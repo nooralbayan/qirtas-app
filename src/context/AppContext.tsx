@@ -11,6 +11,8 @@ export interface AttendanceRecord {
   notes: string;
 }
 
+let isInitializingFromServer = false;
+
 function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
@@ -28,6 +30,17 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetState
       const valueToStore = value instanceof Function ? (value as any)(storedValue) : value;
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      
+      // Auto-sync with backend if not currently initializing from it
+      if (!isInitializingFromServer) {
+        const serverKey = key.replace('qirtas_', '');
+        fetch('http://localhost:3001/api/state/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: serverKey, value: valueToStore })
+        }).catch(err => console.error('Failed to sync to server', err));
+      }
+      
     } catch (error) {
       console.error(error);
     }
@@ -245,6 +258,43 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useLocalStorage<ThemeType>('qirtas_theme', 'light');
   const [academicYear, setAcademicYear] = useLocalStorage('qirtas_academicYear', '2024 - 2025');
   const [attendanceRecords, setAttendanceRecords] = useLocalStorage<AttendanceRecord[]>('qirtas_attendanceRecords', []);
+
+  // Fetch from server on mount
+  useEffect(() => {
+    const fetchServerState = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/api/state');
+        const json = await res.json();
+        if (json.success && json.data) {
+          isInitializingFromServer = true;
+          const state = json.data;
+          
+          if (state.schoolName) setSchoolName(state.schoolName);
+          if (state.schoolLogo) setSchoolLogo(state.schoolLogo);
+          if (state.gradeFees) setGradeFees(state.gradeFees);
+          if (state.students && state.students.length > 0) setStudents(state.students);
+          if (state.receipts && state.receipts.length > 0) setReceipts(state.receipts);
+          if (state.teachers && state.teachers.length > 0) setTeachers(state.teachers);
+          if (state.expenses && state.expenses.length > 0) setExpenses(state.expenses);
+          if (state.gradeSubjects) setGradeSubjects(state.gradeSubjects);
+          if (state.timetables) setTimetables(state.timetables);
+          if (state.users && state.users.length > 0) setUsers(state.users);
+          if (state.classRooms) setClassRooms(state.classRooms);
+          if (state.withdrawnStudents) setWithdrawnStudents(state.withdrawnStudents);
+          if (state.recycleBin) setRecycleBin(state.recycleBin);
+          if (state.studentResults) setStudentResults(state.studentResults);
+          if (state.academicYear) setAcademicYear(state.academicYear);
+          if (state.attendanceRecords) setAttendanceRecords(state.attendanceRecords);
+          
+          isInitializingFromServer = false;
+        }
+      } catch (err) {
+        console.error('Failed to fetch server state:', err);
+      }
+    };
+    
+    fetchServerState();
+  }, []);
 
   // Apply theme to document body
   useEffect(() => {

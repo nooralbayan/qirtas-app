@@ -6,7 +6,7 @@ interface ParentPortalProps {
 }
 
 export default function ParentPortal({ onLogout }: ParentPortalProps) {
-  const { currentUser, students, timetables, studentResults, attendanceRecords } = useAppContext();
+  const { currentUser, students, timetables, studentResults, attendanceRecords, receipts } = useAppContext();
   const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance'>('info');
 
   // The parent user object has a custom `studentId` attached to it
@@ -28,9 +28,21 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
   const periods = [1, 2, 3, 4, 5, 6];
 
   // Get Results
-  const term1Results = studentResults['الفصل الأول']?.[student.id] || {};
-  const term2Results = studentResults['الفصل الثاني']?.[student.id] || {};
-  const allSubjects = Array.from(new Set([...Object.keys(term1Results), ...Object.keys(term2Results)]));
+  const term1Mid = studentResults['نصف الفصل الأول']?.[student.id] || {};
+  const term1Final = studentResults['نهاية الفصل الأول']?.[student.id] || {};
+  const term2Mid = studentResults['نصف الفصل الثاني']?.[student.id] || {};
+  const term2Final = studentResults['نهاية الفصل الثاني']?.[student.id] || {};
+  
+  const allSubjects = Array.from(new Set([
+    ...Object.keys(term1Mid), ...Object.keys(term1Final),
+    ...Object.keys(term2Mid), ...Object.keys(term2Final)
+  ]));
+
+  // Get Receipts
+  const studentReceipts = (receipts || []).filter(r => r.studentId === student.id);
+  const totalPaid = studentReceipts.reduce((acc, r) => acc + r.paidAmount, 0);
+  const totalFees = student.totalFees || 0;
+  const remainingFees = Math.max(0, totalFees - totalPaid);
 
   // Get Attendance
   const studentAttendance = (attendanceRecords || []).filter(a => a.studentId === student.id).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -42,6 +54,9 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
       
       {/* Header */}
       <div style={{ background: 'linear-gradient(135deg, #1e40af, #3b82f6)', color: '#fff', padding: 32, borderRadius: 16, marginBottom: 24, boxShadow: '0 10px 25px rgba(59, 130, 246, 0.3)', position: 'relative', overflow: 'hidden' }}>
+        <button onClick={onLogout} style={{ position: 'absolute', top: 20, left: 20, zIndex: 10, background: 'rgba(255,255,255,0.2)', color: '#fff', border: '1px solid rgba(255,255,255,0.4)', padding: '10px 20px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontFamily: 'Cairo, sans-serif' }}>
+          تسجيل الخروج
+        </button>
         <div style={{ position: 'relative', zIndex: 2 }}>
           <h1 style={{ margin: '0 0 8px 0', fontSize: 32 }}>مرحباً بك يا ولي أمر الطالب</h1>
           <h2 style={{ margin: 0, fontSize: 24, color: '#bfdbfe' }}>{student.name}</h2>
@@ -98,12 +113,12 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                 <div style={{ color: 'var(--text-primary)', fontSize: 18, fontWeight: 'bold' }}>{student.birthDate || 'غير مسجل'}</div>
               </div>
               <div style={{ padding: 16, background: 'var(--input-bg)', borderRadius: 12 }}>
-                <div style={{ color: 'var(--text-secondary)', fontSize: 14 }}>حالة الرسوم الدراسية</div>
-                <div style={{ 
-                  color: student.paymentStatus === 'مسدد' ? '#10b981' : student.paymentStatus === 'جزئي' ? '#f59e0b' : '#ef4444', 
-                  fontSize: 18, fontWeight: 'bold' 
-                }}>
-                  {student.paymentStatus}
+                <div style={{ color: 'var(--text-secondary)', fontSize: 14 }}>الأقساط (المطلوب / المدفوع)</div>
+                <div style={{ color: 'var(--text-primary)', fontSize: 18, fontWeight: 'bold' }}>
+                  {totalPaid} / {totalFees} د.ل
+                </div>
+                <div style={{ fontSize: 13, color: remainingFees > 0 ? '#ef4444' : '#10b981', marginTop: 4, fontWeight: 'bold' }}>
+                  {remainingFees > 0 ? `المتبقي للـدفع: ${remainingFees} د.ل` : 'تم سداد كامل الأقساط'}
                 </div>
               </div>
               <div style={{ padding: 16, background: 'var(--input-bg)', borderRadius: 12 }}>
@@ -216,20 +231,20 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                   <thead>
                     <tr>
                       <th>المادة</th>
-                      <th>الفصل الأول</th>
-                      <th>الفصل الثاني</th>
+                      <th>نصف الأول</th>
+                      <th>نهاية الأول</th>
+                      <th>نصف الثاني</th>
+                      <th>نهاية الثاني</th>
                     </tr>
                   </thead>
                   <tbody>
                     {allSubjects.map(sub => (
                       <tr key={sub}>
                         <td style={{ fontWeight: 'bold', background: 'var(--bg-hover)' }}>{sub}</td>
-                        <td style={{ fontWeight: 'bold', color: term1Results[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>
-                          {term1Results[sub] || '-'}
-                        </td>
-                        <td style={{ fontWeight: 'bold', color: term2Results[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>
-                          {term2Results[sub] || '-'}
-                        </td>
+                        <td style={{ fontWeight: 'bold', color: term1Mid[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term1Mid[sub] || '-'}</td>
+                        <td style={{ fontWeight: 'bold', color: term1Final[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term1Final[sub] || '-'}</td>
+                        <td style={{ fontWeight: 'bold', color: term2Mid[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term2Mid[sub] || '-'}</td>
+                        <td style={{ fontWeight: 'bold', color: term2Final[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term2Final[sub] || '-'}</td>
                       </tr>
                     ))}
                   </tbody>
