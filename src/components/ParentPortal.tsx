@@ -57,12 +57,19 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
         <button onClick={onLogout} style={{ position: 'absolute', top: 20, left: 20, zIndex: 10, background: 'rgba(255,255,255,0.2)', color: '#fff', border: '1px solid rgba(255,255,255,0.4)', padding: '10px 20px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontFamily: 'Cairo, sans-serif' }}>
           تسجيل الخروج
         </button>
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <h1 style={{ margin: '0 0 8px 0', fontSize: 32 }}>مرحباً بك يا ولي أمر الطالب</h1>
-          <h2 style={{ margin: 0, fontSize: 24, color: '#bfdbfe' }}>{student.name}</h2>
-          <div style={{ marginTop: 16, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 8 }}>الصف: {student.grade} - شعبة {student.classRoom}</span>
-            <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 8 }}>رقم القيد: {student.enrollmentNumber}</span>
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+          {student.photo ? (
+            <img src={student.photo} alt={student.name} style={{ width: 100, height: 100, borderRadius: '50%', objectFit: 'cover', border: '3px solid rgba(255,255,255,0.5)' }} />
+          ) : (
+            <div style={{ width: 100, height: 100, borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40, border: '3px solid rgba(255,255,255,0.5)' }}>👨‍🎓</div>
+          )}
+          <div>
+            <h1 style={{ margin: '0 0 8px 0', fontSize: 32 }}>مرحباً بك يا ولي أمر الطالب</h1>
+            <h2 style={{ margin: 0, fontSize: 24, color: '#bfdbfe' }}>{student.name}</h2>
+            <div style={{ marginTop: 16, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 8 }}>الصف: {student.grade} - فصل {student.classRoom}</span>
+              <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 8 }}>رقم القيد: {student.enrollmentNumber}</span>
+            </div>
           </div>
         </div>
         <div style={{ position: 'absolute', left: -20, top: -40, fontSize: 180, opacity: 0.1, zIndex: 1, pointerEvents: 'none' }}>👨‍🎓</div>
@@ -227,24 +234,24 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
               <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>لم يتم رصد أي درجات بعد.</div>
             ) : (
               <div className="table-responsive">
-                <table className="table" style={{ textAlign: 'center' }}>
+                <table className="table" style={{ width: '100%', textAlign: 'center', borderCollapse: 'collapse', marginTop: 12 }}>
                   <thead>
                     <tr>
-                      <th>المادة</th>
-                      <th>نصف الأول</th>
-                      <th>نهاية الأول</th>
-                      <th>نصف الثاني</th>
-                      <th>نهاية الثاني</th>
+                      <th style={{ padding: '16px', background: 'var(--primary-color)', color: '#fff', border: '1px solid var(--border-color)', borderRadius: '0 8px 0 0' }}>المادة</th>
+                      <th style={{ padding: '16px', background: 'var(--primary-color)', color: '#fff', border: '1px solid var(--border-color)' }}>نصف الأول</th>
+                      <th style={{ padding: '16px', background: 'var(--primary-color)', color: '#fff', border: '1px solid var(--border-color)' }}>نهاية الأول</th>
+                      <th style={{ padding: '16px', background: 'var(--primary-color)', color: '#fff', border: '1px solid var(--border-color)' }}>نصف الثاني</th>
+                      <th style={{ padding: '16px', background: 'var(--primary-color)', color: '#fff', border: '1px solid var(--border-color)', borderRadius: '8px 0 0 0' }}>نهاية الثاني</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {allSubjects.map(sub => (
-                      <tr key={sub}>
-                        <td style={{ fontWeight: 'bold', background: 'var(--bg-hover)' }}>{sub}</td>
-                        <td style={{ fontWeight: 'bold', color: term1Mid[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term1Mid[sub] || '-'}</td>
-                        <td style={{ fontWeight: 'bold', color: term1Final[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term1Final[sub] || '-'}</td>
-                        <td style={{ fontWeight: 'bold', color: term2Mid[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term2Mid[sub] || '-'}</td>
-                        <td style={{ fontWeight: 'bold', color: term2Final[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term2Final[sub] || '-'}</td>
+                    {allSubjects.map((sub, idx) => (
+                      <tr key={sub} style={{ background: idx % 2 === 0 ? 'var(--bg-card)' : 'var(--bg-secondary)' }}>
+                        <td style={{ padding: '16px', fontWeight: 'bold', border: '1px solid var(--border-color)', background: 'var(--bg-hover)' }}>{sub}</td>
+                        <td style={{ padding: '16px', fontWeight: 'bold', border: '1px solid var(--border-color)', color: term1Mid[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term1Mid[sub] || '-'}</td>
+                        <td style={{ padding: '16px', fontWeight: 'bold', border: '1px solid var(--border-color)', color: term1Final[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term1Final[sub] || '-'}</td>
+                        <td style={{ padding: '16px', fontWeight: 'bold', border: '1px solid var(--border-color)', color: term2Mid[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term2Mid[sub] || '-'}</td>
+                        <td style={{ padding: '16px', fontWeight: 'bold', border: '1px solid var(--border-color)', color: term2Final[sub] ? 'var(--text-primary)' : 'var(--text-muted)' }}>{term2Final[sub] || '-'}</td>
                       </tr>
                     ))}
                   </tbody>

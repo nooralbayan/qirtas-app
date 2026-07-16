@@ -22,7 +22,7 @@ function App() {
   const [currentView, setCurrentView] = useState(() => {
     return localStorage.getItem('qirtas_currentView') || 'dashboard';
   });
-  const { schoolName, setSchoolName, schoolLogo, setSchoolLogo, gradeFees, setGradeFees, students, setStudents, receipts, expenses, teachers, currentUser, setCurrentUser, theme, setTheme, timetables, classRooms, recycleBin, users, academicYear, setAcademicYear } = useAppContext();
+  const { schoolName, setSchoolName, schoolLogo, setSchoolLogo, gradeFees, setGradeFees, students, setStudents, receipts, expenses, teachers, currentUser, setCurrentUser, theme, setTheme, timetables, classRooms, recycleBin, users, academicYear, setAcademicYear, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects } = useAppContext();
   
   const [notifications, setNotifications] = useState<{id: number, message: string, type: 'info' | 'warning'}[]>([]);
 
@@ -39,24 +39,59 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentView]);
 
+  // AUTOMATIC MIGRATION HACK FOR THE USER
+  useEffect(() => {
+    const doAutoMigrate = async () => {
+      // Only run this if we are running locally on localhost
+      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') return;
+      if (localStorage.getItem('qirtas_auto_migrated_to_render')) return;
+
+      const payload = {
+        students,
+        teachers,
+        receipts,
+        users,
+        settings: { schoolName, gradeFees, classRooms, expenses, timetables, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects, recycleBin }
+      };
+      
+      try {
+        console.log('Auto migrating to Render...');
+        const res = await fetch('https://nooralbayan.onrender.com/api/migration/migrate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('✅ تمت مزامنة جميع بياناتك إلى موقعك الجديد بنجاح! يمكنك الآن إغلاق هذه الصفحة واستخدام الموقع الأونلاين فقط.');
+          localStorage.setItem('qirtas_auto_migrated_to_render', 'true');
+        }
+      } catch (err) {
+        console.error('Migration error:', err);
+      }
+    };
+    // Delay slightly to ensure local states are loaded
+    setTimeout(doAutoMigrate, 2000);
+  }, [students, receipts]);
+
   // Notification System for periods
   useEffect(() => {
     if (!currentUser) return;
     
     const PERIODS = [
-      { id: 1, label: 'الأولى', time: '08:00 - 08:45' },
-      { id: 2, label: 'الثانية', time: '08:50 - 09:35' },
-      { id: 3, label: 'الثالثة', time: '09:40 - 10:25' },
-      { id: 4, label: 'الرابعة', time: '10:45 - 11:30' },
-      { id: 5, label: 'الخامسة', time: '11:35 - 12:20' },
-      { id: 6, label: 'السادسة', time: '12:25 - 13:10' },
+      { id: 1, label: 'ط§ظ„ط£ظˆظ„ظ‰', time: '08:00 - 08:45' },
+      { id: 2, label: 'ط§ظ„ط«ط§ظ†ظٹط©', time: '08:50 - 09:35' },
+      { id: 3, label: 'ط§ظ„ط«ط§ظ„ط«ط©', time: '09:40 - 10:25' },
+      { id: 4, label: 'ط§ظ„ط±ط§ط¨ط¹ط©', time: '10:45 - 11:30' },
+      { id: 5, label: 'ط§ظ„ط®ط§ظ…ط³ط©', time: '11:35 - 12:20' },
+      { id: 6, label: 'ط§ظ„ط³ط§ط¯ط³ط©', time: '12:25 - 13:10' },
     ];
     
     const checkPeriods = () => {
       const now = new Date();
       const minutes = now.getHours() * 60 + now.getMinutes();
       const dayIndex = now.getDay(); // 0 is Sunday
-      const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+      const days = ['ط§ظ„ط£ط­ط¯', 'ط§ظ„ط¥ط«ظ†ظٹظ†', 'ط§ظ„ط«ظ„ط§ط«ط§ط،', 'ط§ظ„ط£ط±ط¨ط¹ط§ط،', 'ط§ظ„ط®ظ…ظٹط³'];
       if (dayIndex > 4) return; // Friday, Saturday
       const today = days[dayIndex];
 
@@ -68,11 +103,11 @@ function App() {
         // Trigger notification exactly when a period ends
         if (minutes === endTotal) {
           const nextPeriod = PERIODS[idx + 1];
-          let msg = `انتهت الحصة ${period.label}. `;
+          let msg = `ط§ظ†طھظ‡طھ ط§ظ„ط­طµط© ${period.label}. `;
           let isWarning = false;
 
           if (nextPeriod) {
-            msg += `تبدأ الحصة ${nextPeriod.label} بعد قليل. `;
+            msg += `طھط¨ط¯ط£ ط§ظ„ط­طµط© ${nextPeriod.label} ط¨ط¹ط¯ ظ‚ظ„ظٹظ„. `;
             // Check for absent teachers in the next period
             const absentTeachersInNext = [];
             for (const [grade, entries] of Object.entries(timetables)) {
@@ -80,17 +115,17 @@ function App() {
               if (entry) {
                 const teacherObj = teachers.find(t => t.name === entry.teacher);
                 if (teacherObj?.isAbsent) {
-                  absentTeachersInNext.push(`${teacherObj.name} (حصة ${entry.subject} - ${grade})`);
+                  absentTeachersInNext.push(`${teacherObj.name} (ط­طµط© ${entry.subject} - ${grade})`);
                 }
               }
             }
 
             if (absentTeachersInNext.length > 0) {
-              msg += `\n⚠️ تنبيه غياب: ${absentTeachersInNext.join('، ')} - يرجى توفير بديل!`;
+              msg += `\nâڑ ï¸ڈ طھظ†ط¨ظٹظ‡ ط؛ظٹط§ط¨: ${absentTeachersInNext.join('طŒ ')} - ظٹط±ط¬ظ‰ طھظˆظپظٹط± ط¨ط¯ظٹظ„!`;
               isWarning = true;
             }
           } else {
-            msg += `نهاية الدوام الرسمي!`;
+            msg += `ظ†ظ‡ط§ظٹط© ط§ظ„ط¯ظˆط§ظ… ط§ظ„ط±ط³ظ…ظٹ!`;
           }
 
           setNotifications(prev => {
@@ -111,21 +146,21 @@ function App() {
   };
 
   const menuItems = [
-    { id: 'students', label: 'إدارة بيانات الطلاب', icon: '👨‍🎓', roles: ['admin', 'student_affairs'] },
-    { id: 'classrooms', label: 'إدارة الفصول الدراسية', icon: '🏫', roles: ['admin', 'student_affairs'] },
-    { id: 'teachers', label: 'إدارة المعلمين', icon: '👨‍🏫', roles: ['admin', 'hr'] },
-    { id: 'withdrawn', label: 'الطلاب المنسحبون', icon: '⏳', roles: ['admin', 'student_affairs'] },
-    { id: 'attendance', label: 'الغياب والحضور', icon: '⏰', roles: ['admin', 'student_affairs', 'hr'] },
-    { id: 'timetable', label: 'الجدول الدراسي', icon: '📅', roles: ['admin', 'student_affairs'] },
-    { id: 'expenses', label: 'إدارة المصروفات', icon: '🧾', roles: ['admin', 'accountant'] },
-    { id: 'receipts', label: 'إدارة سندات القبض', icon: '💵', roles: ['admin', 'accountant'] },
-    { id: 'reports', label: 'التقارير', icon: '📊', roles: ['admin', 'accountant'] },
-    { id: 'whatsapp', label: 'تواصل أولياء الأمور', icon: '📱', roles: ['admin', 'accountant', 'student_affairs'] },
-    { id: 'results', label: 'النتائج المدرسية', icon: '🏆', roles: ['admin', 'student_affairs'] },
-    { id: 'subjects', label: 'المواد الدراسية', icon: '📚', roles: ['admin', 'student_affairs'] },
-    { id: 'users', label: 'إدارة المستخدمين', icon: '👥', roles: ['admin'] },
-    { id: 'settings', label: 'الإعدادات', icon: '⚙️', roles: ['admin'] },
-    { id: 'recyclebin', label: 'سلة المحذوفات', icon: '🗑️', roles: ['admin'] },
+    { id: 'students', label: 'ط¥ط¯ط§ط±ط© ط¨ظٹط§ظ†ط§طھ ط§ظ„ط·ظ„ط§ط¨', icon: 'ًں‘¨â€چًںژ“', roles: ['admin', 'student_affairs'] },
+    { id: 'classrooms', label: 'ط¥ط¯ط§ط±ط© ط§ظ„ظپطµظˆظ„ ط§ظ„ط¯ط±ط§ط³ظٹط©', icon: 'ًںڈ«', roles: ['admin', 'student_affairs'] },
+    { id: 'teachers', label: 'ط¥ط¯ط§ط±ط© ط§ظ„ظ…ط¹ظ„ظ…ظٹظ†', icon: 'ًں‘¨â€چًںڈ«', roles: ['admin', 'hr'] },
+    { id: 'withdrawn', label: 'ط§ظ„ط·ظ„ط§ط¨ ط§ظ„ظ…ظ†ط³ط­ط¨ظˆظ†', icon: 'âڈ³', roles: ['admin', 'student_affairs'] },
+    { id: 'attendance', label: 'ط§ظ„ط؛ظٹط§ط¨ ظˆط§ظ„ط­ط¶ظˆط±', icon: 'âڈ°', roles: ['admin', 'student_affairs', 'hr'] },
+    { id: 'timetable', label: 'ط§ظ„ط¬ط¯ظˆظ„ ط§ظ„ط¯ط±ط§ط³ظٹ', icon: 'ًں“…', roles: ['admin', 'student_affairs'] },
+    { id: 'expenses', label: 'ط¥ط¯ط§ط±ط© ط§ظ„ظ…طµط±ظˆظپط§طھ', icon: 'ًں§¾', roles: ['admin', 'accountant'] },
+    { id: 'receipts', label: 'ط¥ط¯ط§ط±ط© ط³ظ†ط¯ط§طھ ط§ظ„ظ‚ط¨ط¶', icon: 'ًں’µ', roles: ['admin', 'accountant'] },
+    { id: 'reports', label: 'ط§ظ„طھظ‚ط§ط±ظٹط±', icon: 'ًں“ٹ', roles: ['admin', 'accountant'] },
+    { id: 'whatsapp', label: 'طھظˆط§طµظ„ ط£ظˆظ„ظٹط§ط، ط§ظ„ط£ظ…ظˆط±', icon: 'ًں“±', roles: ['admin', 'accountant', 'student_affairs'] },
+    { id: 'results', label: 'ط§ظ„ظ†طھط§ط¦ط¬ ط§ظ„ظ…ط¯ط±ط³ظٹط©', icon: 'ًںڈ†', roles: ['admin', 'student_affairs'] },
+    { id: 'subjects', label: 'ط§ظ„ظ…ظˆط§ط¯ ط§ظ„ط¯ط±ط§ط³ظٹط©', icon: 'ًں“ڑ', roles: ['admin', 'student_affairs'] },
+    { id: 'users', label: 'ط¥ط¯ط§ط±ط© ط§ظ„ظ…ط³طھط®ط¯ظ…ظٹظ†', icon: 'ًں‘¥', roles: ['admin'] },
+    { id: 'settings', label: 'ط§ظ„ط¥ط¹ط¯ط§ط¯ط§طھ', icon: 'âڑ™ï¸ڈ', roles: ['admin'] },
+    { id: 'recyclebin', label: 'ط³ظ„ط© ط§ظ„ظ…ط­ط°ظˆظپط§طھ', icon: 'ًں—‘ï¸ڈ', roles: ['admin'] },
   ];
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,37 +202,37 @@ function App() {
       case 'classrooms': return <Classrooms onBack={() => setCurrentView('dashboard')} />;
       case 'settings':
         const handleSaveSettings = () => {
-          alert('تم حفظ الإعدادات بنجاح!');
+          alert('طھظ… ط­ظپط¸ ط§ظ„ط¥ط¹ط¯ط§ط¯ط§طھ ط¨ظ†ط¬ط§ط­!');
         };
 
         const handleSyncFees = () => {
-          if (window.confirm('هل أنت متأكد من تطبيق هذه الرسوم على جميع الطلبة المسجلين؟ سيتم تعديل الرسوم الإجمالية لكل طالب لتطابق هذه الإعدادات (قد يلغي هذا أي تخفيضات يدوية سابقة).')) {
+          if (window.confirm('ظ‡ظ„ ط£ظ†طھ ظ…طھط£ظƒط¯ ظ…ظ† طھط·ط¨ظٹظ‚ ظ‡ط°ظ‡ ط§ظ„ط±ط³ظˆظ… ط¹ظ„ظ‰ ط¬ظ…ظٹط¹ ط§ظ„ط·ظ„ط¨ط© ط§ظ„ظ…ط³ط¬ظ„ظٹظ†طں ط³ظٹطھظ… طھط¹ط¯ظٹظ„ ط§ظ„ط±ط³ظˆظ… ط§ظ„ط¥ط¬ظ…ط§ظ„ظٹط© ظ„ظƒظ„ ط·ط§ظ„ط¨ ظ„طھط·ط§ط¨ظ‚ ظ‡ط°ظ‡ ط§ظ„ط¥ط¹ط¯ط§ط¯ط§طھ (ظ‚ط¯ ظٹظ„ط؛ظٹ ظ‡ط°ط§ ط£ظٹ طھط®ظپظٹط¶ط§طھ ظٹط¯ظˆظٹط© ط³ط§ط¨ظ‚ط©).')) {
             setStudents(students.map(s => ({
               ...s,
               totalFees: gradeFees[s.grade] || s.totalFees
             })));
-            alert('تم تحديث بيانات الرسوم والأقساط لجميع الطلبة بنجاح.');
+            alert('طھظ… طھط­ط¯ظٹط« ط¨ظٹط§ظ†ط§طھ ط§ظ„ط±ط³ظˆظ… ظˆط§ظ„ط£ظ‚ط³ط§ط· ظ„ط¬ظ…ظٹط¹ ط§ظ„ط·ظ„ط¨ط© ط¨ظ†ط¬ط§ط­.');
           }
         };
         
         return (
           <div className="settings-container">
             <button className="btn btn-back" onClick={() => setCurrentView('dashboard')} style={{ background: 'linear-gradient(135deg, var(--primary-color), #1e40af)', border: 'none', color: '#ffffff', cursor: 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', gap: 12, padding: '12px 30px', borderRadius: 30, fontWeight: 'bold', fontFamily: 'Cairo, sans-serif', boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)', transition: 'all 0.3s ease', width: 'fit-content', marginBottom: 24 }}>
-              <span style={{ fontSize: 24, display: 'flex', alignItems: 'center' }}>⟵</span> العودة للوحة التحكم
+              <span style={{ fontSize: 24, display: 'flex', alignItems: 'center' }}>âںµ</span> ط§ظ„ط¹ظˆط¯ط© ظ„ظ„ظˆط­ط© ط§ظ„طھط­ظƒظ…
             </button>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h2 style={{ margin: 0, color: 'var(--primary-color)' }}>إعدادات النظام العامة</h2>
+              <h2 style={{ margin: 0, color: 'var(--primary-color)' }}>ط¥ط¹ط¯ط§ط¯ط§طھ ط§ظ„ظ†ط¸ط§ظ… ط§ظ„ط¹ط§ظ…ط©</h2>
               <button onClick={handleSaveSettings} style={{ background: 'var(--success-color)', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, fontSize: 16, fontWeight: 'bold', cursor: 'pointer', fontFamily: 'Cairo' }}>
-                💾 حفظ التعديلات
+                ًں’¾ ط­ظپط¸ ط§ظ„طھط¹ط¯ظٹظ„ط§طھ
               </button>
             </div>
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
               {/* General Settings */}
               <div className="card" style={{ padding: 24, borderRadius: 12, background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
-                <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: 10, marginBottom: 20, color: 'var(--text-primary)' }}>بيانات المدرسة</h3>
+                <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: 10, marginBottom: 20, color: 'var(--text-primary)' }}>ط¨ظٹط§ظ†ط§طھ ط§ظ„ظ…ط¯ط±ط³ط©</h3>
                 <div style={{ marginBottom: 16 }}>
-                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold', color: 'var(--text-secondary)' }}>اسم المدرسة / المؤسسة</label>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold', color: 'var(--text-secondary)' }}>ط§ط³ظ… ط§ظ„ظ…ط¯ط±ط³ط© / ط§ظ„ظ…ط¤ط³ط³ط©</label>
                   <input 
                     type="text" 
                     value={schoolName}
@@ -206,7 +241,7 @@ function App() {
                   />
                 </div>
                 <div style={{ marginBottom: 16 }}>
-                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold', color: 'var(--text-secondary)' }}>العام الدراسي</label>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold', color: 'var(--text-secondary)' }}>ط§ظ„ط¹ط§ظ… ط§ظ„ط¯ط±ط§ط³ظٹ</label>
                   <input 
                     type="text" 
                     value={academicYear}
@@ -215,7 +250,7 @@ function App() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold', color: 'var(--text-secondary)' }}>شعار المدرسة</label>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold', color: 'var(--text-secondary)' }}>ط´ط¹ط§ط± ط§ظ„ظ…ط¯ط±ط³ط©</label>
                   <input 
                     type="file" 
                     accept="image/*"
@@ -227,7 +262,7 @@ function App() {
 
               {/* Fee Settings */}
               <div className="card" style={{ padding: 24, borderRadius: 12, background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
-                <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: 10, marginBottom: 20, color: 'var(--text-primary)' }}>إعدادات رسوم الصفوف (د.ل)</h3>
+                <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: 10, marginBottom: 20, color: 'var(--text-primary)' }}>ط¥ط¹ط¯ط§ط¯ط§طھ ط±ط³ظˆظ… ط§ظ„طµظپظˆظپ (ط¯.ظ„)</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, maxHeight: 300, overflowY: 'auto', paddingRight: 10 }}>
                   {Object.entries(gradeFees).map(([grade, fee]) => (
                     <div key={grade} style={{ display: 'flex', flexDirection: 'column' }}>
@@ -245,14 +280,14 @@ function App() {
                   onClick={handleSyncFees} 
                   style={{ marginTop: 20, width: '100%', background: 'var(--primary-color)', color: '#fff', border: 'none', padding: '12px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 16, fontFamily: 'Cairo' }}
                 >
-                  🔄 تطبيق الرسوم على جميع الطلبة المسجلين مسبقاً
+                  ًں”„ طھط·ط¨ظٹظ‚ ط§ظ„ط±ط³ظˆظ… ط¹ظ„ظ‰ ط¬ظ…ظٹط¹ ط§ظ„ط·ظ„ط¨ط© ط§ظ„ظ…ط³ط¬ظ„ظٹظ† ظ…ط³ط¨ظ‚ط§ظ‹
                 </button>
               </div>
             </div>
 
             <div className="card" style={{ marginTop: 24, padding: 24, borderRadius: 12, background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
-                <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: 10, marginBottom: 20, color: 'var(--text-primary)' }}>النسخ الاحتياطي للبيانات</h3>
-                <p style={{ color: 'var(--text-muted)', marginBottom: 16 }}>قم بتنزيل نسخة احتياطية كاملة لجميع بيانات النظام (الطلاب، الرسوم، السندات، الإعدادات) في ملف واحد.</p>
+                <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: 10, marginBottom: 20, color: 'var(--text-primary)' }}>ط§ظ„ظ†ط³ط® ط§ظ„ط§ط­طھظٹط§ط·ظٹ ظ„ظ„ط¨ظٹط§ظ†ط§طھ</h3>
+                <p style={{ color: 'var(--text-muted)', marginBottom: 16 }}>ظ‚ظ… ط¨طھظ†ط²ظٹظ„ ظ†ط³ط®ط© ط§ط­طھظٹط§ط·ظٹط© ظƒط§ظ…ظ„ط© ظ„ط¬ظ…ظٹط¹ ط¨ظٹط§ظ†ط§طھ ط§ظ„ظ†ط¸ط§ظ… (ط§ظ„ط·ظ„ط§ط¨طŒ ط§ظ„ط±ط³ظˆظ…طŒ ط§ظ„ط³ظ†ط¯ط§طھطŒ ط§ظ„ط¥ط¹ط¯ط§ط¯ط§طھ) ظپظٹ ظ…ظ„ظپ ظˆط§ط­ط¯.</p>
                 <div style={{ display: 'flex', gap: 16 }}>
                   <button 
                     onClick={() => {
@@ -269,10 +304,10 @@ function App() {
                     }} 
                     style={{ background: 'var(--primary-color)', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 16, fontFamily: 'Cairo', display: 'flex', alignItems: 'center', gap: 8 }}
                   >
-                    📥 تحميل نسخة احتياطية
+                    ًں“¥ طھط­ظ…ظٹظ„ ظ†ط³ط®ط© ط§ط­طھظٹط§ط·ظٹط©
                   </button>
                   <label style={{ background: '#f59e0b', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 16, fontFamily: 'Cairo', display: 'flex', alignItems: 'center', gap: 8 }}>
-                    📤 استعادة نسخة احتياطية
+                    ًں“¤ ط§ط³طھط¹ط§ط¯ط© ظ†ط³ط®ط© ط§ط­طھظٹط§ط·ظٹط©
                     <input 
                       type="file" 
                       accept=".json"
@@ -280,7 +315,7 @@ function App() {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
-                        if (!window.confirm('تحذير: سيتم مسح كافة البيانات الحالية واستبدالها ببيانات النسخة الاحتياطية. هل أنت متأكد؟')) return;
+                        if (!window.confirm('طھط­ط°ظٹط±: ط³ظٹطھظ… ظ…ط³ط­ ظƒط§ظپط© ط§ظ„ط¨ظٹط§ظ†ط§طھ ط§ظ„ط­ط§ظ„ظٹط© ظˆط§ط³طھط¨ط¯ط§ظ„ظ‡ط§ ط¨ط¨ظٹط§ظ†ط§طھ ط§ظ„ظ†ط³ط®ط© ط§ظ„ط§ط­طھظٹط§ط·ظٹط©. ظ‡ظ„ ط£ظ†طھ ظ…طھط£ظƒط¯طں')) return;
                         
                         const reader = new FileReader();
                         reader.onload = (evt) => {
@@ -289,10 +324,10 @@ function App() {
                             Object.keys(data).forEach(key => {
                               window.localStorage.setItem(`qirtas_${key}`, JSON.stringify(data[key]));
                             });
-                            alert('تمت استعادة النسخة الاحتياطية بنجاح! سيتم إعادة تحميل النظام.');
+                            alert('طھظ…طھ ط§ط³طھط¹ط§ط¯ط© ط§ظ„ظ†ط³ط®ط© ط§ظ„ط§ط­طھظٹط§ط·ظٹط© ط¨ظ†ط¬ط§ط­! ط³ظٹطھظ… ط¥ط¹ط§ط¯ط© طھط­ظ…ظٹظ„ ط§ظ„ظ†ط¸ط§ظ….');
                             window.location.reload();
                           } catch (err) {
-                            alert('ملف النسخة الاحتياطية غير صالح.');
+                            alert('ظ…ظ„ظپ ط§ظ„ظ†ط³ط®ط© ط§ظ„ط§ط­طھظٹط§ط·ظٹط© ط؛ظٹط± طµط§ظ„ط­.');
                           }
                         };
                         reader.readAsText(file);
@@ -301,33 +336,33 @@ function App() {
                   </label>
                   <button 
                     onClick={async () => {
-                      if (!window.confirm('تحذير: سيتم رفع كافة البيانات المحلية إلى السحابة. قد يستغرق هذا بعض الوقت. هل تود الاستمرار؟')) return;
+                      if (!window.confirm('طھط­ط°ظٹط±: ط³ظٹطھظ… ط±ظپط¹ ظƒط§ظپط© ط§ظ„ط¨ظٹط§ظ†ط§طھ ط§ظ„ظ…ط­ظ„ظٹط© ط¥ظ„ظ‰ ط§ظ„ط³ط­ط§ط¨ط©. ظ‚ط¯ ظٹط³طھط؛ط±ظ‚ ظ‡ط°ط§ ط¨ط¹ط¶ ط§ظ„ظˆظ‚طھ. ظ‡ظ„ طھظˆط¯ ط§ظ„ط§ط³طھظ…ط±ط§ط±طں')) return;
                       try {
                         const payload = {
                           students,
                           teachers,
                           receipts,
                           users,
-                          settings: { schoolName, gradeFees, classRooms }
+                          settings: { schoolName, gradeFees, classRooms, expenses, timetables, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects, recycleBin }
                         };
-                        const res = await fetch('http://localhost:3001/api/migration/migrate', {
+                        const res = await fetch('/api/migration/migrate', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify(payload)
                         });
                         const data = await res.json();
                         if (data.success) {
-                          alert('تم ترحيل البيانات إلى السحابة بنجاح!');
+                          alert('طھظ… طھط±ط­ظٹظ„ ط§ظ„ط¨ظٹط§ظ†ط§طھ ط¥ظ„ظ‰ ط§ظ„ط³ط­ط§ط¨ط© ط¨ظ†ط¬ط§ط­!');
                         } else {
-                          alert('حدث خطأ أثناء الترحيل: ' + data.error);
+                          alert('ط­ط¯ط« ط®ط·ط£ ط£ط«ظ†ط§ط، ط§ظ„طھط±ط­ظٹظ„: ' + data.error);
                         }
                       } catch (err) {
-                        alert('تعذر الاتصال بالخادم. يرجى التأكد من تشغيل خادم الباك إند.');
+                        alert('طھط¹ط°ط± ط§ظ„ط§طھطµط§ظ„ ط¨ط§ظ„ط®ط§ط¯ظ…. ظٹط±ط¬ظ‰ ط§ظ„طھط£ظƒط¯ ظ…ظ† طھط´ط؛ظٹظ„ ط®ط§ط¯ظ… ط§ظ„ط¨ط§ظƒ ط¥ظ†ط¯.');
                       }
                     }} 
                     style={{ background: '#8b5cf6', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 16, fontFamily: 'Cairo', display: 'flex', alignItems: 'center', gap: 8 }}
                   >
-                    ☁️ ترحيل البيانات للسحابة
+                    âکپï¸ڈ طھط±ط­ظٹظ„ ط§ظ„ط¨ظٹط§ظ†ط§طھ ظ„ظ„ط³ط­ط§ط¨ط©
                   </button>
                 </div>
             </div>
@@ -343,41 +378,41 @@ function App() {
                 <>
                   <div style={{ background: 'linear-gradient(135deg, #0056b3, #003d82)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
                     <div>
-                      <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>الإيرادات</h4>
-                      <h1 style={{ margin: '8px 0 0', fontSize: 26 }}>{totalCollected} <span style={{ fontSize: 14 }}>د.ل</span></h1>
+                      <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>ط§ظ„ط¥ظٹط±ط§ط¯ط§طھ</h4>
+                      <h1 style={{ margin: '8px 0 0', fontSize: 26 }}>{totalCollected} <span style={{ fontSize: 14 }}>ط¯.ظ„</span></h1>
                     </div>
-                    <div style={{ fontSize: 30, opacity: 0.5 }}>📥</div>
+                    <div style={{ fontSize: 30, opacity: 0.5 }}>ًں“¥</div>
                   </div>
                   <div style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
                     <div>
-                      <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>المصروفات</h4>
-                      <h1 style={{ margin: '8px 0 0', fontSize: 26 }}>{totalExpenses} <span style={{ fontSize: 14 }}>د.ل</span></h1>
+                      <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>ط§ظ„ظ…طµط±ظˆظپط§طھ</h4>
+                      <h1 style={{ margin: '8px 0 0', fontSize: 26 }}>{totalExpenses} <span style={{ fontSize: 14 }}>ط¯.ظ„</span></h1>
                     </div>
-                    <div style={{ fontSize: 30, opacity: 0.5 }}>📤</div>
+                    <div style={{ fontSize: 30, opacity: 0.5 }}>ًں“¤</div>
                   </div>
                   <div style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
                     <div>
-                      <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>السيولة الصافية</h4>
-                      <h1 style={{ margin: '8px 0 0', fontSize: 26 }}>{netProfit} <span style={{ fontSize: 14 }}>د.ل</span></h1>
+                      <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>ط§ظ„ط³ظٹظˆظ„ط© ط§ظ„طµط§ظپظٹط©</h4>
+                      <h1 style={{ margin: '8px 0 0', fontSize: 26 }}>{netProfit} <span style={{ fontSize: 14 }}>ط¯.ظ„</span></h1>
                     </div>
-                    <div style={{ fontSize: 30, opacity: 0.5 }}>💰</div>
+                    <div style={{ fontSize: 30, opacity: 0.5 }}>ًں’°</div>
                   </div>
                 </>
               ) : (
                 <div style={{ gridColumn: 'span 3', background: 'linear-gradient(135deg, #334155, #1e293b)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
-                  <h3 style={{ margin: 0, opacity: 0.9 }}>مرحباً بك مجدداً، {currentUser?.name}</h3>
+                  <h3 style={{ margin: 0, opacity: 0.9 }}>ظ…ط±ط­ط¨ط§ظ‹ ط¨ظƒ ظ…ط¬ط¯ط¯ط§ظ‹طŒ {currentUser?.name}</h3>
                 </div>
               )}
               <div style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
                 <div>
-                  <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>الطلاب المقيدين</h4>
+                  <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>ط§ظ„ط·ظ„ط§ط¨ ط§ظ„ظ…ظ‚ظٹط¯ظٹظ†</h4>
                   <h1 style={{ margin: '8px 0 0', fontSize: 26 }}>{totalStudents}</h1>
                 </div>
-                <div style={{ fontSize: 30, opacity: 0.5 }}>👨‍🎓</div>
+                <div style={{ fontSize: 30, opacity: 0.5 }}>ًں‘¨â€چًںژ“</div>
               </div>
             </div>
 
-            <h2 style={{ color: 'var(--text-primary)', marginBottom: 20 }}>الوصول السريع</h2>
+            <h2 style={{ color: 'var(--text-primary)', marginBottom: 20 }}>ط§ظ„ظˆطµظˆظ„ ط§ظ„ط³ط±ظٹط¹</h2>
             <div className="grid-menu" style={{ gap: '24px' }}>
             {menuItems.filter(item => item.roles.includes(currentUser?.role || '')).map(item => (
               <div 
@@ -428,7 +463,7 @@ function App() {
     return (
       <div className="app-container" style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
         <ParentPortal onLogout={() => {
-          if(window.confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+          if(window.confirm('ظ‡ظ„ ط£ظ†طھ ظ…طھط£ظƒط¯ ظ…ظ† طھط³ط¬ظٹظ„ ط§ظ„ط®ط±ظˆط¬طں')) {
             setCurrentUser(null);
             setCurrentView('dashboard');
           }
@@ -458,10 +493,10 @@ function App() {
           {schoolLogo ? (
             <img src={schoolLogo} alt="School Logo" style={{ height: '60px', width: 'auto', borderRadius: '8px', objectFit: 'contain', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }} />
           ) : (
-            <div style={{ width: '60px', height: '60px', background: 'linear-gradient(135deg, var(--primary-color), #1e40af)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '28px', fontWeight: 'bold', boxShadow: '0 4px 15px rgba(37, 99, 235, 0.3)' }}>ش</div>
+            <div style={{ width: '60px', height: '60px', background: 'linear-gradient(135deg, var(--primary-color), #1e40af)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '28px', fontWeight: 'bold', boxShadow: '0 4px 15px rgba(37, 99, 235, 0.3)' }}>ط´</div>
           )}
           <h1 style={{ margin: 0, fontSize: '28px', fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-0.5px', textShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-            {schoolName || 'نظام إدارة المدرسة'}
+            {schoolName || 'ظ†ط¸ط§ظ… ط¥ط¯ط§ط±ط© ط§ظ„ظ…ط¯ط±ط³ط©'}
           </h1>
         </div>
         <div className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
@@ -470,26 +505,26 @@ function App() {
             <span style={{ 
               background: 'rgba(59, 130, 246, 0.1)', color: 'var(--primary-color)', padding: '4px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: 700 
             }}>
-              {currentUser.role === 'admin' ? 'مدير النظام' : currentUser.role === 'accountant' ? 'محاسب' : currentUser.role === 'hr' ? 'شؤون موظفين' : 'شؤون طلبة'}
+              {currentUser.role === 'admin' ? 'ظ…ط¯ظٹط± ط§ظ„ظ†ط¸ط§ظ…' : currentUser.role === 'accountant' ? 'ظ…ط­ط§ط³ط¨' : currentUser.role === 'hr' ? 'ط´ط¤ظˆظ† ظ…ظˆط¸ظپظٹظ†' : 'ط´ط¤ظˆظ† ط·ظ„ط¨ط©'}
             </span>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
             <button 
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} 
               style={{ background: 'var(--input-bg)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '10px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s ease', width: '44px', height: '44px' }}
-              title="تغيير المظهر"
+              title="طھط؛ظٹظٹط± ط§ظ„ظ…ط¸ظ‡ط±"
             >
               {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
             </button>
             <button 
               onClick={() => {
-                if(window.confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                if(window.confirm('ظ‡ظ„ ط£ظ†طھ ظ…طھط£ظƒط¯ ظ…ظ† طھط³ط¬ظٹظ„ ط§ظ„ط®ط±ظˆط¬طں')) {
                   setCurrentUser(null);
                   setCurrentView('dashboard');
                 }
               }} 
               style={{ background: 'var(--danger-color)', border: 'none', color: '#fff', padding: '10px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s ease', width: '44px', height: '44px', boxShadow: '0 4px 10px rgba(239, 68, 68, 0.3)' }}
-              title="تسجيل الخروج"
+              title="طھط³ط¬ظٹظ„ ط§ظ„ط®ط±ظˆط¬"
             >
               <LogOut size={20} />
             </button>
@@ -516,12 +551,12 @@ function App() {
             minWidth: 320,
             maxWidth: 400
           }}>
-            <div style={{ fontSize: 24 }}>{n.type === 'warning' ? '⚠️' : '🔔'}</div>
+            <div style={{ fontSize: 24 }}>{n.type === 'warning' ? 'âڑ ï¸ڈ' : 'ًں””'}</div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 'bold', marginBottom: 4 }}>{n.type === 'warning' ? 'تنبيه غياب!' : 'إشعار الحصص'}</div>
+              <div style={{ fontWeight: 'bold', marginBottom: 4 }}>{n.type === 'warning' ? 'طھظ†ط¨ظٹظ‡ ط؛ظٹط§ط¨!' : 'ط¥ط´ط¹ط§ط± ط§ظ„ط­طµطµ'}</div>
               <div style={{ fontSize: 14, lineHeight: '1.5', whiteSpace: 'pre-wrap' }}>{n.message}</div>
             </div>
-            <button onClick={() => removeNotification(n.id)} style={{ background: 'none', border: 'none', color: '#fff', opacity: 0.7, cursor: 'pointer', fontSize: 18 }}>×</button>
+            <button onClick={() => removeNotification(n.id)} style={{ background: 'none', border: 'none', color: '#fff', opacity: 0.7, cursor: 'pointer', fontSize: 18 }}>أ—</button>
           </div>
         ))}
       </div>

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 
-type AttendanceStatus = 'حاضر' | 'غائب' | 'متأخر';
+type AttendanceStatus = 'ط­ط§ط¶ط±' | 'ط؛ط§ط¦ط¨' | 'ظ…طھط£ط®ط±';
 type TabType = 'students' | 'teachers';
 
 interface AttendanceRecord {
@@ -14,9 +14,9 @@ interface AttendanceRecord {
 }
 
 const statusColors: Record<AttendanceStatus, string> = {
-  'حاضر': '#27ae60',
-  'غائب': '#e74c3c',
-  'متأخر': '#f39c12',
+  'ط­ط§ط¶ط±': '#27ae60',
+  'ط؛ط§ط¦ط¨': '#e74c3c',
+  'ظ…طھط£ط®ط±': '#f39c12',
 };
 
 export default function Attendance({ onBack }: { onBack: () => void }) {
@@ -40,9 +40,9 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
         return {
           id: s.id, 
           name: s.name, 
-          status: existing ? existing.status : 'حاضر', 
-          checkIn: existing && existing.status === 'غائب' ? '-' : '07:30', 
-          checkOut: existing && existing.status === 'غائب' ? '-' : '13:30', 
+          status: existing ? existing.status : 'ط­ط§ط¶ط±', 
+          checkIn: existing && existing.status === 'ط؛ط§ط¦ط¨' ? '-' : '07:30', 
+          checkOut: existing && existing.status === 'ط؛ط§ط¦ط¨' ? '-' : '13:30', 
           notes: existing ? existing.notes : ''
         };
       });
@@ -53,7 +53,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   useEffect(() => {
     if (teacherRecords.length === 0 && teachers.length > 0) {
       setTeacherRecords(teachers.map(t => ({
-        id: t.id, name: t.name, status: 'حاضر', checkIn: '07:00', checkOut: '14:00', notes: ''
+        id: t.id, name: t.name, status: 'ط­ط§ط¶ط±', checkIn: '07:00', checkOut: '14:00', notes: ''
       })));
     }
   }, [teachers]);
@@ -61,9 +61,9 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   const records = activeTab === 'students' ? studentRecords : teacherRecords;
   const setRecords = activeTab === 'students' ? setStudentRecords : setTeacherRecords;
 
-  const presentCount = records.filter(r => r.status === 'حاضر').length;
-  const absentCount = records.filter(r => r.status === 'غائب').length;
-  const lateCount = records.filter(r => r.status === 'متأخر').length;
+  const presentCount = records.filter(r => r.status === 'ط­ط§ط¶ط±').length;
+  const absentCount = records.filter(r => r.status === 'ط؛ط§ط¦ط¨').length;
+  const lateCount = records.filter(r => r.status === 'ظ…طھط£ط®ط±').length;
   const attendanceRate = records.length > 0 ? (((presentCount + lateCount) / records.length) * 100).toFixed(1) : '0';
 
   const styles = {
@@ -135,8 +135,8 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
       r.id === id ? {
         ...r,
         status,
-        checkIn: status === 'غائب' ? '-' : (r.checkIn === '-' ? timeStr : r.checkIn),
-        checkOut: status === 'غائب' ? '-' : r.checkOut,
+        checkIn: status === 'ط؛ط§ط¦ط¨' ? '-' : (r.checkIn === '-' ? timeStr : r.checkIn),
+        checkOut: status === 'ط؛ط§ط¦ط¨' ? '-' : r.checkOut,
       } : r
     ));
     
@@ -173,12 +173,12 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   };
 
   const sendAbsenceAlerts = async () => {
-    const absentees = studentRecords.filter(r => r.status === 'غائب');
+    const absentees = studentRecords.filter(r => r.status === 'ط؛ط§ط¦ط¨');
     if (absentees.length === 0) {
-      alert('لا يوجد طلاب غائبين لإرسال إشعارات لهم.');
+      alert('ظ„ط§ ظٹظˆط¬ط¯ ط·ظ„ط§ط¨ ط؛ط§ط¦ط¨ظٹظ† ظ„ط¥ط±ط³ط§ظ„ ط¥ط´ط¹ط§ط±ط§طھ ظ„ظ‡ظ….');
       return;
     }
-    if (!window.confirm(`سيتم إرسال رسائل واتساب لـ ${absentees.length} طالب غائب. هل ترغب في المتابعة؟`)) return;
+    if (!window.confirm(`ط³ظٹطھظ… ط¥ط±ط³ط§ظ„ ط±ط³ط§ط¦ظ„ ظˆط§طھط³ط§ط¨ ظ„ظ€ ${absentees.length} ط·ط§ظ„ط¨ ط؛ط§ط¦ط¨. ظ‡ظ„ طھط±ط؛ط¨ ظپظٹ ط§ظ„ظ…طھط§ط¨ط¹ط©طں`)) return;
 
     setIsSendingWa(true);
     let successCount = 0;
@@ -187,14 +187,14 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
       const student = students.find(s => s.id === record.id);
       if (!student || !student.fatherPhone) continue;
 
-      const message = `السلام عليكم ورحمة الله\n\nنحيطكم علماً بأن الطالب/ة: ${student.name}\nالصف: ${student.grade}\nكان/ت غائب/ة اليوم ${new Date(selectedDate).toLocaleDateString('ar-LY')}.\n\nعسى أن يكون المانع خيراً 🤲`;
+      const message = `ط§ظ„ط³ظ„ط§ظ… ط¹ظ„ظٹظƒظ… ظˆط±ط­ظ…ط© ط§ظ„ظ„ظ‡\n\nظ†ط­ظٹط·ظƒظ… ط¹ظ„ظ…ط§ظ‹ ط¨ط£ظ† ط§ظ„ط·ط§ظ„ط¨/ط©: ${student.name}\nط§ظ„طµظپ: ${student.grade}\nظƒط§ظ†/طھ ط؛ط§ط¦ط¨/ط© ط§ظ„ظٹظˆظ… ${new Date(selectedDate).toLocaleDateString('ar-LY')}.\n\nط¹ط³ظ‰ ط£ظ† ظٹظƒظˆظ† ط§ظ„ظ…ط§ظ†ط¹ ط®ظٹط±ط§ظ‹ ًں¤²`;
       
       let phone = student.fatherPhone.replace(/\s+/g, '').replace(/-/g, '');
       if (phone.startsWith('0')) phone = '218' + phone.slice(1);
       if (!phone.startsWith('+')) phone = '+' + phone;
 
       try {
-        const res = await fetch('http://localhost:3001/api/wa-send', {
+        const res = await fetch('/api/wa-send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ phone, message })
@@ -208,36 +208,36 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
     }
     
     setIsSendingWa(false);
-    alert(`تم الانتهاء! نجح إرسال ${successCount} رسالة من أصل ${absentees.length}.`);
+    alert(`طھظ… ط§ظ„ط§ظ†طھظ‡ط§ط،! ظ†ط¬ط­ ط¥ط±ط³ط§ظ„ ${successCount} ط±ط³ط§ظ„ط© ظ…ظ† ط£طµظ„ ${absentees.length}.`);
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>📋 سجل الحضور والغياب</h1>
+        <h1 style={styles.title}>ًں“‹ ط³ط¬ظ„ ط§ظ„ط­ط¶ظˆط± ظˆط§ظ„ط؛ظٹط§ط¨</h1>
         <button onClick={onBack} style={{ background: 'linear-gradient(135deg, #2563eb, #1e40af)', border: 'none', color: '#ffffff', cursor: 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', gap: 12, padding: '12px 30px', borderRadius: 30, fontWeight: 'bold', fontFamily: 'Cairo, sans-serif', boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)', transition: 'all 0.3s ease', width: 'fit-content' }}>
-          <span style={{ fontSize: 24, display: 'flex', alignItems: 'center' }}>⟵</span> العودة للوحة التحكم
+          <span style={{ fontSize: 24, display: 'flex', alignItems: 'center' }}>âںµ</span> ط§ظ„ط¹ظˆط¯ط© ظ„ظ„ظˆط­ط© ط§ظ„طھط­ظƒظ…
         </button>
       </div>
 
       <div style={styles.tabsContainer}>
         <button style={styles.tab(activeTab === 'students')} onClick={() => setActiveTab('students')}>
-          👨‍🎓 حضور الطلاب
+          ًں‘¨â€چًںژ“ ط­ط¶ظˆط± ط§ظ„ط·ظ„ط§ط¨
         </button>
         <button style={styles.tab(activeTab === 'teachers')} onClick={() => setActiveTab('teachers')}>
-          👨‍🏫 حضور المعلمين
+          ًں‘¨â€چًںڈ« ط­ط¶ظˆط± ط§ظ„ظ…ط¹ظ„ظ…ظٹظ†
         </button>
       </div>
 
       <div style={styles.controlsBar}>
-        <span style={styles.dateLabel}>📅 التاريخ:</span>
+        <span style={styles.dateLabel}>ًں“… ط§ظ„طھط§ط±ظٹط®:</span>
         <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} style={styles.dateInput} />
         
         <div style={{ borderRight: '1px solid #ddd', height: '30px' }}></div>
-        <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '600' }}>تحديد الكل:</span>
-        <button style={styles.bulkBtn('#27ae60')} onClick={() => markAll('حاضر')}>✓ حاضر</button>
-        <button style={styles.bulkBtn('#e74c3c')} onClick={() => markAll('غائب')}>✗ غائب</button>
-        <button style={styles.bulkBtn('#f39c12')} onClick={() => markAll('متأخر')}>⏰ متأخر</button>
+        <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '600' }}>طھط­ط¯ظٹط¯ ط§ظ„ظƒظ„:</span>
+        <button style={styles.bulkBtn('#27ae60')} onClick={() => markAll('ط­ط§ط¶ط±')}>âœ“ ط­ط§ط¶ط±</button>
+        <button style={styles.bulkBtn('#e74c3c')} onClick={() => markAll('ط؛ط§ط¦ط¨')}>âœ— ط؛ط§ط¦ط¨</button>
+        <button style={styles.bulkBtn('#f39c12')} onClick={() => markAll('ظ…طھط£ط®ط±')}>âڈ° ظ…طھط£ط®ط±</button>
 
         {activeTab === 'students' && (
           <>
@@ -251,8 +251,8 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
                 display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 2px 6px rgba(37,211,102,0.3)', opacity: isSendingWa ? 0.7 : 1
               }}
             >
-              <span style={{ fontSize: 18 }}>💬</span>
-              {isSendingWa ? 'جاري إرسال إشعارات الواتساب...' : 'إرسال إشعارات الغياب بالواتساب'}
+              <span style={{ fontSize: 18 }}>ًں’¬</span>
+              {isSendingWa ? 'ط¬ط§ط±ظٹ ط¥ط±ط³ط§ظ„ ط¥ط´ط¹ط§ط±ط§طھ ط§ظ„ظˆط§طھط³ط§ط¨...' : 'ط¥ط±ط³ط§ظ„ ط¥ط´ط¹ط§ط±ط§طھ ط§ظ„ط؛ظٹط§ط¨ ط¨ط§ظ„ظˆط§طھط³ط§ط¨'}
             </button>
           </>
         )}
@@ -261,19 +261,19 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
       <div style={styles.summaryBar}>
         <div style={styles.summaryCard('#27ae60')}>
           <div style={styles.summaryValue('#27ae60')}>{presentCount}</div>
-          <div style={styles.summaryLabel}>عدد الحاضرين</div>
+          <div style={styles.summaryLabel}>ط¹ط¯ط¯ ط§ظ„ط­ط§ط¶ط±ظٹظ†</div>
         </div>
         <div style={styles.summaryCard('#e74c3c')}>
           <div style={styles.summaryValue('#e74c3c')}>{absentCount}</div>
-          <div style={styles.summaryLabel}>عدد الغائبين</div>
+          <div style={styles.summaryLabel}>ط¹ط¯ط¯ ط§ظ„ط؛ط§ط¦ط¨ظٹظ†</div>
         </div>
         <div style={styles.summaryCard('#f39c12')}>
           <div style={styles.summaryValue('#f39c12')}>{lateCount}</div>
-          <div style={styles.summaryLabel}>عدد المتأخرين</div>
+          <div style={styles.summaryLabel}>ط¹ط¯ط¯ ط§ظ„ظ…طھط£ط®ط±ظٹظ†</div>
         </div>
         <div style={styles.summaryCard('#0056b3')}>
           <div style={styles.summaryValue('#0056b3')}>{attendanceRate}%</div>
-          <div style={styles.summaryLabel}>نسبة الحضور</div>
+          <div style={styles.summaryLabel}>ظ†ط³ط¨ط© ط§ظ„ط­ط¶ظˆط±</div>
         </div>
       </div>
 
@@ -282,12 +282,12 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
           <thead>
             <tr>
               <th style={styles.th}>#</th>
-              <th style={styles.th}>الاسم</th>
-              <th style={styles.th}>الحالة</th>
-              <th style={styles.th}>تغيير الحالة</th>
-              <th style={styles.th}>وقت الحضور</th>
-              <th style={styles.th}>وقت الانصراف</th>
-              <th style={styles.th}>ملاحظات</th>
+              <th style={styles.th}>ط§ظ„ط§ط³ظ…</th>
+              <th style={styles.th}>ط§ظ„ط­ط§ظ„ط©</th>
+              <th style={styles.th}>طھط؛ظٹظٹط± ط§ظ„ط­ط§ظ„ط©</th>
+              <th style={styles.th}>ظˆظ‚طھ ط§ظ„ط­ط¶ظˆط±</th>
+              <th style={styles.th}>ظˆظ‚طھ ط§ظ„ط§ظ†طµط±ط§ظپ</th>
+              <th style={styles.th}>ظ…ظ„ط§ط­ط¸ط§طھ</th>
             </tr>
           </thead>
           <tbody>
@@ -299,9 +299,9 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
                   <span style={styles.statusBadge(record.status)}>{record.status}</span>
                 </td>
                 <td style={styles.td(hoveredRow === record.id)}>
-                  <button style={styles.statusBtn('حاضر', record.status === 'حاضر')} onClick={() => updateStatus(record.id, 'حاضر')}>حاضر</button>
-                  <button style={styles.statusBtn('غائب', record.status === 'غائب')} onClick={() => updateStatus(record.id, 'غائب')}>غائب</button>
-                  <button style={styles.statusBtn('متأخر', record.status === 'متأخر')} onClick={() => updateStatus(record.id, 'متأخر')}>متأخر</button>
+                  <button style={styles.statusBtn('ط­ط§ط¶ط±', record.status === 'ط­ط§ط¶ط±')} onClick={() => updateStatus(record.id, 'ط­ط§ط¶ط±')}>ط­ط§ط¶ط±</button>
+                  <button style={styles.statusBtn('ط؛ط§ط¦ط¨', record.status === 'ط؛ط§ط¦ط¨')} onClick={() => updateStatus(record.id, 'ط؛ط§ط¦ط¨')}>ط؛ط§ط¦ط¨</button>
+                  <button style={styles.statusBtn('ظ…طھط£ط®ط±', record.status === 'ظ…طھط£ط®ط±')} onClick={() => updateStatus(record.id, 'ظ…طھط£ط®ط±')}>ظ…طھط£ط®ط±</button>
                 </td>
                 <td style={{ ...styles.td(hoveredRow === record.id), fontWeight: record.checkIn !== '-' ? '600' : '400', color: record.checkIn !== '-' ? '#27ae60' : '#999' }}>
                   {record.checkIn}
@@ -312,22 +312,22 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
                 <td style={styles.td(hoveredRow === record.id)}>
                   {editingNote === record.id ? (
                     <div style={styles.noteCell}>
-                      <input style={styles.noteInput} value={noteText} onChange={e => setNoteText(e.target.value)} placeholder="أضف ملاحظة..." autoFocus />
-                      <button style={styles.noteSaveBtn} onClick={() => saveNote(record.id)}>حفظ</button>
+                      <input style={styles.noteInput} value={noteText} onChange={e => setNoteText(e.target.value)} placeholder="ط£ط¶ظپ ظ…ظ„ط§ط­ط¸ط©..." autoFocus />
+                      <button style={styles.noteSaveBtn} onClick={() => saveNote(record.id)}>ط­ظپط¸</button>
                     </div>
                   ) : (
                     <div style={styles.noteCell}>
                       <span style={{ fontSize: '13px', color: record.notes ? '#333' : '#ccc' }}>
-                        {record.notes || 'لا توجد'}
+                        {record.notes || 'ظ„ط§ طھظˆط¬ط¯'}
                       </span>
-                      <button style={styles.noteEditBtn} onClick={() => startEditNote(record)}>✏️</button>
+                      <button style={styles.noteEditBtn} onClick={() => startEditNote(record)}>âœڈï¸ڈ</button>
                     </div>
                   )}
                 </td>
               </tr>
             ))}
             {records.length === 0 && (
-              <tr><td colSpan={7} style={{ padding: 40, textAlign: 'center', color: 'var(--text-secondary)' }}>لا توجد بيانات مسجلة</td></tr>
+              <tr><td colSpan={7} style={{ padding: 40, textAlign: 'center', color: 'var(--text-secondary)' }}>ظ„ط§ طھظˆط¬ط¯ ط¨ظٹط§ظ†ط§طھ ظ…ط³ط¬ظ„ط©</td></tr>
             )}
           </tbody>
         </table>
