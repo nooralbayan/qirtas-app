@@ -11,6 +11,7 @@ import path from 'path';
 import connectDB from './db.js';
 import authRoutes from './routes/auth.js';
 import migrationRoutes from './routes/migration.js';
+import stateRoutes from './routes/state.js';
 import { useMongoDBAuthState } from './mongoAuthState.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,6 +28,7 @@ connectDB();
 // Register API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/migration', migrationRoutes);
+app.use('/api/state', stateRoutes);
 
 // Serve static frontend files in production
 const distPath = path.join(__dirname, '../dist');
