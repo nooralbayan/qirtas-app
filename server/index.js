@@ -33,7 +33,7 @@ const distPath = path.join(__dirname, '../dist');
 app.use(express.static(distPath));
 
 // Fallback all other routes to index.html for React Router
-app.get('*', (req, res, next) => {
+app.get('/{*splat}', (req, res, next) => {
     if (req.path.startsWith('/api/')) return next();
     res.sendFile(path.join(distPath, 'index.html'));
 });
