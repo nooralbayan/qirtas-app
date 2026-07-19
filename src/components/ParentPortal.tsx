@@ -50,6 +50,7 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
   const totalFees = student.totalFees || gradeFees?.[student.grade] || 0;
   const totalPaid = studentReceipts.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
   const totalRemaining = totalFees - totalPaid;
+  const dynamicPaymentStatus = totalPaid === 0 ? 'غير مسدد' : (totalPaid >= totalFees ? 'مسدد' : 'جزئي');
 
   return (
     <div style={{ padding: 24, maxWidth: 1000, margin: '0 auto', fontFamily: 'Cairo, sans-serif' }}>
@@ -124,10 +125,10 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
               <div style={{ padding: 16, background: 'var(--input-bg)', borderRadius: 12 }}>
                 <div style={{ color: 'var(--text-secondary)', fontSize: 14 }}>حالة الرسوم الدراسية</div>
                 <div style={{ 
-                  color: student.paymentStatus === 'مسدد' ? '#10b981' : student.paymentStatus === 'جزئي' ? '#f59e0b' : '#ef4444', 
+                  color: dynamicPaymentStatus === 'مسدد' ? '#10b981' : dynamicPaymentStatus === 'جزئي' ? '#f59e0b' : '#ef4444', 
                   fontSize: 18, fontWeight: 'bold' 
                 }}>
-                  {student.paymentStatus}
+                  {dynamicPaymentStatus}
                 </div>
               </div>
               <div style={{ padding: 16, background: 'var(--input-bg)', borderRadius: 12 }}>
