@@ -65,42 +65,73 @@ export default function Login() {
     }
   }, [username, isFocusedUsername]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loginType === 'staff') {
-      const user = users.find(u => u.username === username && u.password === password);
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        setError('اسم المستخدم أو كلمة المرور غير صحيحة');
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (data.success && data.user) {
+          const user = users.find(u => u.username === username) || data.user;
+          setCurrentUser(user);
+        } else {
+          setError(data.error || 'اسم المستخدم أو كلمة المرور غير صحيحة');
+        }
+      } catch (err) {
+        // Offline Fallback
+        const user = users.find(u => u.username === username && u.password === password);
+        if (user) {
+          setCurrentUser(user);
+        } else {
+          setError('اسم المستخدم أو كلمة المرور غير صحيحة (وضع عدم الاتصال)');
+        }
       }
     } else {
-      // Parent Login Logic (Local simulation for now)
-      const student = students.find(s => s.enrollmentNumber === username);
-      if (!student) {
-        setError('رقم القيد غير صحيح');
-        return;
-      }
-      
-      const cleanInputPhone = password.replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
-      const cleanFatherPhone = (student.fatherPhone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
-      const cleanMotherPhone = (student.motherPhone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
+      // Parent Login Logic
+      try {
+        const res = await fetch('/api/auth/parent-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ enrollmentNumber: username, phone: password })
+        });
+        const data = await res.json();
+        if (data.success && data.user) {
+          setCurrentUser(data.user as any);
+        } else {
+          setError(data.error || 'بيانات الدخول غير صحيحة');
+        }
+      } catch (err) {
+        // Local simulation for offline fallback
+        const student = students.find(s => s.enrollmentNumber === username);
+        if (!student) {
+          setError('رقم القيد غير صحيح');
+          return;
+        }
+        
+        const cleanInputPhone = password.replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
+        const cleanFatherPhone = (student.fatherPhone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
+        const cleanMotherPhone = (student.motherPhone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
 
-      const isFatherMatch = cleanFatherPhone.endsWith(cleanInputPhone) || cleanInputPhone.endsWith(cleanFatherPhone);
-      const isMotherMatch = cleanMotherPhone.endsWith(cleanInputPhone) || cleanInputPhone.endsWith(cleanMotherPhone);
+        const isFatherMatch = cleanFatherPhone.endsWith(cleanInputPhone) || cleanInputPhone.endsWith(cleanFatherPhone);
+        const isMotherMatch = cleanMotherPhone.endsWith(cleanInputPhone) || cleanInputPhone.endsWith(cleanMotherPhone);
 
-      if (!isFatherMatch && !isMotherMatch) {
-        setError('رقم الهاتف غير مطابق لبيانات الطالب');
-        return;
+        if (!isFatherMatch && !isMotherMatch) {
+          setError('رقم الهاتف غير مطابق لبيانات الطالب');
+          return;
+        }
+        
+        setCurrentUser({
+          id: `parent_${student.id}`,
+          username: student.enrollmentNumber,
+          name: student.fatherName || `ولي أمر ${student.name}`,
+          role: 'parent',
+          studentId: student.id
+        } as any);
       }
-      
-      setCurrentUser({
-        id: `parent_${student.id}`,
-        username: student.enrollmentNumber,
-        name: student.fatherName || `ولي أمر ${student.name}`,
-        role: 'parent',
-        studentId: student.id // Custom property we can read later
-      } as any);
     }
   };
 
