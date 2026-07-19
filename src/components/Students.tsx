@@ -61,14 +61,11 @@ export default function Students({ onBack }: { onBack: () => void }) {
   };
 
   const handleDelete = (id: number) => {
-    if (window.confirm('هل أنت متأكد من حذف هذا الطالب؟ سيتم مسح بياناته المالية والغياب والدرجات بالكامل ونقله إلى سلة المحذوفات.')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا الطالب؟ سيتم نقله إلى سلة المحذوفات ومسح درجاته وغيابه (لكن ستبقى إيصالاته المالية مسجلة لغرض الجرد).')) {
       const studentToDelete = students.find((s) => s.id === id);
       if (studentToDelete) {
         // Delete student
         setStudents((prev) => prev.filter((s) => s.id !== id));
-        
-        // Cascade delete receipts
-        setReceipts(receipts.filter(r => r.studentId !== id));
         
         // Cascade delete attendance
         setAttendanceRecords(attendanceRecords.filter(a => a.studentId !== id));
