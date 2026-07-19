@@ -22,7 +22,7 @@ function App() {
   const [currentView, setCurrentView] = useState(() => {
     return localStorage.getItem('qirtas_currentView') || 'dashboard';
   });
-  const { schoolName, setSchoolName, schoolLogo, setSchoolLogo, gradeFees, setGradeFees, students, setStudents, receipts, expenses, teachers, currentUser, setCurrentUser, theme, setTheme, timetables, classRooms, recycleBin, users, academicYear, setAcademicYear, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects } = useAppContext();
+  const { schoolName, setSchoolName, schoolLogo, setSchoolLogo, gradeFees, setGradeFees, students, setStudents, receipts, expenses, teachers, currentUser, setCurrentUser, theme, setTheme, timetables, classRooms, recycleBin, users, academicYear, setAcademicYear, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects, isServerLoaded } = useAppContext();
   
   const [notifications, setNotifications] = useState<{id: number, message: string, type: 'info' | 'warning'}[]>([]);
 
@@ -42,6 +42,7 @@ function App() {
   // AUTOMATIC MIGRATION HACK FOR THE USER
   useEffect(() => {
     const doAutoMigrate = async () => {
+      if (!isServerLoaded) return;
       // Only run this if we are running locally on localhost
       if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') return;
       if (localStorage.getItem('qirtas_auto_migrated_to_render')) return;

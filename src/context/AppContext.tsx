@@ -142,6 +142,7 @@ export interface RecycleBinItem {
 }
 
 interface AppContextType {
+  isServerLoaded: boolean;
   theme: ThemeType;
   setTheme: (theme: ThemeType) => void;
   schoolName: string;
@@ -256,6 +257,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useLocalStorage<ThemeType>('qirtas_theme', 'light');
   const [academicYear, setAcademicYear] = useLocalStorage('qirtas_academicYear', '2024 - 2025');
   const [attendanceRecords, setAttendanceRecords] = useLocalStorage<AttendanceRecord[]>('qirtas_attendanceRecords', []);
+  const [isServerLoaded, setIsServerLoaded] = useState(false);
 
   // Fetch from server on mount
   useEffect(() => {
@@ -292,10 +294,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch (err) {
         console.error('Failed to fetch server state:', err);
+      } finally {
+        setIsServerLoaded(true);
       }
     };
     
     fetchServerState();
+    
+    // Poll the server every 30 seconds to keep data updated (e.g. for ParentPortal)
+    const interval = setInterval(fetchServerState, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   // Apply theme to document body
@@ -305,6 +313,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   // Migrate old phone numbers to use +218
   useEffect(() => {
+    if (!isServerLoaded) return;
     if (!students || students.length === 0) return;
     
     let migrated = false;
@@ -336,10 +345,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (migrated) {
       setStudents(migratedStudents);
     }
-  }, []); // Run once on mount
+  }, [isServerLoaded]); // Run after server loads
 
   // Migration: auto-fill fatherName from student name & default gender
   useEffect(() => {
+    if (!isServerLoaded) return;
     if (!students || students.length === 0) return;
     let changed = false;
     const updated = students.map(s => {
@@ -366,7 +376,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       return { ...s, fatherName: newFather, gender: newGender };
     });
     if (changed) setStudents(updated);
-  }, []); // Run once on mount
+  }, [isServerLoaded]); // Run after server loads
 
   return (
     <AppContext.Provider value={{
@@ -387,7 +397,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       studentResults, setStudentResults,
       theme, setTheme,
       academicYear, setAcademicYear,
-      attendanceRecords, setAttendanceRecords
+      attendanceRecords, setAttendanceRecords,
+      isServerLoaded
     }}>
       {children}
     </AppContext.Provider>
