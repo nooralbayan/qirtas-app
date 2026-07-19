@@ -79,10 +79,16 @@ export default function Login() {
           const user = users.find(u => u.username === username) || data.user;
           setCurrentUser(user);
         } else {
-          setError(data.error || 'اسم المستخدم أو كلمة المرور غير صحيحة');
+          // Fallback if backend failed (e.g., local DB down)
+          const fallbackUser = users.find(u => u.username === username && u.password === password);
+          if (fallbackUser) {
+            setCurrentUser(fallbackUser);
+          } else {
+            setError(data.error || 'اسم المستخدم أو كلمة المرور غير صحيحة');
+          }
         }
       } catch (err) {
-        // Offline Fallback
+        // Offline Fallback (Network error)
         const user = users.find(u => u.username === username && u.password === password);
         if (user) {
           setCurrentUser(user);
