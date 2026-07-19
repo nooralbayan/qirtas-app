@@ -135,7 +135,7 @@ export default function Students({ onBack }: { onBack: () => void }) {
         )
       );
     } else {
-      const newId = students.length > 0 ? Math.max(...students.map((s) => s.id)) + 1 : 1;
+      const newId = Date.now();
       const newStudent: Student = {
         id: newId,
         ...form,
