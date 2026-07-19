@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import type { Receipt } from '../context/AppContext';
 import { generateReceiptPDFBase64 } from './pdfGenerator';
@@ -6,7 +6,7 @@ import { generateReceiptPDFBase64 } from './pdfGenerator';
 export default function Receipts({ onBack }: { onBack: () => void }) {
   const { receipts, setReceipts, students, recycleBin, setRecycleBin, schoolName, schoolLogo } = useAppContext();
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ studentName: '', studentId: 0, grade: '', paidAmount: 0, paymentMethod: 'ظ†ظ‚ط¯ظٹ' as Receipt['paymentMethod'] });
+  const [form, setForm] = useState({ studentName: '', studentId: 0, grade: '', paidAmount: 0, paymentMethod: 'نقدي' as Receipt['paymentMethod'] });
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isSendingWaId, setIsSendingWaId] = useState<string | null>(null);
@@ -66,7 +66,7 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
   };
 
   const handleDelete = (receipt: Receipt) => {
-    if (window.confirm('ظ‡ظ„ ط£ظ†طھ ظ…طھط£ظƒط¯ ظ…ظ† ط­ط°ظپ ظ‡ط°ط§ ط§ظ„ط³ظ†ط¯طں ط³ظٹطھظ… ظ†ظ‚ظ„ظ‡ ط¥ظ„ظ‰ ط³ظ„ط© ط§ظ„ظ…ط­ط°ظˆظپط§طھ.')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا السند؟ سيتم نقله إلى سلة المحذوفات.')) {
       setReceipts(receipts.filter(r => r.id !== receipt.id));
       setRecycleBin([
         ...recycleBin,
@@ -78,11 +78,11 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
   const sendReceiptWhatsApp = async (receipt: Receipt) => {
     const student = students.find(s => s.id === receipt.studentId);
     if (!student || !student.fatherPhone) {
-      alert('ظ„ط§ ظٹظˆط¬ط¯ ط±ظ‚ظ… ظ‡ط§طھظپ ظ…ط³ط¬ظ„ ظ„ظˆظ„ظٹ ط£ظ…ط± ظ‡ط°ط§ ط§ظ„ط·ط§ظ„ط¨.');
+      alert('لا يوجد رقم هاتف مسجل لولي أمر هذا الطالب.');
       return;
     }
 
-    if (!window.confirm(`ظ‡ظ„ ط£ظ†طھ ظ…طھط£ظƒط¯ ظ…ظ† ط¥ط±ط³ط§ظ„ ط§ظ„ط¥ظٹطµط§ظ„ ظƒظ…ظ„ظپ PDF ط¹ط¨ط± ط§ظ„ظˆط§طھط³ط§ط¨طں`)) return;
+    if (!window.confirm(`هل أنت متأكد من إرسال الإيصال كملف PDF عبر الواتساب؟`)) return;
 
     setIsSendingWaId(receipt.id);
 
@@ -93,24 +93,24 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
       if (phone.startsWith('0')) phone = '218' + phone.slice(1);
       if (!phone.startsWith('+')) phone = '+' + phone;
 
-      const studentLabel = student.gender === 'ط£ظ†ط«ظ‰' ? 'ط§ظ„ط·ط§ظ„ط¨ط©' : 'ط§ظ„ط·ط§ظ„ط¨';
-      const caption = `ط§ظ„ط³ظ„ط§ظ… ط¹ظ„ظٹظƒظ… ظˆط±ط­ظ…ط© ط§ظ„ظ„ظ‡\n\n${schoolName}\nظ†ط±ظپظ‚ ظ„ظƒظ… ط¥ظٹطµط§ظ„ ط¯ظپط¹ ظ„ظ€${studentLabel}: ${student.name}\nظ‚ظٹظ…ط© ط§ظ„ط¯ظپط¹ط©: ${receipt.paidAmount} ط¯.ظ„\nط§ظ„ظ…طھط¨ظ‚ظٹ ظ…ظ† ط§ظ„ط±ط³ظˆظ…: ${receipt.remaining} ط¯.ظ„\n\nظ†ط´ظƒط± ظ„ظƒظ… طھط¹ط§ظˆظ†ظƒظ… ًںŒ¸`;
+      const studentLabel = student.gender === 'أنثى' ? 'الطالبة' : 'الطالب';
+      const caption = `السلام عليكم ورحمة الله\n\n${schoolName}\nنرفق لكم إيصال دفع لـ${studentLabel}: ${student.name}\nقيمة الدفعة: ${receipt.paidAmount} د.ل\nالمتبقي من الرسوم: ${receipt.remaining} د.ل\n\nنشكر لكم تعاونكم 🌸`;
 
       const res = await fetch('/api/wa-send-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, pdfBase64, fileName: `ط§ظٹطµط§ظ„_${receipt.id}.pdf`, caption })
+        body: JSON.stringify({ phone, pdfBase64, fileName: `ايصال_${receipt.id}.pdf`, caption })
       });
       const data = await res.json();
       
       if (data.success) {
-        alert('طھظ… ط§ظ„ط¥ط±ط³ط§ظ„ ط¨ظ†ط¬ط§ط­!');
+        alert('تم الإرسال بنجاح!');
       } else {
-        alert(data.error || 'ظپط´ظ„ ظپظٹ ط¥ط±ط³ط§ظ„ ط§ظ„ط¥ظٹطµط§ظ„.');
+        alert(data.error || 'فشل في إرسال الإيصال.');
       }
     } catch (e) {
       console.error(e);
-      alert('ط­ط¯ط« ط®ط·ط£ ط£ط«ظ†ط§ط، ط¥ظ†ط´ط§ط، ط£ظˆ ط¥ط±ط³ط§ظ„ ط§ظ„ط¥ظٹطµط§ظ„.');
+      alert('حدث خطأ أثناء إنشاء أو إرسال الإيصال.');
     } finally {
       setIsSendingWaId(null);
     }
@@ -119,7 +119,7 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
   return (
     <div style={{ direction: 'rtl', padding: 24, backgroundColor: 'var(--bg-primary)', minHeight: '100vh', fontFamily: 'Cairo, sans-serif' }}>
       
-      {/* â”€â”€â”€ PRINTABLE RECEIPT LAYOUT â”€â”€â”€ */}
+      {/* ─── PRINTABLE RECEIPT LAYOUT ─── */}
       {receiptToPrint && (
         <div className="print-only" style={{
           position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'var(--bg-card)', zIndex: 9999, padding: '40px', boxSizing: 'border-box', direction: 'rtl'
@@ -128,7 +128,7 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #000', paddingBottom: 20, marginBottom: 20 }}>
               <div style={{ textAlign: 'right' }}>
                 <h1 style={{ margin: '0 0 10px', fontSize: 28 }}>{schoolName}</h1>
-                <h3 style={{ margin: 0, color: 'var(--text-secondary)' }}>ط³ظ†ط¯ ظ‚ط¨ط¶ ظ…ط§ظ„ظٹ (Receipt)</h3>
+                <h3 style={{ margin: 0, color: 'var(--text-secondary)' }}>سند قبض مالي (Receipt)</h3>
               </div>
               <div>
                 {schoolLogo.startsWith('data:image') ? (
@@ -140,78 +140,78 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, fontSize: 18, marginBottom: 30 }}>
-              <div><strong>ط±ظ‚ظ… ط§ظ„ط³ظ†ط¯:</strong> {receiptToPrint.id}</div>
-              <div><strong>ط§ظ„طھط§ط±ظٹط®:</strong> {receiptToPrint.date}</div>
+              <div><strong>رقم السند:</strong> {receiptToPrint.id}</div>
+              <div><strong>التاريخ:</strong> {receiptToPrint.date}</div>
               <div style={{ gridColumn: '1 / -1' }}>
-                <strong>ط§ط³طھظ„ظ…طھ ظ…ظ† ط§ظ„ط³ظٹط¯:</strong> {(() => { const st = students.find(s => s.id === receiptToPrint.studentId); return st ? st.fatherName : '---'; })()}
-                {' '}<strong>ظˆظ„ظٹ ط£ظ…ط± ط§ظ„ط·ط§ظ„ط¨/ط©:</strong> {receiptToPrint.studentName}
+                <strong>استلمت من السيد:</strong> {(() => { const st = students.find(s => s.id === receiptToPrint.studentId); return st ? st.fatherName : '---'; })()}
+                {' '}<strong>ولي أمر الطالب/ة:</strong> {receiptToPrint.studentName}
               </div>
-              <div><strong>ط§ظ„طµظپ ط§ظ„ط¯ط±ط§ط³ظٹ:</strong> {receiptToPrint.grade}</div>
-              <div><strong>ط§ظ„ط¯ظپط¹ط© ط±ظ‚ظ…:</strong> {receiptToPrint.installmentNo}</div>
+              <div><strong>الصف الدراسي:</strong> {receiptToPrint.grade}</div>
+              <div><strong>الدفعة رقم:</strong> {receiptToPrint.installmentNo}</div>
               <div style={{ gridColumn: '1 / -1', fontSize: 22, marginTop: 10 }}>
-                <strong>ظ…ط¨ظ„ط؛ط§ظ‹ ظˆظ‚ط¯ط±ظ‡:</strong> {receiptToPrint.paidAmount} ط¯.ظ„
+                <strong>مبلغاً وقدره:</strong> {receiptToPrint.paidAmount} د.ل
               </div>
               <div style={{ gridColumn: '1 / -1' }}>
-                <strong>ط·ط±ظٹظ‚ط© ط§ظ„ط¯ظپط¹:</strong>{' '}
+                <strong>طريقة الدفع:</strong>{' '}
                 <span style={{ border: '1px solid #000', padding: '4px 16px', borderRadius: 6, fontWeight: 'bold' }}>{receiptToPrint.paymentMethod}</span>
               </div>
-              <div style={{ gridColumn: '1 / -1' }}><strong>ط§ظ„ظ…طھط¨ظ‚ظٹ ظ…ظ† ط§ظ„ط±ط³ظˆظ…:</strong> {receiptToPrint.remaining} ط¯.ظ„</div>
+              <div style={{ gridColumn: '1 / -1' }}><strong>المتبقي من الرسوم:</strong> {receiptToPrint.remaining} د.ل</div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 60, paddingTop: 20, borderTop: '1px solid #ccc' }}>
               <div style={{ textAlign: 'center' }}>
-                <strong>طھظˆظ‚ظٹط¹ ط§ظ„ظ…ط­ط§ط³ط¨</strong>
+                <strong>توقيع المحاسب</strong>
                 <div style={{ marginTop: 40, borderBottom: '1px dotted #000', width: 200 }}></div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <strong>ط§ظ„ط®طھظ… ط§ظ„ظ…ط¹طھظ…ط¯</strong>
-                <div style={{ marginTop: 40, width: 200, height: 80, border: '1px dashed #ccc', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc' }}>ظ…ظƒط§ظ† ط§ظ„ط®طھظ…</div>
+                <strong>الختم المعتمد</strong>
+                <div style={{ marginTop: 40, width: 200, height: 80, border: '1px dashed #ccc', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc' }}>مكان الختم</div>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* â”€â”€â”€ NORMAL SCREEN CONTENT â”€â”€â”€ */}
+      {/* ─── NORMAL SCREEN CONTENT ─── */}
       <div className="no-print">
         <button onClick={onBack} style={{ background: 'linear-gradient(135deg, #2563eb, #1e40af)', border: 'none', color: '#ffffff', cursor: 'pointer', marginBottom: 24, fontSize: 18, display: 'flex', alignItems: 'center', gap: 12, padding: '12px 30px', borderRadius: 30, fontWeight: 'bold', fontFamily: 'Cairo, sans-serif', boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)', transition: 'all 0.3s ease', width: 'fit-content' }}>
-          <span style={{ fontSize: 24, display: 'flex', alignItems: 'center' }}>âںµ</span> ط§ظ„ط¹ظˆط¯ط© ظ„ظ„ظˆط­ط© ط§ظ„طھط­ظƒظ…
+          <span style={{ fontSize: 24, display: 'flex', alignItems: 'center' }}>⟵</span> العودة للوحة التحكم
         </button>
         
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
           <div style={{ background: 'var(--bg-card)', padding: 20, borderRadius: 12, borderLeft: '4px solid #10b981', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-            <h3 style={{ margin: '0 0 10px', color: 'var(--text-secondary)' }}>ط¥ط¬ظ…ط§ظ„ظٹ ط§ظ„ظ…ط­طµظ„</h3>
-            <h2 style={{ margin: 0, fontSize: 28 }}>{totalCollected} <span style={{ fontSize: 16 }}>ط¯.ظ„</span></h2>
+            <h3 style={{ margin: '0 0 10px', color: 'var(--text-secondary)' }}>إجمالي المحصل</h3>
+            <h2 style={{ margin: 0, fontSize: 28 }}>{totalCollected} <span style={{ fontSize: 16 }}>د.ل</span></h2>
           </div>
           <div style={{ background: 'var(--bg-card)', padding: 20, borderRadius: 12, borderLeft: '4px solid #ef4444', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-            <h3 style={{ margin: '0 0 10px', color: 'var(--text-secondary)' }}>ط¥ط¬ظ…ط§ظ„ظٹ ط§ظ„ظ…طھط¨ظ‚ظٹ (ط§ظ„ط¯ظٹظˆظ†)</h3>
-            <h2 style={{ margin: 0, fontSize: 28 }}>{totalRemaining} <span style={{ fontSize: 16 }}>ط¯.ظ„</span></h2>
+            <h3 style={{ margin: '0 0 10px', color: 'var(--text-secondary)' }}>إجمالي المتبقي (الديون)</h3>
+            <h2 style={{ margin: 0, fontSize: 28 }}>{totalRemaining} <span style={{ fontSize: 16 }}>د.ل</span></h2>
           </div>
           <div style={{ background: 'var(--bg-card)', padding: 20, borderRadius: 12, borderLeft: '4px solid #3b82f6', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-            <h3 style={{ margin: '0 0 10px', color: 'var(--text-secondary)' }}>ط¹ط¯ط¯ ط§ظ„ط³ظ†ط¯ط§طھ</h3>
+            <h3 style={{ margin: '0 0 10px', color: 'var(--text-secondary)' }}>عدد السندات</h3>
             <h2 style={{ margin: 0, fontSize: 28 }}>{receipts.length}</h2>
           </div>
         </div>
 
         <div style={{ backgroundColor: 'var(--bg-card)', padding: 24, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20, alignItems: 'center' }}>
-            <h2 style={{ margin: 0, color: '#0056b3' }}>ط³ظ†ط¯ط§طھ ط§ظ„ظ‚ط¨ط¶</h2>
+            <h2 style={{ margin: 0, color: '#0056b3' }}>سندات القبض</h2>
             <button onClick={() => setShowModal(true)} style={{ backgroundColor: '#0056b3', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 15 }}>
-              + طھط³ط¬ظٹظ„ ط³ط¯ط§ط¯ ظ‚ط³ط·
+              + تسجيل سداد قسط
             </button>
           </div>
 
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'right' }}>
             <thead>
               <tr style={{ backgroundColor: '#f8fafc', color: 'var(--text-primary)', borderBottom: '2px solid #eee' }}>
-                <th style={{ padding: 12, fontWeight: 'bold' }}>ط±ظ‚ظ… ط§ظ„ط³ظ†ط¯</th>
-                <th style={{ padding: 12, fontWeight: 'bold' }}>ط§ط³ظ… ط§ظ„ط·ط§ظ„ط¨</th>
-                <th style={{ padding: 12, fontWeight: 'bold' }}>ط§ظ„طµظپ</th>
-                <th style={{ padding: 12, fontWeight: 'bold' }}>ط§ظ„ظ…ط¨ظ„ط؛ ط§ظ„ظ…ط¯ظپظˆط¹</th>
-                <th style={{ padding: 12, fontWeight: 'bold' }}>ط·ط±ظٹظ‚ط© ط§ظ„ط¯ظپط¹</th>
-                <th style={{ padding: 12, fontWeight: 'bold' }}>ط§ظ„ظ…طھط¨ظ‚ظٹ ط¹ظ„ظٹظ‡</th>
-                <th style={{ padding: 12, fontWeight: 'bold' }}>ط§ظ„طھط§ط±ظٹط®</th>
-                <th style={{ padding: 12, fontWeight: 'bold' }}>ط¥ط¬ط±ط§ط،ط§طھ</th>
+                <th style={{ padding: 12, fontWeight: 'bold' }}>رقم السند</th>
+                <th style={{ padding: 12, fontWeight: 'bold' }}>اسم الطالب</th>
+                <th style={{ padding: 12, fontWeight: 'bold' }}>الصف</th>
+                <th style={{ padding: 12, fontWeight: 'bold' }}>المبلغ المدفوع</th>
+                <th style={{ padding: 12, fontWeight: 'bold' }}>طريقة الدفع</th>
+                <th style={{ padding: 12, fontWeight: 'bold' }}>المتبقي عليه</th>
+                <th style={{ padding: 12, fontWeight: 'bold' }}>التاريخ</th>
+                <th style={{ padding: 12, fontWeight: 'bold' }}>إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -220,19 +220,19 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
                   <td style={{ padding: 12, fontWeight: 'bold' }}>{r.id}</td>
                   <td style={{ padding: 12, fontWeight: 'bold' }}>{r.studentName}</td>
                   <td style={{ padding: 12 }}>{r.grade}</td>
-                  <td style={{ padding: 12, color: '#10b981', fontWeight: 'bold' }}>{r.paidAmount} ط¯.ظ„</td>
+                  <td style={{ padding: 12, color: '#10b981', fontWeight: 'bold' }}>{r.paidAmount} د.ل</td>
                   <td style={{ padding: 12 }}>
                      <span style={{ backgroundColor: '#e0f2fe', color: '#0284c7', padding: '4px 8px', borderRadius: 12, fontSize: 12, fontWeight: 'bold' }}>{r.paymentMethod}</span>
                   </td>
-                  <td style={{ padding: 12, color: r.remaining > 0 ? '#ef4444' : '#10b981', fontWeight: 'bold' }}>{r.remaining} ط¯.ظ„</td>
+                  <td style={{ padding: 12, color: r.remaining > 0 ? '#ef4444' : '#10b981', fontWeight: 'bold' }}>{r.remaining} د.ل</td>
                   <td style={{ padding: 12 }}>{r.date}</td>
                   <td style={{ padding: 12 }}>
                     <div style={{ display: 'flex', gap: '8px' }}>
                       <button onClick={() => sendReceiptWhatsApp(r)} disabled={isSendingWaId === r.id} style={{ backgroundColor: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '6px 12px', borderRadius: 6, cursor: isSendingWaId === r.id ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
-                        {isSendingWaId === r.id ? 'âڈ³ ط¬ط§ط±ظٹ...' : 'ًں“± ظˆط§طھط³ط§ط¨'}
+                        {isSendingWaId === r.id ? '⏳ جاري...' : '📱 واتساب'}
                       </button>
-                      <button onClick={() => handlePrint(r)} style={{ backgroundColor: 'var(--bg-primary)', border: '1px solid #cbd5e1', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontWeight: 'bold' }}>ًں–¨ï¸ڈ ط·ط¨ط§ط¹ط©</button>
-                      <button onClick={() => handleDelete(r)} style={{ backgroundColor: '#fee2e2', color: '#ef4444', border: 'none', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontWeight: 'bold' }}>ًں—‘ï¸ڈ ط­ط°ظپ</button>
+                      <button onClick={() => handlePrint(r)} style={{ backgroundColor: 'var(--bg-primary)', border: '1px solid #cbd5e1', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontWeight: 'bold' }}>🖨️ طباعة</button>
+                      <button onClick={() => handleDelete(r)} style={{ backgroundColor: '#fee2e2', color: '#ef4444', border: 'none', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontWeight: 'bold' }}>🗑️ حذف</button>
                     </div>
                   </td>
                 </tr>
@@ -241,18 +241,18 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
           </table>
         </div>
 
-        {/* â”€â”€â”€ MODAL â”€â”€â”€ */}
+        {/* ─── MODAL ─── */}
         {showModal && (
           <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
             <div style={{ backgroundColor: 'var(--bg-card)', padding: 32, borderRadius: 12, width: 500, boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
-              <h2 style={{ marginTop: 0, color: '#0056b3', marginBottom: 24 }}>طھط³ط¬ظٹظ„ ط³ط¯ط§ط¯ ظ‚ط³ط· ظ…ط§ظ„ظٹ</h2>
+              <h2 style={{ marginTop: 0, color: '#0056b3', marginBottom: 24 }}>تسجيل سداد قسط مالي</h2>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                 {/* Autocomplete Input */}
                 <div style={{ position: 'relative' }}>
-                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>ط§ط¨ط­ط« ط¹ظ† ط§ط³ظ… ط§ظ„ط·ط§ظ„ط¨</label>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>ابحث عن اسم الطالب</label>
                   <input 
-                    placeholder="ط§ظƒطھط¨ ط¬ط²ط، ظ…ظ† ط§ط³ظ… ط§ظ„ط·ط§ظ„ط¨..." 
+                    placeholder="اكتب جزء من اسم الطالب..." 
                     value={searchQuery} 
                     onChange={e => {
                       setSearchQuery(e.target.value);
@@ -277,7 +277,7 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
                           </div>
                         ))
                       ) : (
-                        <div style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>ظ„ط§ طھظˆط¬ط¯ ظ†طھط§ط¦ط¬ ظ…ط·ط§ط¨ظ‚ط©</div>
+                        <div style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>لا توجد نتائج مطابقة</div>
                       )}
                     </div>
                   )}
@@ -285,37 +285,37 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
 
                 {form.studentName && (
                   <div style={{ backgroundColor: '#f8fafc', padding: 12, borderRadius: 8, border: '1px solid #e2e8f0', color: '#0f172a' }}>
-                    âœ… طھظ… ط§ط®طھظٹط§ط±: <strong>{form.studentName}</strong> ({form.grade})<br/>
+                    ✅ تم اختيار: <strong>{form.studentName}</strong> ({form.grade})<br/>
                     {(() => {
                       const st = students.find(s => s.id === form.studentId);
                       if (!st) return null;
                       const installmentSize = st.totalFees / (st.installmentsCount || 2);
-                      return <span style={{ color: '#0056b3', fontSize: 14 }}>ًں’، ظ‚ظٹظ…ط© ط§ظ„ظ‚ط³ط· ط§ظ„ظˆط§ط­ط¯: {installmentSize.toFixed(2)} ط¯.ظ„ (ط¨ظ†ط§ط،ظ‹ ط¹ظ„ظ‰ ط§ظ„طھظ‚ط³ظٹظ… ط¥ظ„ظ‰ {st.installmentsCount || 2} ط£ظ‚ط³ط§ط·)</span>;
+                      return <span style={{ color: '#0056b3', fontSize: 14 }}>💡 قيمة القسط الواحد: {installmentSize.toFixed(2)} د.ل (بناءً على التقسيم إلى {st.installmentsCount || 2} أقساط)</span>;
                     })()}
                   </div>
                 )}
 
                 <div>
-                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>ط§ظ„ظ…ط¨ظ„ط؛ ط§ظ„ظ…ط¯ظپظˆط¹ (ط¯.ظ„)</label>
-                  <input type="number" placeholder="ط£ط¯ط®ظ„ ط§ظ„ظ…ط¨ظ„ط؛" value={form.paidAmount || ''} onChange={e => setForm({...form, paidAmount: Number(e.target.value)})} style={inputStyle} />
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>المبلغ المدفوع (د.ل)</label>
+                  <input type="number" placeholder="أدخل المبلغ" value={form.paidAmount || ''} onChange={e => setForm({...form, paidAmount: Number(e.target.value)})} style={inputStyle} />
                 </div>
                 
                 <div>
-                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>ط·ط±ظٹظ‚ط© ط§ظ„ط¯ظپط¹</label>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>طريقة الدفع</label>
                   <select value={form.paymentMethod} onChange={e => setForm({...form, paymentMethod: e.target.value as Receipt['paymentMethod']})} style={inputStyle}>
-                    <option value="ظ†ظ‚ط¯ظٹ">ظ†ظ‚ط¯ظٹ (Cash)</option>
-                    <option value="ط¨ط·ط§ظ‚ط© ظ…طµط±ظپظٹط©">ط¨ط·ط§ظ‚ط© ظ…طµط±ظپظٹط© (Card)</option>
-                    <option value="ط­ظˆط§ظ„ط© ظ…طµط±ظپظٹط©">ط­ظˆط§ظ„ط© ظ…طµط±ظپظٹط© (Bank Transfer)</option>
+                    <option value="نقدي">نقدي (Cash)</option>
+                    <option value="بطاقة مصرفية">بطاقة مصرفية (Card)</option>
+                    <option value="حوالة مصرفية">حوالة مصرفية (Bank Transfer)</option>
                   </select>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
                 <button onClick={handleSubmit} disabled={!form.studentName || form.paidAmount <= 0} style={{ backgroundColor: (!form.studentName || form.paidAmount <= 0) ? '#94a3b8' : '#0056b3', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: (!form.studentName || form.paidAmount <= 0) ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: 16 }}>
-                  ط­ظپط¸ ظˆط·ط¨ط§ط¹ط© ط§ظ„ط³ظ†ط¯
+                  حفظ وطباعة السند
                 </button>
                 <button onClick={() => setShowModal(false)} style={{ backgroundColor: '#e2e8f0', color: '#334155', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 16 }}>
-                  ط¥ظ„ط؛ط§ط،
+                  إلغاء
                 </button>
               </div>
             </div>

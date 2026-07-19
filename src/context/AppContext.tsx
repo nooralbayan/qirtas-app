@@ -1,7 +1,7 @@
-﻿import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode, Dispatch, SetStateAction } from 'react';
 
-export type AttendanceStatus = 'ط­ط§ط¶ط±' | 'ط؛ط§ط¦ط¨' | 'ظ…طھط£ط®ط±';
+export type AttendanceStatus = 'حاضر' | 'غائب' | 'متأخر';
 
 export interface AttendanceRecord {
   id: string; // e.g. student_1_2024-10-01
@@ -17,8 +17,6 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetState
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key);
-      // For initialStudents, if they have new elements from Excel but localStorage has old ones, 
-      // we might just trust localStorage. If they want to reset, they can clear it.
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       return initialValue;
@@ -63,7 +61,7 @@ export interface Student {
   fatherPhone: string;
   motherName: string;
   motherPhone: string;
-  gender?: 'ط°ظƒط±' | 'ط£ظ†ط«ظ‰' | 'ط؛ظٹط± ظ…ط­ط¯ط¯';
+  gender?: 'ذكر' | 'أنثى' | 'غير محدد';
   specialNeeds?: string;
   medicalCondition?: string;
   medication?: string;
@@ -71,7 +69,7 @@ export interface Student {
   notes?: string;
   totalFees: number;
   installmentsCount: number;
-  paymentStatus: 'ظ…ط³ط¯ط¯' | 'ط¬ط²ط¦ظٹ' | 'ط؛ظٹط± ظ…ط³ط¯ط¯';
+  paymentStatus: 'مسدد' | 'جزئي' | 'غير مسدد';
   wasWithdrawn?: boolean;
 }
 
@@ -96,7 +94,7 @@ export interface Receipt {
   totalDue: number;
   paidAmount: number;
   remaining: number;
-  paymentMethod: 'ظ†ظ‚ط¯ظٹ' | 'ط¨ط·ط§ظ‚ط© ظ…طµط±ظپظٹط©' | 'ط­ظˆط§ظ„ط© ظ…طµط±ظپظٹط©';
+  paymentMethod: 'نقدي' | 'بطاقة مصرفية' | 'حوالة مصرفية';
   date: string;
 }
 
@@ -120,7 +118,7 @@ export interface Teacher {
 export interface Expense {
   id: string;
   description: string;
-  category: 'ط¥ظٹط¬ط§ط±' | 'طµظٹط§ظ†ط©' | 'ط±ظˆط§طھط¨' | 'ظپظˆط§طھظٹط±' | 'ط£ط®ط±ظ‰';
+  category: 'إيجار' | 'صيانة' | 'رواتب' | 'فواتير' | 'أخرى';
   amount: number;
   date: string;
   notes: string;
@@ -185,49 +183,49 @@ interface AppContextType {
 const initialGradeFees = {
   'KG1': 1000,
   'KG2': 1000,
-  'ط§ظ„طµظپ ط§ظ„ط£ظˆظ„': 1200,
-  'ط§ظ„طµظپ ط§ظ„ط«ط§ظ†ظٹ': 1200,
-  'ط§ظ„طµظپ ط§ظ„ط«ط§ظ„ط«': 1200,
-  'ط§ظ„طµظپ ط§ظ„ط±ط§ط¨ط¹': 1300,
-  'ط§ظ„طµظپ ط§ظ„ط®ط§ظ…ط³': 1300,
-  'ط§ظ„طµظپ ط§ظ„ط³ط§ط¯ط³': 1300,
-  'ط§ظ„طµظپ ط§ظ„ط³ط§ط¨ط¹': 1500,
-  'ط§ظ„طµظپ ط§ظ„ط«ط§ظ…ظ†': 1500,
-  'ط§ظ„طµظپ ط§ظ„طھط§ط³ط¹': 1500,
+  'الصف الأول': 1200,
+  'الصف الثاني': 1200,
+  'الصف الثالث': 1200,
+  'الصف الرابع': 1300,
+  'الصف الخامس': 1300,
+  'الصف السادس': 1300,
+  'الصف السابع': 1500,
+  'الصف الثامن': 1500,
+  'الصف التاسع': 1500,
 };
 
 const initialClassRooms: Record<string, string[]> = {};
 Object.keys(initialGradeFees).forEach(g => {
-  initialClassRooms[g] = ['ط£'];
+  initialClassRooms[g] = ['أ'];
 });
 
 
 
 const initialReceipts: Receipt[] = [
-  { id: 'REC-0001', studentId: 1, studentName: 'ط£ط­ظ…ط¯ ظ…ط­ظ…ط¯ ط¹ظ„ظٹ', grade: 'ط§ظ„طµظپ ط§ظ„ط±ط§ط¨ط¹', installmentNo: 1, totalDue: 1300, paidAmount: 1300, remaining: 0, paymentMethod: 'ظ†ظ‚ط¯ظٹ', date: '2029-09-01' },
+  { id: 'REC-0001', studentId: 1, studentName: 'أحمد محمد علي', grade: 'الصف الرابع', installmentNo: 1, totalDue: 1300, paidAmount: 1300, remaining: 0, paymentMethod: 'نقدي', date: '2029-09-01' },
 ];
 
 const initialTeachers: Teacher[] = [
-  { id: 1, name: 'ط£. ظ…ط­ظ…ظˆط¯ ط®ظ„ظٹظ„', subject: 'ط±ظٹط§ط¶ظٹط§طھ', phone: '0910000001', salary: 1500, hireDate: '2025-08-15' },
-  { id: 2, name: 'ط£. ظ„ظٹظ„ظ‰ ط¹ظ…ط±', subject: 'ظ„ط؛ط© ط¹ط±ط¨ظٹط©', phone: '0910000002', salary: 1500, hireDate: '2025-08-16' },
+  { id: 1, name: 'أ. محمود خليل', subject: 'رياضيات', phone: '0910000001', salary: 1500, hireDate: '2025-08-15' },
+  { id: 2, name: 'أ. ليلى عمر', subject: 'لغة عربية', phone: '0910000002', salary: 1500, hireDate: '2025-08-16' },
 ];
 
 const initialExpenses: Expense[] = [
-  { id: 'EXP-0001', description: 'ط¥ظٹط¬ط§ط± ط§ظ„ظ…ط¨ظ†ظ‰ ط§ظ„ظ…ط¯ط±ط³ظٹ', category: 'ط¥ظٹط¬ط§ط±', amount: 5000, date: '2029-09-01', notes: 'ط¥ظٹط¬ط§ط± ط´ظ‡ط± 9' },
-  { id: 'EXP-0002', description: 'طµظٹط§ظ†ط© ظ…ظƒظٹظپط§طھ', category: 'طµظٹط§ظ†ط©', amount: 300, date: '2029-09-05', notes: 'طµظٹط§ظ†ط© 3 ظ…ظƒظٹظپط§طھ' },
+  { id: 'EXP-0001', description: 'إيجار المبنى المدرسي', category: 'إيجار', amount: 5000, date: '2029-09-01', notes: 'إيجار شهر 9' },
+  { id: 'EXP-0002', description: 'صيانة مكيفات', category: 'صيانة', amount: 300, date: '2029-09-05', notes: 'صيانة 3 مكيفات' },
 ];
 
-const defaultSubjects = ['ط§ظ„ظ‚ط±ط¢ظ† ط§ظ„ظƒط±ظٹظ…', 'ط§ظ„طھط±ط¨ظٹط© ط§ظ„ط¥ط³ظ„ط§ظ…ظٹط©', 'ط§ظ„ظ„ط؛ط© ط§ظ„ط¹ط±ط¨ظٹط©', 'ط§ظ„ط±ظٹط§ط¶ظٹط§طھ', 'ط§ظ„ط¹ظ„ظˆظ…', 'ط§ظ„ظ„ط؛ط© ط§ظ„ط¥ظ†ط¬ظ„ظٹط²ظٹط©'];
+const defaultSubjects = ['القرآن الكريم', 'التربية الإسلامية', 'اللغة العربية', 'الرياضيات', 'العلوم', 'اللغة الإنجليزية'];
 const initialGradeSubjects: Record<string, string[]> = {};
 Object.keys(initialGradeFees).forEach(g => {
   initialGradeSubjects[g] = [...defaultSubjects];
 });
 
 const initialUsers: User[] = [
-  { id: '1', username: 'admin', password: '123', name: 'ط§ظ„ظ…ط¯ظٹط± ط§ظ„ط¹ط§ظ…', role: 'admin' },
-  { id: '2', username: 'acc', password: '123', name: 'ط§ظ„ظ…ط­ط§ط³ط¨', role: 'accountant' },
-  { id: '3', username: 'std', password: '123', name: 'ط´ط¤ظˆظ† ط§ظ„ط·ظ„ط¨ط©', role: 'student_affairs' },
-  { id: '4', username: 'hr', password: '123', name: 'ط´ط¤ظˆظ† ط§ظ„ظ…ظˆط¸ظپظٹظ†', role: 'hr' }
+  { id: '1', username: 'admin', password: '123', name: 'المدير العام', role: 'admin' },
+  { id: '2', username: 'acc', password: '123', name: 'المحاسب', role: 'accountant' },
+  { id: '3', username: 'std', password: '123', name: 'شؤون الطلبة', role: 'student_affairs' },
+  { id: '4', username: 'hr', password: '123', name: 'شؤون الموظفين', role: 'hr' }
 ];
 
 import { initialStudentsFromExcel } from '../data/studentsData';
@@ -240,7 +238,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export type ThemeType = 'light' | 'dark';
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [schoolName, setSchoolName] = useLocalStorage('qirtas_schoolName', 'ظ†ط¸ط§ظ… ظ‚ط±ط·ط§ط³ ط§ظ„ظ…ط¯ط±ط³ظٹ');
+  const [schoolName, setSchoolName] = useLocalStorage('qirtas_schoolName', 'نظام قرطاس المدرسي');
   const [schoolLogo, setSchoolLogo] = useLocalStorage('qirtas_schoolLogo', '<>');
   const [gradeFees, setGradeFees] = useLocalStorage<Record<string, number>>('qirtas_gradeFees', initialGradeFees);
   const [students, setStudents] = useLocalStorage<Student[]>('qirtas_students', initialStudents);
@@ -342,10 +340,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     let changed = false;
     const updated = students.map(s => {
       let newFather = s.fatherName;
-      let newGender = s.gender || 'ط؛ظٹط± ظ…ط­ط¯ط¯';
-      if (newGender === 'ط؛ظٹط± ظ…ط­ط¯ط¯' && s.nationalId) {
-        if (s.nationalId.startsWith('1')) newGender = 'ط°ظƒط±';
-        else if (s.nationalId.startsWith('2')) newGender = 'ط£ظ†ط«ظ‰';
+      let newGender = s.gender || 'غير محدد';
+      if (newGender === 'غير محدد' && s.nationalId) {
+        if (s.nationalId.startsWith('1')) newGender = 'ذكر';
+        else if (s.nationalId.startsWith('2')) newGender = 'أنثى';
       }
 
       // If fatherName is empty, extract from full name

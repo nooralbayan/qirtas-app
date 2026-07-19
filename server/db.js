@@ -22,5 +22,4 @@ const connectDB = async (retries = 5) => {
   }
 };
 
-
 export default connectDB;
