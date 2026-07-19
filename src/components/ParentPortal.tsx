@@ -6,7 +6,7 @@ interface ParentPortalProps {
 }
 
 export default function ParentPortal({ onLogout }: ParentPortalProps) {
-  const { currentUser, students, timetables, studentResults, attendanceRecords } = useAppContext();
+  const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees } = useAppContext();
   const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance'>('info');
 
   // The parent user object has a custom `studentId` attached to it
@@ -44,6 +44,12 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
   const studentAttendance = (attendanceRecords || []).filter(a => a.studentId === student.id).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const absentDays = studentAttendance.filter(a => a.status === 'غائب').length;
   const lateDays = studentAttendance.filter(a => a.status === 'متأخر').length;
+
+  // Get Financial Data
+  const studentReceipts = (receipts || []).filter(r => r.studentId === student.id).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const totalFees = student.totalFees || gradeFees?.[student.grade] || 0;
+  const totalPaid = studentReceipts.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+  const totalRemaining = totalFees - totalPaid;
 
   return (
     <div style={{ padding: 24, maxWidth: 1000, margin: '0 auto', fontFamily: 'Cairo, sans-serif' }}>
@@ -129,6 +135,65 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                 <div style={{ color: 'var(--text-primary)', fontSize: 18, fontWeight: 'bold' }}>{student.medicalCondition || 'لا يوجد ملاحظات'}</div>
               </div>
             </div>
+
+            {/* Financial Section */}
+            <h3 style={{ color: 'var(--primary-color)', marginTop: 40, marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10 }}>💰 الرسوم الدراسية والأقساط</h3>
+            
+            {/* Summary Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24 }}>
+              <div style={{ padding: 20, background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: 12, textAlign: 'center' }}>
+                <div style={{ fontSize: 14, color: '#3b82f6', fontWeight: 'bold', marginBottom: 8 }}>الرسوم الإجمالية</div>
+                <div style={{ fontSize: 28, fontWeight: 'bold', color: '#1e40af' }}>{totalFees.toLocaleString()} د.ل</div>
+              </div>
+              <div style={{ padding: 20, background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: 12, textAlign: 'center' }}>
+                <div style={{ fontSize: 14, color: '#10b981', fontWeight: 'bold', marginBottom: 8 }}>إجمالي المدفوع</div>
+                <div style={{ fontSize: 28, fontWeight: 'bold', color: '#059669' }}>{totalPaid.toLocaleString()} د.ل</div>
+              </div>
+              <div style={{ padding: 20, background: totalRemaining > 0 ? 'rgba(239, 68, 68, 0.08)' : 'rgba(16, 185, 129, 0.08)', border: `1px solid ${totalRemaining > 0 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`, borderRadius: 12, textAlign: 'center' }}>
+                <div style={{ fontSize: 14, color: totalRemaining > 0 ? '#ef4444' : '#10b981', fontWeight: 'bold', marginBottom: 8 }}>المتبقي</div>
+                <div style={{ fontSize: 28, fontWeight: 'bold', color: totalRemaining > 0 ? '#dc2626' : '#059669' }}>{totalRemaining > 0 ? totalRemaining.toLocaleString() : '0'} د.ل</div>
+              </div>
+              <div style={{ padding: 20, background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: 12, textAlign: 'center' }}>
+                <div style={{ fontSize: 14, color: '#f59e0b', fontWeight: 'bold', marginBottom: 8 }}>عدد الأقساط المسددة</div>
+                <div style={{ fontSize: 28, fontWeight: 'bold', color: '#d97706' }}>{studentReceipts.length} / {student.installmentsCount || '-'}</div>
+              </div>
+            </div>
+
+            {/* Receipts Table */}
+            {studentReceipts.length > 0 ? (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center', fontFamily: 'Cairo, sans-serif' }}>
+                  <thead>
+                    <tr style={{ background: 'linear-gradient(135deg, #1e40af, #3b82f6)', color: '#fff' }}>
+                      <th style={{ padding: '12px', border: '1px solid #ddd', fontWeight: 'bold' }}>رقم الإيصال</th>
+                      <th style={{ padding: '12px', border: '1px solid #ddd', fontWeight: 'bold' }}>رقم القسط</th>
+                      <th style={{ padding: '12px', border: '1px solid #ddd', fontWeight: 'bold' }}>المبلغ المستحق</th>
+                      <th style={{ padding: '12px', border: '1px solid #ddd', fontWeight: 'bold' }}>المبلغ المدفوع</th>
+                      <th style={{ padding: '12px', border: '1px solid #ddd', fontWeight: 'bold' }}>المتبقي</th>
+                      <th style={{ padding: '12px', border: '1px solid #ddd', fontWeight: 'bold' }}>طريقة الدفع</th>
+                      <th style={{ padding: '12px', border: '1px solid #ddd', fontWeight: 'bold' }}>التاريخ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {studentReceipts.map((receipt, idx) => (
+                      <tr key={receipt.id} style={{ background: idx % 2 === 0 ? '#f8fafc' : '#ffffff' }}>
+                        <td style={{ padding: '10px 12px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: '#1e40af' }}>{receipt.id}</td>
+                        <td style={{ padding: '10px 12px', border: '1px solid #e2e8f0', fontWeight: 'bold' }}>القسط {receipt.installmentNo}</td>
+                        <td style={{ padding: '10px 12px', border: '1px solid #e2e8f0' }}>{(receipt.totalDue || 0).toLocaleString()} د.ل</td>
+                        <td style={{ padding: '10px 12px', border: '1px solid #e2e8f0', color: '#059669', fontWeight: 'bold' }}>{(receipt.paidAmount || 0).toLocaleString()} د.ل</td>
+                        <td style={{ padding: '10px 12px', border: '1px solid #e2e8f0', color: (receipt.remaining || 0) > 0 ? '#ef4444' : '#10b981', fontWeight: 'bold' }}>{(receipt.remaining || 0).toLocaleString()} د.ل</td>
+                        <td style={{ padding: '10px 12px', border: '1px solid #e2e8f0' }}>{receipt.paymentMethod}</td>
+                        <td style={{ padding: '10px 12px', border: '1px solid #e2e8f0' }}>{receipt.date}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div style={{ textAlign: 'center', padding: 30, color: 'var(--text-muted)', background: 'var(--input-bg)', borderRadius: 12 }}>
+                لا توجد إيصالات دفع مسجلة حتى الآن.
+              </div>
+            )}
           </div>
         )}
 
