@@ -7,6 +7,8 @@ type TabType = 'students' | 'teachers';
 interface AttendanceRecord {
   id: number;
   name: string;
+  grade?: string;
+  classRoom?: string;
   status: AttendanceStatus;
   checkIn: string;
   checkOut: string;
@@ -20,9 +22,15 @@ const statusColors: Record<AttendanceStatus, string> = {
 };
 
 export default function Attendance({ onBack }: { onBack: () => void }) {
-  const { students, teachers, attendanceRecords, setAttendanceRecords } = useAppContext();
+  const { students, teachers, attendanceRecords, setAttendanceRecords, gradeFees, classRooms } = useAppContext();
   const [activeTab, setActiveTab] = useState<TabType>('students');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  
+  const grades = Object.keys(gradeFees || {});
+  const [gradeFilter, setGradeFilter] = useState(grades[0] || 'الصف الأول');
+  const [classRoomFilter, setClassRoomFilter] = useState('الكل');
+  
+  const currentGradeClasses = classRooms?.[gradeFilter] || [];
   
   const [studentRecords, setStudentRecords] = useState<AttendanceRecord[]>([]);
   const [teacherRecords, setTeacherRecords] = useState<AttendanceRecord[]>([]);
@@ -40,6 +48,8 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
         return {
           id: s.id, 
           name: s.name, 
+          grade: s.grade,
+          classRoom: s.classRoom,
           status: existing ? existing.status : 'حاضر', 
           checkIn: existing && existing.status === 'غائب' ? '-' : '07:30', 
           checkOut: existing && existing.status === 'غائب' ? '-' : '13:30', 
@@ -58,8 +68,16 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
     }
   }, [teachers]);
 
-  const records = activeTab === 'students' ? studentRecords : teacherRecords;
+  const allRecords = activeTab === 'students' ? studentRecords : teacherRecords;
   const setRecords = activeTab === 'students' ? setStudentRecords : setTeacherRecords;
+
+  const records = activeTab === 'students' 
+    ? allRecords.filter(r => {
+        const matchGrade = r.grade === gradeFilter;
+        const matchClass = classRoomFilter === 'الكل' || r.classRoom === classRoomFilter;
+        return matchGrade && matchClass;
+      })
+    : allRecords;
 
   const presentCount = records.filter(r => r.status === 'حاضر').length;
   const absentCount = records.filter(r => r.status === 'غائب').length;
@@ -131,7 +149,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   const updateStatus = (id: number, status: AttendanceStatus) => {
     const now = new Date();
     const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    setRecords(records.map(r =>
+    setRecords(allRecords.map(r =>
       r.id === id ? {
         ...r,
         status,
@@ -147,7 +165,11 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   };
 
   const markAll = (status: AttendanceStatus) => {
-    setRecords(records.map(r => ({ ...r, status })));
+    // Only mark the CURRENTLY FILTERED records
+    const filteredIds = new Set(records.map(r => r.id));
+    
+    setRecords(allRecords.map(r => filteredIds.has(r.id) ? { ...r, status } : r));
+    
     if (activeTab === 'students') {
       records.forEach(r => {
         saveGlobalAttendance(r.id, status, r.notes);
@@ -155,8 +177,9 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
     }
   };
 
+
   const saveNote = (id: number) => {
-    setRecords(records.map(r => r.id === id ? { ...r, notes: noteText } : r));
+    setRecords(allRecords.map(r => r.id === id ? { ...r, notes: noteText } : r));
     if (activeTab === 'students') {
       const record = studentRecords.find(r => r.id === id);
       if (record) {
@@ -233,7 +256,27 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
         <span style={styles.dateLabel}>📅 التاريخ:</span>
         <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} style={styles.dateInput} />
         
-        <div style={{ borderRight: '1px solid #ddd', height: '30px' }}></div>
+        {activeTab === 'students' && (
+          <>
+            <div style={{ borderRight: '1px solid #ddd', height: '30px', margin: '0 8px' }}></div>
+            <span style={styles.dateLabel}>الصف:</span>
+            <select value={gradeFilter} onChange={e => { setGradeFilter(e.target.value); setClassRoomFilter('الكل'); }} style={{ ...styles.dateInput, minWidth: 150 }}>
+              {grades.map(g => <option key={g} value={g}>{g}</option>)}
+            </select>
+            
+            {currentGradeClasses.length > 0 && (
+              <>
+                <span style={styles.dateLabel}>الفصل:</span>
+                <select value={classRoomFilter} onChange={e => setClassRoomFilter(e.target.value)} style={{ ...styles.dateInput, minWidth: 100 }}>
+                  <option value="الكل">الكل</option>
+                  {currentGradeClasses.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </>
+            )}
+          </>
+        )}
+        
+        <div style={{ borderRight: '1px solid #ddd', height: '30px', margin: '0 8px' }}></div>
         <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '600' }}>تحديد الكل:</span>
         <button style={styles.bulkBtn('#27ae60')} onClick={() => markAll('حاضر')}>✓ حاضر</button>
         <button style={styles.bulkBtn('#e74c3c')} onClick={() => markAll('غائب')}>✗ غائب</button>
@@ -283,6 +326,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
             <tr>
               <th style={styles.th}>#</th>
               <th style={styles.th}>الاسم</th>
+              {activeTab === 'students' && <th style={styles.th}>الفصل</th>}
               <th style={styles.th}>الحالة</th>
               <th style={styles.th}>تغيير الحالة</th>
               <th style={styles.th}>وقت الحضور</th>
@@ -295,6 +339,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
               <tr key={record.id} onMouseEnter={() => setHoveredRow(record.id)} onMouseLeave={() => setHoveredRow(null)}>
                 <td style={styles.td(hoveredRow === record.id)}>{idx + 1}</td>
                 <td style={{ ...styles.td(hoveredRow === record.id), fontWeight: '600', textAlign: 'right' }}>{record.name}</td>
+                {activeTab === 'students' && <td style={styles.td(hoveredRow === record.id)}>{record.classRoom || '-'}</td>}
                 <td style={styles.td(hoveredRow === record.id)}>
                   <span style={styles.statusBadge(record.status)}>{record.status}</span>
                 </td>
