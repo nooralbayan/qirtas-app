@@ -28,9 +28,17 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
   const periods = [1, 2, 3, 4, 5, 6];
 
   // Get Results
-  const term1Results = studentResults['الفصل الأول']?.[student.id] || {};
-  const term2Results = studentResults['الفصل الثاني']?.[student.id] || {};
-  const allSubjects = Array.from(new Set([...Object.keys(term1Results), ...Object.keys(term2Results)]));
+  const midTerm1 = studentResults['نصف الفصل الأول']?.[student.id] || {};
+  const finalTerm1 = studentResults['نهاية الفصل الأول']?.[student.id] || {};
+  const midTerm2 = studentResults['نصف الفصل الثاني']?.[student.id] || {};
+  const finalTerm2 = studentResults['نهاية الفصل الثاني']?.[student.id] || {};
+  
+  const allSubjects = Array.from(new Set([
+    ...Object.keys(midTerm1), 
+    ...Object.keys(finalTerm1),
+    ...Object.keys(midTerm2),
+    ...Object.keys(finalTerm2)
+  ]));
 
   // Get Attendance
   const studentAttendance = (attendanceRecords || []).filter(a => a.studentId === student.id).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -236,14 +244,18 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                     {allSubjects.map((sub, idx) => (
                       <tr key={sub} style={{ background: idx % 2 === 0 ? '#f8fafc' : '#ffffff' }}>
                         <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', background: 'var(--bg-hover)', textAlign: 'right' }}>{sub}</td>
-                        <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: term1Results[sub] ? '#1e40af' : '#cbd5e1', fontSize: 16 }}>
-                          {term1Results[sub] || '-'}
+                        <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: midTerm1[sub] ? '#1e40af' : '#cbd5e1', fontSize: 16 }}>
+                          {midTerm1[sub] || '-'}
                         </td>
-                        <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: '#cbd5e1', fontSize: 16 }}>-</td>
-                        <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: term2Results[sub] ? '#1e40af' : '#cbd5e1', fontSize: 16 }}>
-                          {term2Results[sub] || '-'}
+                        <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: finalTerm1[sub] ? '#1e40af' : '#cbd5e1', fontSize: 16 }}>
+                          {finalTerm1[sub] || '-'}
                         </td>
-                        <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: '#cbd5e1', fontSize: 16 }}>-</td>
+                        <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: midTerm2[sub] ? '#1e40af' : '#cbd5e1', fontSize: 16 }}>
+                          {midTerm2[sub] || '-'}
+                        </td>
+                        <td style={{ padding: '12px 16px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: finalTerm2[sub] ? '#1e40af' : '#cbd5e1', fontSize: 16 }}>
+                          {finalTerm2[sub] || '-'}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
