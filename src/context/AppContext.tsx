@@ -267,22 +267,26 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           isInitializingFromServer = true;
           const state = json.data;
           
-          if (state.schoolName) setSchoolName(state.schoolName);
-          if (state.schoolLogo) setSchoolLogo(state.schoolLogo);
-          if (state.gradeFees) setGradeFees(state.gradeFees);
-          if (state.students && state.students.length > 0) setStudents(state.students);
-          if (state.receipts && state.receipts.length > 0) setReceipts(state.receipts);
-          if (state.teachers && state.teachers.length > 0) setTeachers(state.teachers);
-          if (state.expenses && state.expenses.length > 0) setExpenses(state.expenses);
-          if (state.gradeSubjects) setGradeSubjects(state.gradeSubjects);
-          if (state.timetables) setTimetables(state.timetables);
-          if (state.users && state.users.length > 0) setUsers(state.users);
-          if (state.classRooms) setClassRooms(state.classRooms);
-          if (state.withdrawnStudents) setWithdrawnStudents(state.withdrawnStudents);
-          if (state.recycleBin) setRecycleBin(state.recycleBin);
-          if (state.studentResults) setStudentResults(state.studentResults);
-          if (state.academicYear) setAcademicYear(state.academicYear);
-          if (state.attendanceRecords) setAttendanceRecords(state.attendanceRecords);
+          if (state.students && state.students.length > 0) {
+            // If the server has students, it means it's the source of truth.
+            // We should apply all its data, even empty arrays, so deletions sync properly.
+            if (state.schoolName !== undefined) setSchoolName(state.schoolName);
+            if (state.schoolLogo !== undefined) setSchoolLogo(state.schoolLogo);
+            if (state.gradeFees !== undefined) setGradeFees(state.gradeFees);
+            setStudents(state.students);
+            setReceipts(state.receipts || []);
+            setTeachers(state.teachers || []);
+            setExpenses(state.expenses || []);
+            if (state.gradeSubjects) setGradeSubjects(state.gradeSubjects);
+            if (state.timetables) setTimetables(state.timetables);
+            setUsers(state.users || initialUsers);
+            if (state.classRooms) setClassRooms(state.classRooms);
+            setWithdrawnStudents(state.withdrawnStudents || []);
+            setRecycleBin(state.recycleBin || []);
+            if (state.studentResults) setStudentResults(state.studentResults);
+            if (state.academicYear) setAcademicYear(state.academicYear);
+            setAttendanceRecords(state.attendanceRecords || []);
+          }
           
           isInitializingFromServer = false;
         }
