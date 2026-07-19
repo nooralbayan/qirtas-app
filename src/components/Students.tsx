@@ -28,7 +28,7 @@ const emptyForm = {
 };
 
 export default function Students({ onBack }: { onBack: () => void }) {
-  const { students, setStudents, gradeFees, classRooms, setClassRooms, schoolName, schoolLogo, recycleBin, setRecycleBin } = useAppContext();
+  const { students, setStudents, gradeFees, classRooms, setClassRooms, schoolName, schoolLogo, recycleBin, setRecycleBin, receipts } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [gradeFilter, setGradeFilter] = useState<string>('الكل');
   const [classRoomFilter, setClassRoomFilter] = useState<string>('الكل');
@@ -249,7 +249,11 @@ export default function Students({ onBack }: { onBack: () => void }) {
       'الفصل': s.classRoom || '-',
       'الرقم الوطني': s.nationalId || '-',
       'هاتف ولي الأمر': s.fatherPhone || '-',
-      'حالة الدفع': s.paymentStatus || '-',
+      'حالة الدفع': (() => {
+        const stdReceipts = receipts.filter(r => r.studentId === s.id);
+        const totalPaid = stdReceipts.reduce((a, r) => a + r.paidAmount, 0);
+        return totalPaid === 0 ? 'غير مسدد' : (totalPaid >= s.totalFees ? 'مسدد' : 'جزئي');
+      })() || '-',
       'ملاحظات': s.notes || '-'
     }));
 
@@ -430,7 +434,12 @@ export default function Students({ onBack }: { onBack: () => void }) {
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>{s.classRoom || '-'}</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee', fontWeight: 'bold' }}>{s.totalFees} د.ل</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
-                    <span style={badgeStyle(s.paymentStatus)}>{s.paymentStatus}</span>
+                    {(() => {
+                      const stdReceipts = receipts.filter(r => r.studentId === s.id);
+                      const totalPaid = stdReceipts.reduce((a, r) => a + r.paidAmount, 0);
+                      const currentStatus = totalPaid === 0 ? 'غير مسدد' : (totalPaid >= s.totalFees ? 'مسدد' : 'جزئي');
+                      return <span style={badgeStyle(currentStatus)}>{currentStatus}</span>;
+                    })()}
                   </td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
                     <button onClick={() => openEdit(s)} style={{ backgroundColor: '#ffc107', color: 'var(--text-primary)', border: 'none', borderRadius: 6, padding: '6px 14px', cursor: 'pointer', marginLeft: 6, fontWeight: 600 }}>تعديل</button>

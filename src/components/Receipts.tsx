@@ -196,7 +196,11 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
         <div style={{ backgroundColor: 'var(--bg-card)', padding: 24, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20, alignItems: 'center' }}>
             <h2 style={{ margin: 0, color: '#0056b3' }}>سندات القبض</h2>
-            <button onClick={() => setShowModal(true)} style={{ backgroundColor: '#0056b3', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 15 }}>
+            <button onClick={() => {
+              setForm({ studentName: '', studentId: 0, grade: '', paidAmount: 0, paymentMethod: 'نقدي' });
+              setSearchQuery('');
+              setShowModal(true);
+            }} style={{ backgroundColor: '#0056b3', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 15 }}>
               + تسجيل سداد قسط
             </button>
           </div>
