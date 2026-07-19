@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 
 type AttendanceStatus = 'حاضر' | 'غائب' | 'متأخر';
-type TabType = 'students' | 'teachers';
+type TabType = 'students' | 'teachers' | 'report';
 
 interface AttendanceRecord {
   id: number;
@@ -39,6 +39,15 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   const [noteText, setNoteText] = useState('');
   
   const [isSendingWa, setIsSendingWa] = useState(false);
+
+  // Report tab state
+  const firstDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0];
+  const [reportDateFrom, setReportDateFrom] = useState(firstDayOfMonth);
+  const [reportDateTo, setReportDateTo] = useState(new Date().toISOString().split('T')[0]);
+  const [reportPersonFilter, setReportPersonFilter] = useState<'all' | 'bygrade' | 'student' | 'teacher'>('all');
+  const [reportGradeFilter, setReportGradeFilter] = useState('الكل');
+  const [reportClassFilter, setReportClassFilter] = useState('الكل');
+  const [reportPersonId, setReportPersonId] = useState<number | null>(null);
 
   // Initialize records from context for the selected date
   useEffect(() => {
@@ -250,6 +259,9 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
         <button style={styles.tab(activeTab === 'teachers')} onClick={() => setActiveTab('teachers')}>
           👨‍🏫 حضور المعلمين
         </button>
+        <button style={styles.tab(activeTab === 'report')} onClick={() => setActiveTab('report')}>
+          📊 تقرير الغياب
+        </button>
       </div>
 
       <div style={styles.controlsBar}>
@@ -377,6 +389,178 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
           </tbody>
         </table>
       </div>
+
+      {/* ─── REPORT TAB ─── */}
+      {activeTab === 'report' && (() => {
+        const inRange = (date: string) => date >= reportDateFrom && date <= reportDateTo;
+
+        let studentRows: { id: number; name: string; grade?: string; classRoom?: string; absent: number; late: number }[] = [];
+        if (reportPersonFilter === 'all' || reportPersonFilter === 'bygrade') {
+          const fs = students.filter(s => {
+            if (reportPersonFilter === 'bygrade' && reportGradeFilter !== 'الكل' && s.grade !== reportGradeFilter) return false;
+            if (reportPersonFilter === 'bygrade' && reportClassFilter !== 'الكل' && s.classRoom !== reportClassFilter) return false;
+            return true;
+          });
+          studentRows = fs.map(s => {
+            const recs = attendanceRecords.filter(a => a.studentId === s.id && inRange(a.date));
+            return { id: s.id, name: s.name, grade: s.grade, classRoom: s.classRoom, absent: recs.filter(a => a.status === 'غائب').length, late: recs.filter(a => a.status === 'متأخر').length };
+          });
+        } else if (reportPersonFilter === 'student' && reportPersonId) {
+          const s = students.find(st => st.id === reportPersonId);
+          if (s) {
+            const recs = attendanceRecords.filter(a => a.studentId === s.id && inRange(a.date));
+            studentRows = [{ id: s.id, name: s.name, grade: s.grade, classRoom: s.classRoom, absent: recs.filter(a => a.status === 'غائب').length, late: recs.filter(a => a.status === 'متأخر').length }];
+          }
+        }
+
+        const workingDays = (() => {
+          let count = 0;
+          const from = new Date(reportDateFrom);
+          const to = new Date(reportDateTo);
+          for (const d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
+            const day = d.getDay();
+            if (day !== 5 && day !== 6) count++;
+          }
+          return count;
+        })();
+
+        const filteredTeachers = reportPersonFilter === 'teacher' && reportPersonId ? teachers.filter(t => t.id === reportPersonId) : (reportPersonFilter === 'all' || reportPersonFilter === 'teacher') ? teachers : [];
+        const teacherRows = filteredTeachers.map(t => ({
+          id: t.id, name: t.name, salary: t.salary, absent: 0,
+          salaryDue: t.salary
+        }));
+
+        return (
+          <div>
+            <div style={{ background: 'var(--bg-card)', borderRadius: 12, padding: 24, marginBottom: 24, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+              <h3 style={{ margin: '0 0 20px', color: '#0056b3' }}>🔍 خيارات التقرير</h3>
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-end' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--text-secondary)' }}>من تاريخ</label>
+                  <input type="date" value={reportDateFrom} onChange={e => setReportDateFrom(e.target.value)} style={styles.dateInput} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--text-secondary)' }}>إلى تاريخ</label>
+                  <input type="date" value={reportDateTo} onChange={e => setReportDateTo(e.target.value)} style={styles.dateInput} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--text-secondary)' }}>نوع الجرد</label>
+                  <select value={reportPersonFilter} onChange={e => { setReportPersonFilter(e.target.value as any); setReportPersonId(null); setReportGradeFilter('الكل'); setReportClassFilter('الكل'); }} style={{ ...styles.dateInput, minWidth: 160 }}>
+                    <option value="all">كل الطلاب والمعلمين</option>
+                    <option value="student">طالب بعينه</option>
+                    <option value="bygrade">صف / فصل كامل</option>
+                    <option value="teacher">معلم بعينه</option>
+                  </select>
+                </div>
+                {reportPersonFilter === 'student' && (
+                  <div>
+                    <label style={{ display: 'block', fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--text-secondary)' }}>اختر الطالب</label>
+                    <select value={reportPersonId ?? ''} onChange={e => setReportPersonId(Number(e.target.value))} style={{ ...styles.dateInput, minWidth: 220 }}>
+                      <option value="">اختر...</option>
+                      {students.map(s => <option key={s.id} value={s.id}>{s.name} - {s.grade}</option>)}
+                    </select>
+                  </div>
+                )}
+                {reportPersonFilter === 'bygrade' && (
+                  <>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--text-secondary)' }}>الصف</label>
+                      <select value={reportGradeFilter} onChange={e => { setReportGradeFilter(e.target.value); setReportClassFilter('الكل'); }} style={{ ...styles.dateInput, minWidth: 150 }}>
+                        <option value="الكل">كل الصفوف</option>
+                        {grades.map(g => <option key={g} value={g}>{g}</option>)}
+                      </select>
+                    </div>
+                    {reportGradeFilter !== 'الكل' && (classRooms[reportGradeFilter] || []).length > 0 && (
+                      <div>
+                        <label style={{ display: 'block', fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--text-secondary)' }}>الفصل</label>
+                        <select value={reportClassFilter} onChange={e => setReportClassFilter(e.target.value)} style={{ ...styles.dateInput, minWidth: 100 }}>
+                          <option value="الكل">كل الفصول</option>
+                          {(classRooms[reportGradeFilter] || []).map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                    )}
+                  </>
+                )}
+                {reportPersonFilter === 'teacher' && (
+                  <div>
+                    <label style={{ display: 'block', fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--text-secondary)' }}>اختر المعلم</label>
+                    <select value={reportPersonId ?? ''} onChange={e => setReportPersonId(Number(e.target.value))} style={{ ...styles.dateInput, minWidth: 220 }}>
+                      <option value="">اختر...</option>
+                      {teachers.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                    </select>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div style={{ background: 'var(--bg-card)', borderRadius: 12, padding: 24, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+              {studentRows.length > 0 && (
+                <>
+                  <h3 style={{ margin: '0 0 16px', color: '#0056b3' }}>👨‍🎓 غياب الطلاب من {reportDateFrom} إلى {reportDateTo}</h3>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 32 }}>
+                    <thead>
+                      <tr style={{ background: '#0056b3', color: '#fff' }}>
+                        <th style={{ padding: '12px 16px', textAlign: 'right' }}>الاسم</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'center' }}>الصف</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'center' }}>الفصل</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'center' }}>أيام الغياب</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'center' }}>أيام التأخير</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'center' }}>الإجمالي</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {studentRows.map((row, i) => (
+                        <tr key={row.id} style={{ background: i % 2 === 0 ? 'var(--input-bg)' : 'transparent', borderBottom: '1px solid var(--border-color)' }}>
+                          <td style={{ padding: '10px 16px', fontWeight: 'bold' }}>{row.name}</td>
+                          <td style={{ padding: '10px 16px', textAlign: 'center' }}>{row.grade}</td>
+                          <td style={{ padding: '10px 16px', textAlign: 'center' }}>{row.classRoom || '-'}</td>
+                          <td style={{ padding: '10px 16px', textAlign: 'center', color: row.absent > 0 ? '#ef4444' : '#10b981', fontWeight: 'bold', fontSize: 20 }}>{row.absent}</td>
+                          <td style={{ padding: '10px 16px', textAlign: 'center', color: row.late > 0 ? '#f59e0b' : '#10b981', fontWeight: 'bold', fontSize: 20 }}>{row.late}</td>
+                          <td style={{ padding: '10px 16px', textAlign: 'center', fontWeight: 'bold', fontSize: 20 }}>{row.absent + row.late}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              )}
+
+              {teacherRows.length > 0 && (
+                <>
+                  <h3 style={{ margin: '0 0 8px', color: '#0056b3' }}>👨‍🏫 المعلمون وحساب الراتب</h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginBottom: 16 }}>أيام العمل في الفترة: <strong>{workingDays}</strong> يوم (باستثناء الجمعة والسبت)</p>
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ background: '#0056b3', color: '#fff' }}>
+                        <th style={{ padding: '12px 16px', textAlign: 'right' }}>اسم المعلم</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'center' }}>الراتب الشهري</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'center' }}>أيام الغياب</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'center' }}>المستحق (تقريبي)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {teacherRows.map((row, i) => (
+                        <tr key={row.id} style={{ background: i % 2 === 0 ? 'var(--input-bg)' : 'transparent', borderBottom: '1px solid var(--border-color)' }}>
+                          <td style={{ padding: '10px 16px', fontWeight: 'bold' }}>{row.name}</td>
+                          <td style={{ padding: '10px 16px', textAlign: 'center' }}>{row.salary.toLocaleString()} د.ل</td>
+                          <td style={{ padding: '10px 16px', textAlign: 'center', color: '#10b981', fontWeight: 'bold', fontSize: 20 }}>0</td>
+                          <td style={{ padding: '10px 16px', textAlign: 'center', color: '#10b981', fontWeight: 'bold', fontSize: 20 }}>{row.salary.toLocaleString()} د.ل</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p style={{ marginTop: 12, fontSize: 12, color: 'var(--text-muted)' }}>⚠️ ملاحظة: لحساب الخصم التلقائي من راتب المعلمين بسبب الغياب، يجب تسجيل غياب المعلمين يومياً من تبويب "حضور المعلمين".</p>
+                </>
+              )}
+
+              {studentRows.length === 0 && teacherRows.length === 0 && (
+                <div style={{ textAlign: 'center', padding: 60, color: 'var(--text-muted)', fontSize: 18 }}>
+                  📄 لا توجد بيانات غياب مسجلة في هذه الفترة
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

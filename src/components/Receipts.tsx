@@ -4,9 +4,11 @@ import type { Receipt } from '../context/AppContext';
 import { generateReceiptPDFBase64 } from './pdfGenerator';
 
 export default function Receipts({ onBack }: { onBack: () => void }) {
-  const { receipts, setReceipts, students, recycleBin, setRecycleBin, schoolName, schoolLogo } = useAppContext();
+  const { receipts, setReceipts, students, withdrawnStudents, recycleBin, setRecycleBin, schoolName, schoolLogo } = useAppContext();
+  const withdrawnStudentIds = new Set((withdrawnStudents || []).map(w => w.studentId));
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ studentName: '', studentId: 0, grade: '', paidAmount: 0, paymentMethod: 'نقدي' as Receipt['paymentMethod'] });
+  const today = new Date().toISOString().split('T')[0];
+  const [form, setForm] = useState({ studentName: '', studentId: 0, grade: '', paidAmount: 0, paymentMethod: 'نقدي' as Receipt['paymentMethod'], date: today });
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isSendingWaId, setIsSendingWaId] = useState<string | null>(null);
@@ -47,7 +49,7 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
       paidAmount: form.paidAmount,
       remaining: newRemaining < 0 ? 0 : newRemaining,
       paymentMethod: form.paymentMethod,
-      date: new Date().toISOString().split('T')[0]
+      date: form.date || new Date().toISOString().split('T')[0]
     };
     
     setReceipts([newReceipt, ...receipts]);
@@ -197,7 +199,7 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20, alignItems: 'center' }}>
             <h2 style={{ margin: 0, color: '#0056b3' }}>سندات القبض</h2>
             <button onClick={() => {
-              setForm({ studentName: '', studentId: 0, grade: '', paidAmount: 0, paymentMethod: 'نقدي' });
+              setForm({ studentName: '', studentId: 0, grade: '', paidAmount: 0, paymentMethod: 'نقدي', date: new Date().toISOString().split('T')[0] });
               setSearchQuery('');
               setShowModal(true);
             }} style={{ backgroundColor: '#0056b3', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 15 }}>
@@ -220,9 +222,14 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
             </thead>
             <tbody>
               {receipts.map(r => (
-                <tr key={r.id} style={{ borderBottom: '1px solid #eee' }}>
+                <tr key={r.id} style={{ borderBottom: '1px solid #eee', backgroundColor: withdrawnStudentIds.has(r.studentId) ? '#fffbeb' : 'transparent' }}>
                   <td style={{ padding: 12, fontWeight: 'bold' }}>{r.id}</td>
-                  <td style={{ padding: 12, fontWeight: 'bold' }}>{r.studentName}</td>
+                  <td style={{ padding: 12, fontWeight: 'bold' }}>
+                    {r.studentName}
+                    {withdrawnStudentIds.has(r.studentId) && (
+                      <span style={{ marginRight: 8, backgroundColor: '#f59e0b', color: '#fff', fontSize: 11, padding: '2px 7px', borderRadius: 10, fontWeight: 'bold', verticalAlign: 'middle' }}>⚠️ منسحب</span>
+                    )}
+                  </td>
                   <td style={{ padding: 12 }}>{r.grade}</td>
                   <td style={{ padding: 12, color: '#10b981', fontWeight: 'bold' }}>{r.paidAmount} د.ل</td>
                   <td style={{ padding: 12 }}>
@@ -311,6 +318,11 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
                     <option value="بطاقة مصرفية">بطاقة مصرفية (Card)</option>
                     <option value="حوالة مصرفية">حوالة مصرفية (Bank Transfer)</option>
                   </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>تاريخ السداد</label>
+                  <input type="date" value={form.date} onChange={e => setForm({...form, date: e.target.value})} style={inputStyle} />
                 </div>
               </div>
 
