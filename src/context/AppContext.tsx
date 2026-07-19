@@ -36,7 +36,15 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetState
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ key: serverKey, value: valueToStore })
-        }).catch(err => console.error('Failed to sync to server', err));
+        }).then(res => {
+          if (!res.ok) {
+            console.error('Server returned error:', res.status);
+            alert('⚠️ فشل حفظ البيانات على السيرفر! يرجى التأكد من اتصالك بالإنترنت وأن السيرفر يعمل بشكل سليم.');
+          }
+        }).catch(err => {
+          console.error('Failed to sync to server', err);
+          alert('⚠️ تعذر الاتصال بالسيرفر! يرجى عدم إغلاق الصفحة والمحاولة مرة أخرى.');
+        });
       }
       
     } catch (error) {
@@ -179,6 +187,7 @@ interface AppContextType {
   setAcademicYear: (year: string) => void;
   attendanceRecords: AttendanceRecord[];
   setAttendanceRecords: React.Dispatch<React.SetStateAction<AttendanceRecord[]>>;
+  refreshFromServer: () => Promise<void>;
 }
 
 const initialGradeFees = {
@@ -259,51 +268,45 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [attendanceRecords, setAttendanceRecords] = useLocalStorage<AttendanceRecord[]>('qirtas_attendanceRecords', []);
   const [isServerLoaded, setIsServerLoaded] = useState(false);
 
+  const refreshFromServer = async () => {
+    try {
+      const res = await fetch('/api/state');
+      const json = await res.json();
+      if (json.success && json.data) {
+        isInitializingFromServer = true;
+        const state = json.data;
+        
+        if (state.students && state.students.length > 0) {
+          if (state.schoolName !== undefined) setSchoolName(state.schoolName);
+          if (state.schoolLogo !== undefined) setSchoolLogo(state.schoolLogo);
+          if (state.gradeFees !== undefined) setGradeFees(state.gradeFees);
+          setStudents(state.students);
+          setReceipts(state.receipts || []);
+          setTeachers(state.teachers || []);
+          setExpenses(state.expenses || []);
+          if (state.gradeSubjects) setGradeSubjects(state.gradeSubjects);
+          if (state.timetables) setTimetables(state.timetables);
+          setUsers(state.users || initialUsers);
+          if (state.classRooms) setClassRooms(state.classRooms);
+          setWithdrawnStudents(state.withdrawnStudents || []);
+          setRecycleBin(state.recycleBin || []);
+          if (state.studentResults) setStudentResults(state.studentResults);
+          if (state.academicYear) setAcademicYear(state.academicYear);
+          setAttendanceRecords(state.attendanceRecords || []);
+        }
+        
+        isInitializingFromServer = false;
+      }
+    } catch (err) {
+      console.error('Failed to fetch server state:', err);
+    } finally {
+      setIsServerLoaded(true);
+    }
+  };
+
   // Fetch from server on mount
   useEffect(() => {
-    const fetchServerState = async () => {
-      try {
-        const res = await fetch('/api/state');
-        const json = await res.json();
-        if (json.success && json.data) {
-          isInitializingFromServer = true;
-          const state = json.data;
-          
-          if (state.students && state.students.length > 0) {
-            // If the server has students, it means it's the source of truth.
-            // We should apply all its data, even empty arrays, so deletions sync properly.
-            if (state.schoolName !== undefined) setSchoolName(state.schoolName);
-            if (state.schoolLogo !== undefined) setSchoolLogo(state.schoolLogo);
-            if (state.gradeFees !== undefined) setGradeFees(state.gradeFees);
-            setStudents(state.students);
-            setReceipts(state.receipts || []);
-            setTeachers(state.teachers || []);
-            setExpenses(state.expenses || []);
-            if (state.gradeSubjects) setGradeSubjects(state.gradeSubjects);
-            if (state.timetables) setTimetables(state.timetables);
-            setUsers(state.users || initialUsers);
-            if (state.classRooms) setClassRooms(state.classRooms);
-            setWithdrawnStudents(state.withdrawnStudents || []);
-            setRecycleBin(state.recycleBin || []);
-            if (state.studentResults) setStudentResults(state.studentResults);
-            if (state.academicYear) setAcademicYear(state.academicYear);
-            setAttendanceRecords(state.attendanceRecords || []);
-          }
-          
-          isInitializingFromServer = false;
-        }
-      } catch (err) {
-        console.error('Failed to fetch server state:', err);
-      } finally {
-        setIsServerLoaded(true);
-      }
-    };
-    
-    fetchServerState();
-    
-    // Poll the server every 30 seconds to keep data updated (e.g. for ParentPortal)
-    const interval = setInterval(fetchServerState, 30000);
-    return () => clearInterval(interval);
+    refreshFromServer();
   }, []);
 
   // Apply theme to document body
@@ -398,7 +401,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       theme, setTheme,
       academicYear, setAcademicYear,
       attendanceRecords, setAttendanceRecords,
-      isServerLoaded
+      isServerLoaded,
+      refreshFromServer
     }}>
       {children}
     </AppContext.Provider>

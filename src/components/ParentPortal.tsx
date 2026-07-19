@@ -6,8 +6,15 @@ interface ParentPortalProps {
 }
 
 export default function ParentPortal({ onLogout }: ParentPortalProps) {
-  const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees } = useAppContext();
+  const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees, refreshFromServer } = useAppContext();
   const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance'>('info');
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      refreshFromServer();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [refreshFromServer]);
 
   // The parent user object has a custom `studentId` attached to it
   const studentId = (currentUser as any)?.studentId;
