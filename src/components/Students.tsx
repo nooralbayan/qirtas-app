@@ -28,7 +28,7 @@ const emptyForm = {
 };
 
 export default function Students({ onBack }: { onBack: () => void }) {
-  const { students, setStudents, gradeFees, classRooms, setClassRooms, schoolName, schoolLogo, recycleBin, setRecycleBin, receipts } = useAppContext();
+  const { students, setStudents, gradeFees, classRooms, setClassRooms, schoolName, schoolLogo, recycleBin, setRecycleBin, receipts, setReceipts, attendanceRecords, setAttendanceRecords, studentResults, setStudentResults } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [gradeFilter, setGradeFilter] = useState<string>('الكل');
   const [classRoomFilter, setClassRoomFilter] = useState<string>('الكل');
@@ -61,10 +61,31 @@ export default function Students({ onBack }: { onBack: () => void }) {
   };
 
   const handleDelete = (id: number) => {
-    if (window.confirm('هل أنت متأكد من حذف هذا الطالب؟ سيتم نقله إلى سلة المحذوفات.')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا الطالب؟ سيتم مسح بياناته المالية والغياب والدرجات بالكامل ونقله إلى سلة المحذوفات.')) {
       const studentToDelete = students.find((s) => s.id === id);
       if (studentToDelete) {
+        // Delete student
         setStudents((prev) => prev.filter((s) => s.id !== id));
+        
+        // Cascade delete receipts
+        setReceipts(receipts.filter(r => r.studentId !== id));
+        
+        // Cascade delete attendance
+        setAttendanceRecords(attendanceRecords.filter(a => a.studentId !== id));
+        
+        // Cascade delete results
+        setStudentResults(prev => {
+          const newResults = { ...prev };
+          Object.keys(newResults).forEach(examType => {
+            if (newResults[examType]?.[id]) {
+              const updatedExam = { ...newResults[examType] };
+              delete updatedExam[id];
+              newResults[examType] = updatedExam;
+            }
+          });
+          return newResults;
+        });
+
         setRecycleBin([
           ...recycleBin,
           { id: String(studentToDelete.id), type: 'student', deletedAt: new Date().toISOString(), data: studentToDelete }
