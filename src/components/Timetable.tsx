@@ -13,10 +13,7 @@ const PERIODS = [
   { id: 6, label: 'السادسة', time: '12:25 - 13:10' },
 ];
 
-const SUBJECTS = [
-  'رياضيات', 'لغة عربية', 'لغة إنجليزية', 'علوم', 'تربية إسلامية',
-  'تاريخ', 'جغرافيا', 'تربية فنية', 'تربية رياضية', 'حاسوب', 'فيزياء', 'كيمياء',
-];
+// SUBJECTS array removed - now using dynamic gradeSubjects from AppContext
 
 const SUBJECT_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   'رياضيات':       { bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' },
@@ -34,7 +31,7 @@ const SUBJECT_COLORS: Record<string, { bg: string; text: string; border: string 
 };
 
 export default function Timetable({ onBack }: { onBack: () => void }) {
-  const { gradeFees, classRooms, teachers, schoolName, schoolLogo, timetables, setTimetables } = useAppContext();
+  const { gradeFees, classRooms, teachers, schoolName, schoolLogo, timetables, setTimetables, gradeSubjects } = useAppContext();
   const grades = Object.keys(gradeFees);
   const [selectedGrade, setSelectedGrade] = useState(grades[0]);
   
@@ -57,6 +54,8 @@ export default function Timetable({ onBack }: { onBack: () => void }) {
   const [showCopyModal, setShowCopyModal] = useState(false);
 
   const currentEntries = timetables[activeKey] || [];
+  
+  const availableSubjects = gradeSubjects[selectedGrade] || [];
 
   const getEntry = (day: string, periodId: number): TimetableEntry | undefined =>
     currentEntries.find(e => e.day === day && e.periodId === periodId);
@@ -278,7 +277,7 @@ export default function Timetable({ onBack }: { onBack: () => void }) {
               <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>المادة الدراسية</label>
               <select value={cellForm.subject} onChange={e => setCellForm({ ...cellForm, subject: e.target.value })} style={{ width: '100%', padding: '12px', borderRadius: 8, border: '1px solid var(--border-color)', fontSize: 15, background: 'var(--input-bg)' }}>
                 <option value="">-- تفريغ الحصة --</option>
-                {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                {availableSubjects.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
 
