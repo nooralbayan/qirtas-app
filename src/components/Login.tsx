@@ -183,15 +183,32 @@ export default function Login() {
     <div style={styles.container} className="login-animated-bg">
       <style>
         {`
-          @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+          @keyframes majesticPan {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
           }
           .login-animated-bg {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: #0f172a;
+            background-image: 
+              radial-gradient(circle at 15% 50%, rgba(30, 58, 138, 0.4), transparent 50%),
+              radial-gradient(circle at 85% 30%, rgba(15, 23, 42, 0.8), transparent 50%),
+              linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            background-size: 200% 200%;
+            animation: majesticPan 20s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+          }
+          /* Add a subtle grid overlay to mimic architectural marble/glass structure */
+          .login-animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
           }
           @keyframes float {
             0% { transform: translateY(0px); }
@@ -322,38 +339,38 @@ export default function Login() {
             25% { transform: rotate(15deg); }
             75% { transform: rotate(-15deg); }
           }
-          @media (max-width: 1100px) {
-            .side-character-left, .roaming-panda-container {
-              display: none !important;
-            }
-          }
           .interactive-bg-logo {
             position: fixed;
             pointer-events: none;
-            z-index: 0;
-            opacity: 0.05;
-            filter: grayscale(100%) contrast(200%);
-            animation: slowRotate 40s linear infinite;
-            transition: all 0.5s ease-out;
+            z-index: 1;
+            opacity: 0.15;
+            filter: drop-shadow(0 0 30px rgba(255,255,255,0.2));
+            animation: majesticFloat 20s ease-in-out infinite;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
           .login-animated-bg:hover .interactive-bg-logo {
-            opacity: 0.15;
-            filter: grayscale(50%) blur(2px);
-            transform: scale(1.05);
+            opacity: 0.4;
+            filter: drop-shadow(0 0 50px rgba(255, 255, 255, 0.4)) brightness(1.2);
+            transform: scale(1.08);
           }
-          @keyframes slowRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+          @keyframes majesticFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(20px, -20px) rotate(2deg); }
+            66% { transform: translate(-10px, 15px) rotate(-1deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
           }
         `}
       </style>
       
-      {/* School Logo Background Elements */}
+      {/* School Logo Background Elements - Majestic Style */}
       {schoolLogo && (
         <>
-          <img src={schoolLogo} className="interactive-bg-logo" style={{ top: '-10%', left: '-5%', width: '40vw', animationDirection: 'normal' }} alt="" />
-          <img src={schoolLogo} className="interactive-bg-logo" style={{ bottom: '-15%', right: '-10%', width: '50vw', animationDirection: 'reverse' }} alt="" />
-          <img src={schoolLogo} className="interactive-bg-logo" style={{ top: '30%', right: '20%', width: '20vw', opacity: 0.03, animationDuration: '60s' }} alt="" />
+          <div style={{ position: 'fixed', top: '-10%', left: '-5%', width: '45vw', height: '45vw', zIndex: 1, pointerEvents: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img src={schoolLogo} className="interactive-bg-logo" style={{ width: '100%', height: '100%', objectFit: 'contain', animationDelay: '0s' }} alt="" />
+          </div>
+          <div style={{ position: 'fixed', bottom: '-20%', right: '-10%', width: '60vw', height: '60vw', zIndex: 1, pointerEvents: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img src={schoolLogo} className="interactive-bg-logo" style={{ width: '100%', height: '100%', objectFit: 'contain', animationDelay: '-10s', opacity: 0.08 }} alt="" />
+          </div>
         </>
       )}
 
@@ -708,33 +725,35 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     maxWidth: 420,
     padding: '40px 32px',
-    background: 'rgba(255, 255, 255, 0.15)',
-    backdropFilter: 'blur(20px)',
-    WebkitBackdropFilter: 'blur(20px)',
+    background: 'rgba(15, 23, 42, 0.65)',
+    backdropFilter: 'blur(24px)',
+    WebkitBackdropFilter: 'blur(24px)',
     borderRadius: 30,
-    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.3)',
-    border: '1px solid rgba(255, 255, 255, 0.3)',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     color: '#fff',
+    zIndex: 20
   },
   header: {
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: 24,
     width: '100%',
   },
   logoWrapper: {
-    width: 80,
-    height: 80,
-    margin: '0 auto 16px',
-    background: 'linear-gradient(135deg, #f8fafc, #e2e8f0)',
-    borderRadius: 24,
-    padding: 16,
-    boxShadow: '0 12px 24px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.8)',
+    width: 100,
+    height: 100,
+    margin: '0 auto 20px',
+    background: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: '24px',
+    padding: 8,
+    boxShadow: '0 15px 35px rgba(0,0,0,0.4), inset 0 2px 10px rgba(255,255,255,1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    border: '2px solid rgba(255,255,255,0.5)',
   },
   title: {
     fontSize: 28,
