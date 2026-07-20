@@ -42,9 +42,11 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
   const [lessonTopic, setLessonTopic] = useState('');
   const [lessonHomework, setLessonHomework] = useState('');
   const [lessonType, setLessonType] = useState<'درس' | 'واجب' | 'امتحان'>('درس');
-  const [lessonImage, setLessonImage] = useState<File | null>(null);
+  const [lessonImages, setLessonImages] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [historyDateFilter, setHistoryDateFilter] = useState('');
+  const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
   
   // Filtered Students for the selected class
   const classStudents = students.filter(s => s.grade === selectedGrade && s.classRoom === selectedClass && !s.wasWithdrawn);
@@ -53,50 +55,80 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
     e.preventDefault();
     if (!selectedGrade || !selectedClass || !selectedSubject || !lessonTopic) return;
     
-    let uploadedImageUrl = '';
+    let uploadedImageUrls: string[] = [];
     
-    if (lessonImage) {
+    if (lessonImages.length > 0) {
       setIsUploading(true);
-      const formData = new FormData();
-      formData.append('image', lessonImage);
-      
-      try {
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=cbbbdc89aac0156de440afef7964a19e`, {
-          method: 'POST',
-          body: formData
-        });
-        const data = await res.json();
-        if (data.success) {
-          uploadedImageUrl = data.data.url;
-        } else {
-          alert('فشل رفع الصورة: ' + (data.error?.message || 'خطأ غير معروف'));
+      const uploadPromises = lessonImages.map(async (file) => {
+        const formData = new FormData();
+        formData.append('image', file);
+        try {
+          const res = await fetch(`https://api.imgbb.com/1/upload?key=cbbbdc89aac0156de440afef7964a19e`, {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          if (data.success) return data.data.url;
+        } catch (err) {
+          console.error('Upload error', err);
         }
-      } catch (err) {
-        console.error('Upload error', err);
-        alert('حدث خطأ أثناء الرفع.');
-      } finally {
-        setIsUploading(false);
-      }
+        return null;
+      });
+      
+      const results = await Promise.all(uploadPromises);
+      uploadedImageUrls = results.filter(url => url !== null) as string[];
+      setIsUploading(false);
     }
     
-    const newLog: LessonLog = {
-      id: `lesson_${Date.now()}`,
-      date: new Date().toISOString().split('T')[0],
-      teacherId: Number(teacherId),
-      grade: selectedGrade,
-      classRoom: selectedClass,
-      subject: selectedSubject,
-      topic: lessonTopic,
-      homework: lessonHomework,
-      type: lessonType,
-      ...(uploadedImageUrl ? { imageUrl: uploadedImageUrl } : {})
-    };
+    const finalImageUrls = [...existingImages, ...uploadedImageUrls];
     
-    setLessonLogs([newLog, ...lessonLogs]);
+    if (editingLessonId) {
+      setLessonLogs(lessonLogs.map(l => l.id === editingLessonId ? {
+        ...l,
+        topic: lessonTopic,
+        homework: lessonHomework,
+        type: lessonType,
+        imageUrls: finalImageUrls.length > 0 ? finalImageUrls : undefined
+      } : l));
+      alert('تم تحديث الدرس بنجاح!');
+    } else {
+      const newLog: LessonLog = {
+        id: `lesson_${Date.now()}`,
+        date: new Date().toISOString().split('T')[0],
+        teacherId: Number(teacherId),
+        grade: selectedGrade,
+        classRoom: selectedClass,
+        subject: selectedSubject,
+        topic: lessonTopic,
+        homework: lessonHomework,
+        type: lessonType,
+        imageUrls: finalImageUrls.length > 0 ? finalImageUrls : undefined
+      };
+      setLessonLogs([newLog, ...lessonLogs]);
+      alert('تم حفظ الدرس بنجاح!');
+    }
+    
     setLessonTopic('');
     setLessonHomework('');
-    setLessonImage(null);
-    alert('تم حفظ الدرس بنجاح!');
+    setLessonImages([]);
+    setExistingImages([]);
+    setEditingLessonId(null);
+  };
+
+  const handleEditLesson = (log: LessonLog) => {
+    setLessonTopic(log.topic);
+    setLessonHomework(log.homework);
+    setLessonType(log.type);
+    const images = log.imageUrls || (log.imageUrl ? [log.imageUrl] : []);
+    setExistingImages(images);
+    setLessonImages([]);
+    setEditingLessonId(log.id);
+  };
+
+  const handleDeleteLesson = (id: string) => {
+    if (window.confirm('هل أنت متأكد من حذف هذا الدرس؟')) {
+      setLessonLogs(lessonLogs.filter(l => l.id !== id));
+    }
   };
 
   const handleAddEvaluation = (studentId: number, rating: StudentEvaluation['rating'], notes: string) => {
@@ -219,12 +251,22 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
                       <textarea value={lessonHomework} onChange={e => setLessonHomework(e.target.value)} rows={3} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--input-bg)', color: 'var(--text-primary)' }} />
                     </div>
                     <div>
-                      <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)' }}>إرفاق صورة للسبورة أو الدرس (اختياري)</label>
-                      <input type="file" accept="image/*" onChange={e => setLessonImage(e.target.files?.[0] || null)} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--input-bg)', color: 'var(--text-primary)' }} />
+                      <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)' }}>إرفاق صور للسبورة أو الدرس (اختياري)</label>
+                      <input type="file" accept="image/*" multiple onChange={e => setLessonImages(Array.from(e.target.files || []))} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--input-bg)', color: 'var(--text-primary)' }} />
+                      {existingImages.length > 0 && (
+                        <div style={{ marginTop: '8px', fontSize: '13px', color: '#2563eb', fontWeight: 'bold' }}>
+                          تم إرفاق {existingImages.length} صورة مسبقاً (سيتم الاحتفاظ بها).
+                        </div>
+                      )}
                     </div>
                     <button type="submit" disabled={isUploading} style={{ background: isUploading ? '#9ca3af' : '#27ae60', color: '#fff', border: 'none', padding: '12px', borderRadius: '8px', fontWeight: 'bold', fontSize: '16px', cursor: isUploading ? 'not-allowed' : 'pointer' }}>
-                      {isUploading ? 'جاري الرفع والحفظ...' : 'حفظ'}
+                      {isUploading ? 'جاري الرفع والحفظ...' : (editingLessonId ? 'تحديث الدرس' : 'حفظ')}
                     </button>
+                    {editingLessonId && (
+                      <button type="button" onClick={() => { setEditingLessonId(null); setLessonTopic(''); setLessonHomework(''); setLessonImages([]); setExistingImages([]); }} style={{ background: 'transparent', color: '#64748b', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginTop: '8px' }}>
+                        إلغاء التعديل
+                      </button>
+                    )}
                   </form>
                 </div>
                 
@@ -248,14 +290,23 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {lessonLogs.filter(l => l.grade === selectedGrade && l.classRoom === selectedClass && l.subject === selectedSubject && (!historyDateFilter || l.date === historyDateFilter)).map(log => (
                       <div key={log.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '8px', background: 'var(--input-bg)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                          <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{log.type}: {log.topic}</span>
-                          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{log.date}</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px' }}>
+                          <div>
+                            <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{log.type}: {log.topic}</span>
+                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>{log.date}</div>
+                          </div>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <button onClick={() => handleEditLesson(log)} style={{ background: '#f59e0b', color: '#fff', border: 'none', borderRadius: '6px', padding: '6px 12px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}>تعديل ✏️</button>
+                            <button onClick={() => handleDeleteLesson(log.id)} style={{ background: '#ef4444', color: '#fff', border: 'none', borderRadius: '6px', padding: '6px 12px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}>حذف 🗑️</button>
+                          </div>
                         </div>
                         {log.homework && <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '8px' }}>الواجب: {log.homework}</div>}
-                        {log.imageUrl && (
-                          <div style={{ marginTop: '8px' }}>
-                            <img src={log.imageUrl} alt="مرفق الدرس" style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px', border: '1px solid var(--border-color)' }} />
+                        
+                        {(log.imageUrls || log.imageUrl) && (
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '12px' }}>
+                            {(log.imageUrls || (log.imageUrl ? [log.imageUrl] : [])).map((url, i) => (
+                              <img key={i} src={url} alt="مرفق الدرس" style={{ maxWidth: '100%', maxHeight: '150px', borderRadius: '8px', border: '2px solid var(--border-color)', objectFit: 'cover' }} />
+                            ))}
                           </div>
                         )}
                       </div>

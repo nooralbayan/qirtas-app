@@ -461,12 +461,16 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                             <strong style={{ color: '#f39c12' }}>📝 الواجب:</strong> {log.homework}
                           </div>
                         )}
-                        {log.imageUrl && (
+                        {(log.imageUrls || log.imageUrl) && (
                           <div style={{ marginTop: '12px', textAlign: 'center' }}>
-                            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '6px' }}>صورة مرفقة للدرس:</div>
-                            <a href={log.imageUrl} target="_blank" rel="noopener noreferrer">
-                              <img src={log.imageUrl} alt="مرفق الدرس" style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '12px', border: '2px solid var(--primary-color)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-                            </a>
+                            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 'bold' }}>الصور المرفقة للدرس:</div>
+                            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                              {(log.imageUrls || (log.imageUrl ? [log.imageUrl] : [])).map((url, i) => (
+                                <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                                  <img src={url} alt={`مرفق الدرس ${i+1}`} style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '12px', border: '2px solid var(--primary-color)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', objectFit: 'cover' }} />
+                                </a>
+                              ))}
+                            </div>
                           </div>
                         )}
                       </div>

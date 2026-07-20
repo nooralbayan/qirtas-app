@@ -22,6 +22,7 @@ export interface LessonLog {
   homework: string;
   type: 'درس' | 'واجب' | 'امتحان';
   imageUrl?: string;
+  imageUrls?: string[];
 }
 
 export interface StudentEvaluation {
