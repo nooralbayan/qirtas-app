@@ -3,7 +3,7 @@ import { useAppContext, LessonLog, StudentEvaluation } from '../context/AppConte
 import { LogOut, BookOpen, Star } from 'lucide-react';
 
 export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
-  const { currentUser, schoolName, schoolLogo, classRooms, students, lessonLogs, setLessonLogs, studentEvaluations, setStudentEvaluations } = useAppContext();
+  const { currentUser, schoolName, schoolLogo, classRooms, students, lessonLogs, setLessonLogs, studentEvaluations, setStudentEvaluations, timetables, teachers } = useAppContext();
   
   const [activeTab, setActiveTab] = useState<'lessons' | 'evaluations'>('lessons');
   const [selectedGrade, setSelectedGrade] = useState('');
@@ -11,7 +11,33 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
   const [selectedSubject, setSelectedSubject] = useState('');
   
   const teacherId = currentUser?.id.replace('teacher_', '') || '0';
-  const teacherName = currentUser?.name || '';
+  const teacher = teachers?.find(t => t.id.toString() === teacherId);
+  const teacherName = teacher?.name || currentUser?.name || '';
+  
+  // Smartly calculate what this teacher teaches based on Timetables
+  const teacherClasses = React.useMemo(() => {
+    const classesMap: Record<string, Set<string>> = {};
+    Object.entries(timetables || {}).forEach(([key, entries]) => {
+      if (entries.some(e => e.teacher === teacherName)) {
+        const parts = key.split(' - ');
+        const grade = parts[0];
+        const classRoom = parts[1] || '';
+        
+        if (!classesMap[grade]) classesMap[grade] = new Set();
+        if (classRoom) classesMap[grade].add(classRoom);
+      }
+    });
+    return classesMap;
+  }, [timetables, teacherName]);
+
+  const allowedGrades = Object.keys(teacherClasses);
+
+  // Initialize Subject if not set, fallback to teacher.subject
+  React.useEffect(() => {
+    if (teacher?.subject && !selectedSubject) {
+      setSelectedSubject(teacher.subject);
+    }
+  }, [teacher, selectedSubject]);
   
   // States for new Lesson Log
   const [lessonTopic, setLessonTopic] = useState('');
@@ -107,7 +133,8 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
               <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)' }}>الصف الدراسي</label>
               <select value={selectedGrade} onChange={e => {setSelectedGrade(e.target.value); setSelectedClass('');}} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--input-bg)', color: 'var(--text-primary)', fontFamily: 'Cairo' }}>
                 <option value="">-- اختر الصف --</option>
-                {Object.keys(classRooms).map(g => <option key={g} value={g}>{g}</option>)}
+                {allowedGrades.length === 0 && <option value="" disabled>لا يوجد فصول مسندة لك في الجدول</option>}
+                {allowedGrades.map(g => <option key={g} value={g}>{g}</option>)}
               </select>
             </div>
             {selectedGrade && (
@@ -115,7 +142,7 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
                 <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)' }}>الفصل</label>
                 <select value={selectedClass} onChange={e => setSelectedClass(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--input-bg)', color: 'var(--text-primary)', fontFamily: 'Cairo' }}>
                   <option value="">-- اختر الفصل --</option>
-                  {classRooms[selectedGrade]?.map(c => <option key={c} value={c}>{c}</option>)}
+                  {teacherClasses[selectedGrade] && Array.from(teacherClasses[selectedGrade]).map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
             )}
