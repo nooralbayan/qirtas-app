@@ -3,7 +3,7 @@ import { School } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 export default function Login() {
-  const { users, students, teachers, setCurrentUser, schoolName } = useAppContext();
+  const { users, students, teachers, setCurrentUser, schoolName, schoolLogo } = useAppContext();
   const [loginType, setLoginType] = useState<'admin' | 'teacher' | 'parent'>('admin');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -327,9 +327,36 @@ export default function Login() {
               display: none !important;
             }
           }
+          .interactive-bg-logo {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.05;
+            filter: grayscale(100%) contrast(200%);
+            animation: slowRotate 40s linear infinite;
+            transition: all 0.5s ease-out;
+          }
+          .login-animated-bg:hover .interactive-bg-logo {
+            opacity: 0.15;
+            filter: grayscale(50%) blur(2px);
+            transform: scale(1.05);
+          }
+          @keyframes slowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
         `}
       </style>
       
+      {/* School Logo Background Elements */}
+      {schoolLogo && (
+        <>
+          <img src={schoolLogo} className="interactive-bg-logo" style={{ top: '-10%', left: '-5%', width: '40vw', animationDirection: 'normal' }} alt="" />
+          <img src={schoolLogo} className="interactive-bg-logo" style={{ bottom: '-15%', right: '-10%', width: '50vw', animationDirection: 'reverse' }} alt="" />
+          <img src={schoolLogo} className="interactive-bg-logo" style={{ top: '30%', right: '20%', width: '20vw', opacity: 0.03, animationDuration: '60s' }} alt="" />
+        </>
+      )}
+
       {/* ─── Roaming Panda ─── */}
       <div 
         className="roaming-panda-container" 
@@ -576,8 +603,12 @@ export default function Login() {
 
       <div style={{...styles.loginBox, zIndex: 20}} className="floating-element">
         <div style={styles.header}>
-          <div style={styles.logoWrapper} className="logo-pulse">
-            <School size={48} strokeWidth={1.5} color="#0f172a" />
+          <div style={{...styles.logoWrapper, padding: schoolLogo ? 8 : 16}} className="logo-pulse">
+            {schoolLogo ? (
+              <img src={schoolLogo} alt="School Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            ) : (
+              <School size={48} strokeWidth={1.5} color="#0f172a" />
+            )}
           </div>
           <h2 style={styles.title}>
             <span style={{ color: '#fff' }}>قِـرْطَاس</span>
