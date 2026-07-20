@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "قرطاس - نظام مدرسي",
+    "slug": "qirtas-mobile",
+    "owner": "amrder",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.amrder.qirtas",
+      "adaptiveIcon": {
+        "backgroundColor": "#0f172a",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1a10e0e3-b329-4778-b47b-fec33c297fd8"
+      }
+    }
+  }
+}
