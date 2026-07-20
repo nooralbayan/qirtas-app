@@ -242,6 +242,8 @@ interface AppContextType {
   setBehaviorRecords: React.Dispatch<React.SetStateAction<BehaviorRecord[]>>;
   announcements: Announcement[];
   setAnnouncements: React.Dispatch<React.SetStateAction<Announcement[]>>;
+  workDaysInMonth: number;
+  setWorkDaysInMonth: (days: number) => void;
   refreshFromServer: () => Promise<void>;
 }
 
@@ -333,6 +335,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [studentEvaluations, setStudentEvaluations] = useLocalStorage<StudentEvaluation[]>('qirtas_studentEvaluations', []);
   const [behaviorRecords, setBehaviorRecords] = useLocalStorage<BehaviorRecord[]>('qirtas_behaviorRecords', []);
   const [announcements, setAnnouncements] = useLocalStorage<Announcement[]>('qirtas_announcements', []);
+  const [workDaysInMonth, setWorkDaysInMonth] = useLocalStorage<number>('qirtas_workDaysInMonth', 22);
   const [isServerLoaded, setIsServerLoaded] = useState(false);
 
   const refreshFromServer = async () => {
@@ -486,6 +489,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       studentEvaluations, setStudentEvaluations,
       behaviorRecords, setBehaviorRecords,
       announcements, setAnnouncements,
+      workDaysInMonth, setWorkDaysInMonth,
       isServerLoaded,
       refreshFromServer
     }}>

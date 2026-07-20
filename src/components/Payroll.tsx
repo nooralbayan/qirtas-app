@@ -16,7 +16,7 @@ interface PayrollEntry {
 }
 
 export default function Payroll({ onBack }: { onBack: () => void }) {
-  const { teachers, setTeachers, attendanceRecords, schoolName, schoolLogo } = useAppContext();
+  const { teachers, setTeachers, attendanceRecords, schoolName, schoolLogo, workDaysInMonth, setWorkDaysInMonth } = useAppContext();
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
@@ -26,8 +26,7 @@ export default function Payroll({ onBack }: { onBack: () => void }) {
   // Calculate payroll for each teacher
   const payrollEntries: PayrollEntry[] = teachers.map(teacher => {
     const baseSalary = teacher.salary || 0;
-    const workDaysInMonth = 22; // Approximate
-    const dailyRate = baseSalary > 0 ? Math.round(baseSalary / workDaysInMonth) : 0;
+    const dailyRate = baseSalary > 0 && workDaysInMonth > 0 ? Math.round(baseSalary / workDaysInMonth) : 0;
 
     // Count absent days for this teacher in the selected month
     const teacherAbsences = attendanceRecords.filter(record => {
@@ -146,10 +145,21 @@ export default function Payroll({ onBack }: { onBack: () => void }) {
           </button>
         </div>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <select value={selectedMonth} onChange={e => setSelectedMonth(parseInt(e.target.value))} style={{ padding: '10px 16px', borderRadius: 8, border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-card)', cursor: 'pointer', fontFamily: 'Cairo', fontWeight: 'bold' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-card)', padding: '6px 16px', borderRadius: 8, border: '1px solid var(--border-color)' }}>
+            <label style={{ fontSize: 14, fontWeight: 'bold', color: 'var(--text-secondary)' }}>أيام العمل بالشهر:</label>
+            <input 
+              type="number" 
+              min="1" 
+              max="31" 
+              value={workDaysInMonth} 
+              onChange={e => setWorkDaysInMonth(parseInt(e.target.value) || 22)} 
+              style={{ width: 60, padding: 4, borderRadius: 6, border: '1px solid var(--border-color)', textAlign: 'center', fontWeight: 'bold', fontFamily: 'Cairo', background: 'var(--input-bg)', color: 'var(--text-primary)' }}
+            />
+          </div>
+          <select value={selectedMonth} onChange={e => setSelectedMonth(parseInt(e.target.value))} style={{ padding: '10px 16px', borderRadius: 8, border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-card)', cursor: 'pointer', fontFamily: 'Cairo', fontWeight: 'bold', color: 'var(--text-primary)' }}>
             {MONTHS_AR.map((m, i) => <option key={i} value={i}>{m}</option>)}
           </select>
-          <select value={selectedYear} onChange={e => setSelectedYear(parseInt(e.target.value))} style={{ padding: '10px 16px', borderRadius: 8, border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-card)', cursor: 'pointer', fontFamily: 'Cairo', fontWeight: 'bold' }}>
+          <select value={selectedYear} onChange={e => setSelectedYear(parseInt(e.target.value))} style={{ padding: '10px 16px', borderRadius: 8, border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-card)', cursor: 'pointer', fontFamily: 'Cairo', fontWeight: 'bold', color: 'var(--text-primary)' }}>
             {[2024, 2025, 2026, 2027].map(y => <option key={y} value={y}>{y}</option>)}
           </select>
         </div>
