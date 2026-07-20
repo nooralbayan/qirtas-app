@@ -6,8 +6,8 @@ interface ParentPortalProps {
 }
 
 export default function ParentPortal({ onLogout }: ParentPortalProps) {
-  const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees, refreshFromServer, lessonLogs, studentEvaluations } = useAppContext();
-  const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance' | 'educationPath'>('info');
+  const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees, refreshFromServer, lessonLogs, studentEvaluations, behaviorRecords, announcements } = useAppContext();
+  const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance' | 'educationPath' | 'behavior'>('info');
   const [selectedPathSubject, setSelectedPathSubject] = useState('');
   const [pathViewMode, setPathViewMode] = useState<'subject' | 'date'>('subject');
   const [pathDate, setPathDate] = useState(new Date().toISOString().split('T')[0]);
@@ -66,6 +66,10 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
   // Get Education Path Data
   const studentLessonLogs = (lessonLogs || []).filter(l => l.grade === student.grade && l.classRoom === student.classRoom).sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const studentEvaluationsList = (studentEvaluations || []).filter(e => e.studentId === student.id).sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const studentBehaviors = (behaviorRecords || []).filter(b => b.studentId === student.id).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const behaviorPoints = studentBehaviors.reduce((acc, curr) => acc + (curr.type === 'إيجابي' ? curr.points : -curr.points), 0);
+
+  const visibleAnnouncements = (announcements || []).filter(a => a.target === 'الكل' || a.target === 'أولياء الأمور').sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div style={{ padding: 24, maxWidth: 1000, margin: '0 auto', fontFamily: 'Cairo, sans-serif' }}>
@@ -93,6 +97,23 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
         <div style={{ position: 'absolute', left: -20, top: -40, fontSize: 180, opacity: 0.1, zIndex: 1, pointerEvents: 'none' }}>👨‍🎓</div>
       </div>
 
+      {visibleAnnouncements.length > 0 && (
+        <div style={{ marginBottom: 24 }}>
+          <h3 style={{ color: 'var(--text-primary)', marginBottom: 12 }}>📢 أحدث التعاميم والإعلانات</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {visibleAnnouncements.slice(0, 3).map(ann => (
+              <div key={ann.id} style={{ background: 'var(--bg-card)', padding: '16px 20px', borderRadius: 12, border: '1px solid var(--border-color)', borderRight: `4px solid ${ann.priority === 'عاجل' ? '#ef4444' : (ann.priority === 'إعلامي' ? '#3b82f6' : '#10b981')}`, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: 16 }}>{ann.title}</h4>
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{new Date(ann.date).toLocaleDateString('ar-LY')}</span>
+                </div>
+                <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: 14, whiteSpace: 'pre-wrap' }}>{ann.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Tabs */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
         <button 
@@ -112,6 +133,12 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
           style={{ flex: 1, padding: '16px', background: activeTab === 'attendance' ? 'var(--primary-color)' : 'var(--bg-card)', color: activeTab === 'attendance' ? '#fff' : 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 12, fontWeight: 'bold', fontSize: 18, cursor: 'pointer', transition: '0.3s' }}
         >
           ⏰ الغياب والحضور
+        </button>
+        <button 
+          onClick={() => setActiveTab('behavior')}
+          style={{ flex: 1, padding: '16px', background: activeTab === 'behavior' ? 'var(--primary-color)' : 'var(--bg-card)', color: activeTab === 'behavior' ? '#fff' : 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 12, fontWeight: 'bold', fontSize: 18, cursor: 'pointer', transition: '0.3s' }}
+        >
+          🌟 السلوك والمواظبة
         </button>
         <button 
           onClick={() => setActiveTab('results')}

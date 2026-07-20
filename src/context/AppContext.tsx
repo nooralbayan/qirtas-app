@@ -35,6 +35,27 @@ export interface StudentEvaluation {
   notes: string;
 }
 
+export interface BehaviorRecord {
+  id: string;
+  studentId: number;
+  date: string;
+  type: 'إيجابي' | 'سلبي';
+  category: string;
+  points: number;
+  notes: string;
+  loggedBy: string;
+}
+
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  date: string;
+  priority: 'عاجل' | 'عادي' | 'إعلامي';
+  target: 'الكل' | 'المعلمين' | 'أولياء الأمور';
+  author: string;
+}
+
 let isInitializingFromServer = false;
 
 function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
@@ -217,6 +238,10 @@ interface AppContextType {
   setLessonLogs: React.Dispatch<React.SetStateAction<LessonLog[]>>;
   studentEvaluations: StudentEvaluation[];
   setStudentEvaluations: React.Dispatch<React.SetStateAction<StudentEvaluation[]>>;
+  behaviorRecords: BehaviorRecord[];
+  setBehaviorRecords: React.Dispatch<React.SetStateAction<BehaviorRecord[]>>;
+  announcements: Announcement[];
+  setAnnouncements: React.Dispatch<React.SetStateAction<Announcement[]>>;
   refreshFromServer: () => Promise<void>;
 }
 
@@ -306,6 +331,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [attendanceRecords, setAttendanceRecords] = useLocalStorage<AttendanceRecord[]>('qirtas_attendanceRecords', []);
   const [lessonLogs, setLessonLogs] = useLocalStorage<LessonLog[]>('qirtas_lessonLogs', []);
   const [studentEvaluations, setStudentEvaluations] = useLocalStorage<StudentEvaluation[]>('qirtas_studentEvaluations', []);
+  const [behaviorRecords, setBehaviorRecords] = useLocalStorage<BehaviorRecord[]>('qirtas_behaviorRecords', []);
+  const [announcements, setAnnouncements] = useLocalStorage<Announcement[]>('qirtas_announcements', []);
   const [isServerLoaded, setIsServerLoaded] = useState(false);
 
   const refreshFromServer = async () => {
@@ -335,6 +362,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           setAttendanceRecords(state.attendanceRecords || []);
           setLessonLogs(state.lessonLogs || []);
           setStudentEvaluations(state.studentEvaluations || []);
+          setBehaviorRecords(state.behaviorRecords || []);
+          setAnnouncements(state.announcements || []);
         }
         
         isInitializingFromServer = false;
@@ -455,6 +484,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       attendanceRecords, setAttendanceRecords,
       lessonLogs, setLessonLogs,
       studentEvaluations, setStudentEvaluations,
+      behaviorRecords, setBehaviorRecords,
+      announcements, setAnnouncements,
       isServerLoaded,
       refreshFromServer
     }}>

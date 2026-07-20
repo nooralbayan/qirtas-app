@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { generateStudentPDFBase64 } from './pdfGenerator';
+import { StudentReportCard } from './StudentReportCard';
 
 const getArabicOrdinal = (rank: number, gender: 'ذكر' | 'أنثى' | 'غير محدد' = 'ذكر'): string => {
   const ordinalsM = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر'];
@@ -260,7 +261,32 @@ export default function Results({ onBack }: { onBack: () => void }) {
              )}
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', minWidth: '100%', marginTop: 8, gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', minWidth: '100%', marginTop: 8, gap: 12, flexWrap: 'wrap' }}>
+             <button 
+              onClick={() => {
+                if (filteredStudents.length === 0) {
+                  alert('لا يوجد طلاب في هذا الصف لطباعة شهاداتهم.');
+                  return;
+                }
+                const hasScores = filteredStudents.some(student => {
+                  const sRes = results[student.id] || {};
+                  return Object.values(sRes).some(s => s !== '');
+                });
+                if (!hasScores) {
+                  if (!window.confirm('لم يتم رصد أي درجات للطلاب. هل تريد الطباعة كقوالب فارغة؟')) return;
+                }
+                window.print();
+              }}
+              style={{
+                padding: '12px 24px', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px',
+                cursor: 'pointer', fontSize: '15px', fontWeight: 'bold',
+                display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'Cairo'
+              }}
+              className="no-print"
+            >
+              <span style={{ fontSize: 20 }}>🖨️</span>
+              طباعة شهادات الفصل
+            </button>
              <button 
               onClick={congratulateTopStudents}
               disabled={isSendingWa}
@@ -364,6 +390,64 @@ export default function Results({ onBack }: { onBack: () => void }) {
             </tbody>
           </table>
         </div>
+      </div>
+      
+      {/* Hidden Print Area for Native Vector Printing of all Report Cards */}
+      <div className="print-only">
+        <style>{`
+          @media print {
+            body * { visibility: hidden; }
+            .print-only, .print-only * { visibility: visible; }
+            .print-only { position: absolute; left: 0; top: 0; width: 100%; display: block !important; }
+            .page-break { page-break-after: always; padding: 20px; }
+            .no-print { display: none !important; }
+            
+            /* Add some print specific adjustments */
+            @page { margin: 0; size: A4 portrait; }
+            body { margin: 1cm; background: #fff; }
+          }
+          @media screen {
+            .print-only { display: none; }
+          }
+        `}</style>
+        {filteredStudents.map(student => {
+          const studentResults = results[student.id] || {};
+          let totalScore = 0;
+          subjects.forEach(subj => {
+            const s = parseFloat(studentResults[subj]);
+            if (!isNaN(s)) totalScore += s;
+          });
+          
+          // Calculate rank for print view if applicable
+          const studentsWithTotals = filteredStudents.map(s => {
+             const sRes = results[s.id] || {};
+             let t = 0;
+             subjects.forEach(subj => {
+               const st = parseFloat(sRes[subj]);
+               if (!isNaN(st)) t += st;
+             });
+             return { id: s.id, total: t };
+          }).sort((a, b) => b.total - a.total);
+          
+          const rank = studentsWithTotals.findIndex(s => s.id === student.id) + 1;
+          const displayRank = totalScore > 0 ? rank : undefined;
+
+          return (
+            <div key={student.id} className="page-break" style={{ width: '100%', minHeight: '100vh', display: 'flex', justifyContent: 'center' }}>
+              <StudentReportCard 
+                student={student}
+                results={studentResults}
+                subjects={subjects}
+                examType={examType}
+                totalScore={totalScore > 0 ? totalScore : undefined}
+                rank={displayRank}
+                schoolName={schoolName}
+                schoolLogo={schoolLogo}
+                academicYear={academicYear}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

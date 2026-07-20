@@ -3,7 +3,7 @@ import { useAppContext, LessonLog, StudentEvaluation } from '../context/AppConte
 import { LogOut, BookOpen, Star } from 'lucide-react';
 
 export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
-  const { currentUser, schoolName, schoolLogo, classRooms, students, lessonLogs, setLessonLogs, studentEvaluations, setStudentEvaluations, timetables, teachers } = useAppContext();
+  const { currentUser, schoolName, schoolLogo, classRooms, students, lessonLogs, setLessonLogs, studentEvaluations, setStudentEvaluations, timetables, teachers, announcements } = useAppContext();
   
   const [activeTab, setActiveTab] = useState<'lessons' | 'evaluations'>('lessons');
   const [selectedGrade, setSelectedGrade] = useState('');
@@ -48,8 +48,12 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
   const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   
-  // Filtered Students for the selected class
-  const classStudents = students.filter(s => s.grade === selectedGrade && s.classRoom === selectedClass && !s.wasWithdrawn);
+  const myStudents = React.useMemo(() => {
+    if (!selectedGrade || !selectedClass) return [];
+    return students?.filter(s => s.grade === selectedGrade && s.classRoom === selectedClass && !s.wasWithdrawn) || [];
+  }, [students, selectedGrade, selectedClass]);
+
+  const visibleAnnouncements = (announcements || []).filter(a => a.target === 'الكل' || a.target === 'المعلمين').sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   
   const handleAddLesson = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -173,19 +177,37 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
             <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)' }}>{schoolName}</p>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', position: 'relative' }}>
           <div style={{ textAlign: 'left' }}>
             <div style={{ fontWeight: 'bold', color: 'var(--text-primary)' }}>{teacherName}</div>
             <div style={{ fontSize: '12px', color: '#27ae60' }}>معلم</div>
           </div>
-          <button onClick={onLogout} style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '10px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <LogOut size={20} />
-          </button>
-        </div>
+          <button onClick={onLogout} style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: 'none', padding: '12px 24px', borderRadius: 30, cursor: 'pointer', fontWeight: 'bold', fontSize: 16, display: 'flex', gap: 8, alignItems: 'center', transition: '0.3s', position: 'relative', zIndex: 2 }}>
+          تسجيل الخروج <LogOut size={20} />
+        </button>
+        <div style={{ position: 'absolute', left: -20, top: -40, fontSize: 180, opacity: 0.1, zIndex: 1, pointerEvents: 'none' }}>👨‍🏫</div>
+      </div>
       </header>
 
       {/* Main Content */}
       <main style={{ flex: 1, padding: '30px 40px', maxWidth: '1200px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
+      
+      {visibleAnnouncements.length > 0 && (
+        <div style={{ marginBottom: 24 }}>
+          <h3 style={{ color: 'var(--text-primary)', marginBottom: 12 }}>📢 أحدث التعاميم والإعلانات</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {visibleAnnouncements.slice(0, 3).map(ann => (
+              <div key={ann.id} style={{ background: 'var(--bg-card)', padding: '16px 20px', borderRadius: 12, border: '1px solid var(--border-color)', borderRight: `4px solid ${ann.priority === 'عاجل' ? '#ef4444' : (ann.priority === 'إعلامي' ? '#3b82f6' : '#10b981')}`, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: 16 }}>{ann.title}</h4>
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{new Date(ann.date).toLocaleDateString('ar-LY')}</span>
+                </div>
+                <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: 14, whiteSpace: 'pre-wrap' }}>{ann.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
         
         {/* Class Selector */}
         <div style={{ background: 'var(--bg-card)', padding: '20px', borderRadius: '16px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', marginBottom: '24px', border: '1px solid var(--border-color)' }}>

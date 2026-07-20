@@ -28,7 +28,7 @@ const emptyForm = {
 };
 
 export default function Students({ onBack }: { onBack: () => void }) {
-  const { students, setStudents, gradeFees, classRooms, setClassRooms, schoolName, schoolLogo, recycleBin, setRecycleBin, receipts, setReceipts, attendanceRecords, setAttendanceRecords, studentResults, setStudentResults } = useAppContext();
+  const { students, setStudents, gradeFees, classRooms, setClassRooms, schoolName, schoolLogo, recycleBin, setRecycleBin, receipts, setReceipts, attendanceRecords, setAttendanceRecords, studentResults, setStudentResults, behaviorRecords, setBehaviorRecords, currentUser } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [gradeFilter, setGradeFilter] = useState<string>('الكل');
   const [classRoomFilter, setClassRoomFilter] = useState<string>('الكل');
@@ -37,6 +37,8 @@ export default function Students({ onBack }: { onBack: () => void }) {
   const [form, setForm] = useState(emptyForm);
   const [newClassRoomName, setNewClassRoomName] = useState('');
   const [showNewClassRoom, setShowNewClassRoom] = useState(false);
+  const [behaviorModalStudentId, setBehaviorModalStudentId] = useState<number | null>(null);
+  const [behaviorForm, setBehaviorForm] = useState<{type: 'إيجابي' | 'سلبي', category: string, points: number, notes: string}>({ type: 'إيجابي', category: 'مشاركة متميزة', points: 5, notes: '' });
 
   /* ───── filtering ───── */
   const filtered = students.filter((s) => {
@@ -462,6 +464,10 @@ export default function Students({ onBack }: { onBack: () => void }) {
                     })()}
                   </td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
+                    <button onClick={() => {
+                      setBehaviorModalStudentId(s.id);
+                      setBehaviorForm({ type: 'إيجابي', category: 'مشاركة متميزة', points: 5, notes: '' });
+                    }} style={{ backgroundColor: '#8b5cf6', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 14px', cursor: 'pointer', marginLeft: 6, fontWeight: 600 }}>🌟 السلوك</button>
                     <button onClick={() => openEdit(s)} style={{ backgroundColor: '#ffc107', color: 'var(--text-primary)', border: 'none', borderRadius: 6, padding: '6px 14px', cursor: 'pointer', marginLeft: 6, fontWeight: 600 }}>تعديل</button>
                     <button onClick={() => handleDelete(s.id)} style={{ backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 14px', cursor: 'pointer', fontWeight: 600 }}>حذف</button>
                   </td>
@@ -656,6 +662,152 @@ export default function Students({ onBack }: { onBack: () => void }) {
           </div>
         </div>
       )}
+
+      {/* Behavior Tracking Modal */}
+      {behaviorModalStudentId !== null && (() => {
+        const student = students.find(s => s.id === behaviorModalStudentId);
+        if (!student) return null;
+        
+        const studentBehaviors = behaviorRecords.filter(b => b.studentId === student.id).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        const totalPoints = studentBehaviors.reduce((acc, curr) => acc + (curr.type === 'إيجابي' ? curr.points : -curr.points), 0);
+
+        const handleAddBehavior = () => {
+          if (!behaviorForm.category || behaviorForm.points <= 0) {
+            alert('الرجاء إدخال الفئة وتحديد نقاط صحيحة');
+            return;
+          }
+          const newRecord = {
+            id: Math.random().toString(36).substring(2, 9),
+            studentId: student.id,
+            date: new Date().toISOString().split('T')[0],
+            type: behaviorForm.type,
+            category: behaviorForm.category,
+            points: behaviorForm.points,
+            notes: behaviorForm.notes,
+            loggedBy: currentUser?.name || 'النظام'
+          };
+          setBehaviorRecords([...behaviorRecords, newRecord]);
+          setBehaviorForm({ type: 'إيجابي', category: 'مشاركة متميزة', points: 5, notes: '' });
+        };
+
+        const deleteBehavior = (id: string) => {
+          if (confirm('هل تريد حذف هذا السجل؟')) {
+            setBehaviorRecords(behaviorRecords.filter(b => b.id !== id));
+          }
+        };
+
+        return (
+          <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+            <div style={{ backgroundColor: 'var(--bg-card)', borderRadius: 14, padding: 32, width: '90%', maxWidth: 700, maxHeight: '90vh', overflowY: 'auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid var(--border-color)', paddingBottom: 16, marginBottom: 20 }}>
+                <h3 style={{ margin: 0, color: 'var(--primary-color)', fontSize: 22 }}>🌟 سجل السلوك والمواظبة - {student.name}</h3>
+                <div style={{ backgroundColor: totalPoints >= 0 ? '#10b981' : '#ef4444', color: '#fff', padding: '6px 16px', borderRadius: 20, fontWeight: 'bold' }}>
+                  مجموع النقاط: <span dir="ltr">{totalPoints > 0 ? '+' : ''}{totalPoints}</span>
+                </div>
+              </div>
+
+              {/* Add New Record Form */}
+              <div style={{ backgroundColor: 'var(--bg-secondary)', padding: 20, borderRadius: 12, marginBottom: 24, border: '1px solid var(--border-color)' }}>
+                <h4 style={{ margin: '0 0 16px' }}>إضافة ملاحظة جديدة</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                  <div>
+                    <label style={labelStyle}>نوع الملاحظة</label>
+                    <select 
+                      value={behaviorForm.type} 
+                      onChange={e => {
+                        const type = e.target.value as 'إيجابي' | 'سلبي';
+                        setBehaviorForm({...behaviorForm, type, category: type === 'إيجابي' ? 'مشاركة متميزة' : 'غياب بدون عذر', points: type === 'إيجابي' ? 5 : 3});
+                      }} 
+                      style={selectStyle}
+                    >
+                      <option value="إيجابي">إيجابي (نقاط إضافة)</option>
+                      <option value="سلبي">سلبي (خصم نقاط)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={labelStyle}>التصنيف</label>
+                    <select value={behaviorForm.category} onChange={e => setBehaviorForm({...behaviorForm, category: e.target.value})} style={selectStyle}>
+                      {behaviorForm.type === 'إيجابي' ? (
+                        <>
+                          <option value="مشاركة متميزة">مشاركة متميزة</option>
+                          <option value="مساعدة زميل">مساعدة زميل</option>
+                          <option value="أخلاق عالية">أخلاق عالية والنظافة</option>
+                          <option value="تفوق مستمر">تفوق مستمر</option>
+                        </>
+                      ) : (
+                        <>
+                          <option value="غياب بدون عذر">غياب بدون عذر</option>
+                          <option value="شغب داخل الفصل">شغب داخل الفصل</option>
+                          <option value="تأخير عن الطابور">تأخير عن الطابور</option>
+                          <option value="إهمال الواجبات">إهمال الواجبات</option>
+                        </>
+                      )}
+                    </select>
+                  </div>
+                  <div>
+                    <label style={labelStyle}>النقاط</label>
+                    <input type="number" min="1" value={behaviorForm.points} onChange={e => setBehaviorForm({...behaviorForm, points: parseInt(e.target.value) || 0})} style={inputBaseStyle} />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>ملاحظات إضافية</label>
+                    <input type="text" value={behaviorForm.notes} onChange={e => setBehaviorForm({...behaviorForm, notes: e.target.value})} style={inputBaseStyle} placeholder="تفاصيل الملاحظة..." />
+                  </div>
+                </div>
+                <button onClick={handleAddBehavior} style={{ marginTop: 16, width: '100%', padding: '12px', backgroundColor: 'var(--primary-color)', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold' }}>
+                  إضافة للسجل 📝
+                </button>
+              </div>
+
+              {/* History Table */}
+              <h4 style={{ margin: '0 0 16px' }}>تاريخ السلوكيات</h4>
+              {studentBehaviors.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-muted)' }}>لا توجد سجلات سابقة.</div>
+              ) : (
+                <div className="table-responsive">
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'right' }}>
+                    <thead>
+                      <tr style={{ backgroundColor: 'var(--bg-secondary)', borderBottom: '2px solid var(--border-color)' }}>
+                        <th style={{ padding: 10 }}>التاريخ</th>
+                        <th style={{ padding: 10 }}>النوع</th>
+                        <th style={{ padding: 10 }}>التصنيف</th>
+                        <th style={{ padding: 10 }}>النقاط</th>
+                        <th style={{ padding: 10 }}>بواسطة</th>
+                        <th style={{ padding: 10 }}>إجراء</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {studentBehaviors.map(b => (
+                        <tr key={b.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                          <td style={{ padding: 10, fontSize: 13 }}>{b.date}</td>
+                          <td style={{ padding: 10 }}>
+                            <span style={{ backgroundColor: b.type === 'إيجابي' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: b.type === 'إيجابي' ? '#10b981' : '#ef4444', padding: '4px 8px', borderRadius: 12, fontSize: 12, fontWeight: 'bold' }}>
+                              {b.type}
+                            </span>
+                          </td>
+                          <td style={{ padding: 10, fontWeight: 'bold' }}>{b.category}</td>
+                          <td style={{ padding: 10, color: b.type === 'إيجابي' ? '#10b981' : '#ef4444', fontWeight: 'bold' }} dir="ltr">
+                            {b.type === 'إيجابي' ? '+' : '-'}{b.points}
+                          </td>
+                          <td style={{ padding: 10, fontSize: 12 }}>{b.loggedBy}</td>
+                          <td style={{ padding: 10 }}>
+                            <button onClick={() => deleteBehavior(b.id)} style={{ background: 'none', border: 'none', color: '#dc2626', cursor: 'pointer' }}>❌</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <div style={{ marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
+                <button onClick={() => setBehaviorModalStudentId(null)} style={{ backgroundColor: 'var(--bg-secondary)', color: 'var(--text-primary)', border: 'none', borderRadius: 8, padding: '12px 24px', cursor: 'pointer', fontWeight: 'bold' }}>
+                  إغلاق
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { LogOut, Moon, Sun } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell, Legend } from 'recharts';
 import Students from './components/Students';
 import Teachers from './components/Teachers';
 import Expenses from './components/Expenses';
@@ -17,13 +18,15 @@ import Subjects from './components/Subjects';
 import Classrooms from './components/Classrooms';
 import ParentPortal from './components/ParentPortal';
 import TeacherPortal from './components/TeacherPortal';
+import Payroll from './components/Payroll';
+import Announcements from './components/Announcements';
 import { useAppContext } from './context/AppContext';
 
 function App() {
   const [currentView, setCurrentView] = useState(() => {
     return localStorage.getItem('qirtas_currentView') || 'dashboard';
   });
-  const { schoolName, setSchoolName, schoolLogo, setSchoolLogo, gradeFees, setGradeFees, students, setStudents, receipts, expenses, teachers, currentUser, setCurrentUser, theme, setTheme, timetables, classRooms, recycleBin, users, academicYear, setAcademicYear, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects, isServerLoaded, lessonLogs } = useAppContext();
+  const { schoolName, setSchoolName, schoolLogo, setSchoolLogo, gradeFees, setGradeFees, students, setStudents, receipts, expenses, teachers, currentUser, setCurrentUser, theme, setTheme, timetables, classRooms, recycleBin, users, academicYear, setAcademicYear, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects, isServerLoaded, lessonLogs, behaviorRecords } = useAppContext();
   
   const [notifications, setNotifications] = useState<{id: number, message: string, type: 'info' | 'warning'}[]>([]);
 
@@ -151,6 +154,7 @@ function App() {
     { id: 'students', label: 'إدارة بيانات الطلاب', icon: '👨‍🎓', roles: ['admin', 'student_affairs'] },
     { id: 'classrooms', label: 'إدارة الفصول الدراسية', icon: '🏫', roles: ['admin', 'student_affairs'] },
     { id: 'teachers', label: 'إدارة المعلمين', icon: '👨‍🏫', roles: ['admin', 'hr'] },
+    { id: 'payroll', label: 'إدارة الرواتب (Payroll)', icon: '💰', roles: ['admin', 'hr', 'accountant'] },
     { id: 'withdrawn', label: 'الطلاب المنسحبون', icon: '⏳', roles: ['admin', 'student_affairs'] },
     { id: 'attendance', label: 'الغياب والحضور', icon: '⏰', roles: ['admin', 'student_affairs', 'hr'] },
     { id: 'timetable', label: 'الجدول الدراسي', icon: '📅', roles: ['admin', 'student_affairs'] },
@@ -158,6 +162,7 @@ function App() {
     { id: 'receipts', label: 'إدارة سندات القبض', icon: '💵', roles: ['admin', 'accountant'] },
     { id: 'reports', label: 'التقارير', icon: '📊', roles: ['admin', 'accountant'] },
     { id: 'whatsapp', label: 'تواصل أولياء الأمور', icon: '📱', roles: ['admin', 'accountant', 'student_affairs'] },
+    { id: 'announcements', label: 'الإعلانات والتعاميم', icon: '📢', roles: ['admin', 'student_affairs', 'hr'] },
     { id: 'results', label: 'النتائج المدرسية', icon: '🏆', roles: ['admin', 'student_affairs'] },
     { id: 'subjects', label: 'المواد الدراسية', icon: '📚', roles: ['admin', 'student_affairs'] },
     { id: 'users', label: 'إدارة المستخدمين', icon: '👥', roles: ['admin'] },
@@ -204,6 +209,7 @@ function App() {
     switch (currentView) {
       case 'students': return <Students onBack={() => setCurrentView('dashboard')} />;
       case 'teachers': return <Teachers onBack={() => setCurrentView('dashboard')} />;
+      case 'payroll': return <Payroll onBack={() => setCurrentView('dashboard')} />;
       case 'withdrawn': return <WithdrawnStudents onBack={() => setCurrentView('dashboard')} />;
       case 'attendance': return <Attendance onBack={() => setCurrentView('dashboard')} />;
       case 'timetable': return <Timetable onBack={() => setCurrentView('dashboard')} />;
@@ -211,6 +217,7 @@ function App() {
       case 'receipts': return <Receipts onBack={() => setCurrentView('dashboard')} />;
       case 'reports': return <Reports onBack={() => setCurrentView('dashboard')} />;
       case 'whatsapp': return <WhatsApp onBack={() => setCurrentView('dashboard')} />;
+      case 'announcements': return <Announcements onBack={() => setCurrentView('dashboard')} />;
       case 'results': return <Results onBack={() => setCurrentView('dashboard')} />;
       case 'subjects': return <Subjects onBack={() => setCurrentView('dashboard')} />;
       case 'users': return <UsersComponent onBack={() => setCurrentView('dashboard')} />;
@@ -383,6 +390,65 @@ function App() {
                 </div>
             </div>
 
+            {/* Year-End Promotion */}
+            <div className="card" style={{ marginTop: 24, padding: 24, borderRadius: 12, background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRight: '4px solid #dc2626' }}>
+                <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: 10, marginBottom: 20, color: '#dc2626' }}>⚠️ الإغلاق المالي والأكاديمي (ترحيل السنة)</h3>
+                <p style={{ color: 'var(--text-muted)', marginBottom: 16 }}>سيقوم هذا الإجراء بترقية جميع الطلاب للصفوف التالية، تصفير حساباتهم المالية، وحذف الحضور والغياب والسلوك والنتائج للبدء في سنة دراسية جديدة. <strong>يرجى أخذ نسخة احتياطية أولاً!</strong></p>
+                <div style={{ display: 'flex', gap: 16 }}>
+                  <button 
+                    onClick={() => {
+                      if (!window.confirm('🚨 تحذير خطير: هل قمت بأخذ نسخة احتياطية؟ هذا الإجراء سيمسح البيانات الأكاديمية والمالية للسنة الحالية! هل أنت متأكد من ترحيل السنة الدراسية؟')) return;
+                      if (!window.confirm('تأكيد نهائي: هل تريد حقاً بدء سنة دراسية جديدة؟')) return;
+
+                      // Logic for Year-End Promotion
+                      // 1. Advance Students
+                      const GRADES_ORDER = ['KG1', 'KG2', 'الصف الأول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس', 'الصف السادس', 'الصف السابع', 'الصف الثامن', 'الصف التاسع', 'تخرج'];
+                      const promotedStudents = students.map(s => {
+                        const currentIndex = GRADES_ORDER.indexOf(s.grade);
+                        let nextGrade = s.grade;
+                        if (currentIndex !== -1 && currentIndex < GRADES_ORDER.length - 1) {
+                          nextGrade = GRADES_ORDER[currentIndex + 1];
+                        }
+                        
+                        return {
+                          ...s,
+                          grade: nextGrade,
+                          totalFees: gradeFees[nextGrade] || 0
+                        };
+                      }).filter(s => s.grade !== 'تخرج'); // Graduates can be handled differently or removed, we filter them for now, or just let them stay but marked as graduate. Let's just update their grade to 'تخرج' and not delete them, but they might clutter. Better to just let them be 'تخرج'. Let's keep them.
+                      
+                      const advancedStudents = students.map(s => {
+                        const currentIndex = GRADES_ORDER.indexOf(s.grade);
+                        let nextGrade = s.grade;
+                        if (currentIndex !== -1 && currentIndex < GRADES_ORDER.length - 1) {
+                          nextGrade = GRADES_ORDER[currentIndex + 1];
+                        }
+                        return { ...s, grade: nextGrade, totalFees: gradeFees[nextGrade] || 0 };
+                      });
+
+                      setStudents(advancedStudents);
+                      setReceipts([]);
+                      setExpenses([]);
+                      setStudentResults({});
+                      setAttendanceRecords([]);
+                      // Wait, we can't easily reset lessonLogs, studentEvaluations, behaviorRecords because they don't have direct setters exposed in this file (behaviorRecords is not destructured from useAppContext in App.tsx). Let's just use localStorage directly for the missing ones to clear them.
+                      localStorage.setItem('qirtas_lessonLogs', '[]');
+                      localStorage.setItem('qirtas_studentEvaluations', '[]');
+                      localStorage.setItem('qirtas_behaviorRecords', '[]');
+                      
+                      const nextYear = (parseInt(academicYear.split(' ')[0]) + 1).toString();
+                      setAcademicYear(`${nextYear} - ${parseInt(nextYear) + 1}`);
+
+                      alert('🎉 تم ترحيل السنة الدراسية بنجاح! سيتم إعادة تحميل النظام.');
+                      window.location.reload();
+                    }} 
+                    style={{ background: '#dc2626', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 16, fontFamily: 'Cairo', display: 'flex', alignItems: 'center', gap: 8 }}
+                  >
+                    🚀 بدء سنة دراسية جديدة
+                  </button>
+                </div>
+            </div>
+
           </div>
         );
       default:
@@ -438,7 +504,80 @@ function App() {
                   <div style={{ fontSize: 30, opacity: 0.5 }}>☁️</div>
                 </div>
               )}
+              )}
             </div>
+
+            {/* Charts Section */}
+            {(currentUser?.role === 'admin' || currentUser?.role === 'accountant') && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 24, marginBottom: 40 }}>
+                {/* Revenue vs Expenses Bar Chart */}
+                <div className="card" style={{ padding: 24, borderRadius: 16, background: 'var(--bg-card)', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-color)' }}>
+                  <h3 style={{ margin: '0 0 20px', color: 'var(--primary-color)' }}>📊 نظرة عامة على التدفق النقدي</h3>
+                  <div style={{ width: '100%', height: 300 }}>
+                    <ResponsiveContainer>
+                      <BarChart data={[
+                        { name: 'الإيرادات', value: totalCollected, fill: '#3b82f6' },
+                        { name: 'المصروفات', value: totalExpenses, fill: '#ef4444' },
+                        { name: 'الصافي', value: netProfit, fill: netProfit >= 0 ? '#10b981' : '#f59e0b' }
+                      ]} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+                        <CartesianGrid strokeDasharray="3 3" opacity={0.2} vertical={false} />
+                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-secondary)' }} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-secondary)' }} />
+                        <Tooltip cursor={{ fill: 'var(--bg-secondary)' }} contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                        <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                          {
+                            [
+                              { name: 'الإيرادات', value: totalCollected, fill: '#3b82f6' },
+                              { name: 'المصروفات', value: totalExpenses, fill: '#ef4444' },
+                              { name: 'الصافي', value: netProfit, fill: netProfit >= 0 ? '#10b981' : '#f59e0b' }
+                            ].map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))
+                          }
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Demographics Pie Chart */}
+                <div className="card" style={{ padding: 24, borderRadius: 16, background: 'var(--bg-card)', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-color)' }}>
+                  <h3 style={{ margin: '0 0 20px', color: 'var(--primary-color)' }}>👨‍🎓 ديموغرافية الطلاب (حسب الجنس)</h3>
+                  <div style={{ width: '100%', height: 300 }}>
+                    <ResponsiveContainer>
+                      <PieChart>
+                        <Pie
+                          data={[
+                            { name: 'ذكور', value: students.filter(s => s.gender === 'ذكر').length },
+                            { name: 'إناث', value: students.filter(s => s.gender === 'أنثى').length },
+                            { name: 'غير محدد', value: students.filter(s => s.gender === 'غير محدد').length }
+                          ].filter(d => d.value > 0)}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={100}
+                          paddingAngle={5}
+                          dataKey="value"
+                        >
+                          {
+                            [
+                              { name: 'ذكور', value: students.filter(s => s.gender === 'ذكر').length },
+                              { name: 'إناث', value: students.filter(s => s.gender === 'أنثى').length },
+                              { name: 'غير محدد', value: students.filter(s => s.gender === 'غير محدد').length }
+                            ].filter(d => d.value > 0).map((entry, index) => {
+                              const COLORS = ['#3b82f6', '#ec4899', '#94a3b8'];
+                              return <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />;
+                            })
+                          }
+                        </Pie>
+                        <Tooltip contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                        <Legend verticalAlign="bottom" height={36} wrapperStyle={{ color: 'var(--text-primary)' }} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <h2 style={{ color: 'var(--text-primary)', marginBottom: 20 }}>الوصول السريع</h2>
             <div className="grid-menu" style={{ gap: '24px' }}>
