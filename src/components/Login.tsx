@@ -3,8 +3,8 @@ import { School } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 export default function Login() {
-  const { users, students, setCurrentUser, schoolName } = useAppContext();
-  const [loginType, setLoginType] = useState<'staff' | 'parent'>('staff');
+  const { users, students, teachers, setCurrentUser, schoolName } = useAppContext();
+  const [loginType, setLoginType] = useState<'admin' | 'teacher' | 'parent'>('admin');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -67,7 +67,7 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginType === 'staff') {
+    if (loginType === 'admin') {
       try {
         const res = await fetch('/api/auth/login', {
           method: 'POST',
@@ -102,6 +102,34 @@ export default function Login() {
           setError('اسم المستخدم أو كلمة المرور غير صحيحة (وضع عدم الاتصال)');
         }
       }
+    } else if (loginType === 'teacher') {
+      // Teacher Login Logic (Offline / Local)
+      // Search for teacher in teachers list
+      const cleanInputPhone = password.replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
+      const inputPhoneWithoutZero = cleanInputPhone.startsWith('0') ? cleanInputPhone.substring(1) : cleanInputPhone;
+      
+      // Currently teachers might not have national ID in their interface, 
+      // if the user types anything as username for now we will just find them by phone password, 
+      // or wait, let's assume `teacher.phone` is the password, and username is just something they type, or we match both.
+      // Since teacher object doesn't have nationalId, I'll match teacher.name or we match by phone exactly.
+      const teacher = teachers.find(t => {
+        const tPhone = (t.phone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
+        const tPhoneWithoutZero = tPhone.startsWith('0') ? tPhone.substring(1) : tPhone;
+        return tPhoneWithoutZero === inputPhoneWithoutZero;
+      });
+
+      if (!teacher) {
+        setError('بيانات المعلم غير صحيحة (تأكد من رقم الهاتف)');
+        return;
+      }
+
+      setCurrentUser({
+        id: `teacher_${teacher.id}`,
+        username: username,
+        name: teacher.name,
+        role: 'teacher',
+      } as any);
+
     } else {
       // Parent Login Logic
       try {
@@ -563,20 +591,27 @@ export default function Login() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', width: '100%' }}>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', width: '100%', flexWrap: 'wrap' }}>
           <button 
             type="button"
-            onClick={() => { setLoginType('staff'); setError(''); }}
-            style={{ flex: 1, padding: '10px', borderRadius: '12px', border: 'none', background: loginType === 'staff' ? 'var(--primary-color)' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
+            onClick={() => { setLoginType('admin'); setError(''); }}
+            style={{ flex: 1, padding: '10px', borderRadius: '12px', border: 'none', background: loginType === 'admin' ? 'var(--primary-color)' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s', minWidth: '30%' }}
           >
-            👨‍🏫 دخول الإدارة والمعلمين
+            👨‍💼 الإدارة
+          </button>
+          <button 
+            type="button"
+            onClick={() => { setLoginType('teacher'); setError(''); }}
+            style={{ flex: 1, padding: '10px', borderRadius: '12px', border: 'none', background: loginType === 'teacher' ? '#27ae60' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s', minWidth: '30%' }}
+          >
+            👨‍🏫 المعلمون
           </button>
           <button 
             type="button"
             onClick={() => { setLoginType('parent'); setError(''); }}
-            style={{ flex: 1, padding: '10px', borderRadius: '12px', border: 'none', background: loginType === 'parent' ? '#f59e0b' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
+            style={{ flex: 1, padding: '10px', borderRadius: '12px', border: 'none', background: loginType === 'parent' ? '#f59e0b' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s', minWidth: '30%' }}
           >
-            👨‍👩‍👦 بوابة أولياء الأمور
+            👨‍👩‍👦 أولياء الأمور
           </button>
         </div>
 
@@ -587,7 +622,7 @@ export default function Login() {
             </div>
             <input
               type="text"
-              placeholder={loginType === 'staff' ? "اسم المستخدم" : "رقم القيد الخاص بالطالب"}
+              placeholder={loginType === 'admin' ? "اسم المستخدم" : loginType === 'teacher' ? "الرقم الوطني للمعلم" : "رقم القيد الخاص بالطالب"}
               value={username}
               onChange={e => setUsername(e.target.value)}
               onFocus={() => setIsFocusedUsername(true)}
@@ -602,8 +637,8 @@ export default function Login() {
               🔐
             </div>
             <input
-              type={loginType === 'parent' ? "tel" : "password"}
-              placeholder={loginType === 'staff' ? "كلمة المرور" : "رقم هاتف ولي الأمر المسجل"}
+              type={loginType === 'admin' ? "password" : "tel"}
+              placeholder={loginType === 'admin' ? "كلمة المرور" : loginType === 'teacher' ? "رقم الهاتف (بدون صفر في البداية)" : "رقم هاتف ولي الأمر"}
               value={password}
               onChange={e => setPassword(e.target.value)}
               onFocus={() => setIsFocusedPassword(true)}

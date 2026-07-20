@@ -44,7 +44,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   const firstDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0];
   const [reportDateFrom, setReportDateFrom] = useState(firstDayOfMonth);
   const [reportDateTo, setReportDateTo] = useState(new Date().toISOString().split('T')[0]);
-  const [reportPersonFilter, setReportPersonFilter] = useState<'all' | 'bygrade' | 'student' | 'teacher'>('all');
+  const [reportPersonFilter, setReportPersonFilter] = useState<'all' | 'bygrade' | 'student' | 'teacher' | 'all_teachers'>('all');
   const [reportGradeFilter, setReportGradeFilter] = useState('الكل');
   const [reportClassFilter, setReportClassFilter] = useState('الكل');
   const [reportPersonId, setReportPersonId] = useState<number | null>(null);
@@ -78,7 +78,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   }, [teachers]);
 
   const allRecords = activeTab === 'students' ? studentRecords : teacherRecords;
-  const setRecords = activeTab === 'students' ? setStudentRecords : setTeacherRecords;
+  const setRecords = activeTab === 'students' ? setStudentRecords : setTeacherRecords as any;
 
   const records = activeTab === 'students' 
     ? allRecords.filter(r => {
@@ -174,7 +174,6 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
   };
 
   const markAll = (status: AttendanceStatus) => {
-    // Only mark the CURRENTLY FILTERED records
     const filteredIds = new Set(records.map(r => r.id));
     
     setRecords(allRecords.map(r => filteredIds.has(r.id) ? { ...r, status } : r));
@@ -185,7 +184,6 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
       });
     }
   };
-
 
   const saveNote = (id: number) => {
     setRecords(allRecords.map(r => r.id === id ? { ...r, notes: noteText } : r));
@@ -235,7 +233,6 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
         if (data.success) successCount++;
       } catch (e) {}
 
-      // delay 3 seconds
       await new Promise(r => setTimeout(r, 3000));
     }
     
@@ -348,7 +345,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
           </thead>
           <tbody>
             {records.map((record, idx) => (
-              <tr key={record.id} onMouseEnter={() => setHoveredRow(record.id)} onMouseLeave={() => setHoveredRow(null)}>
+              <tr key={record.id} onMouseEnter={() => setHoveredRow(record.id as number)} onMouseLeave={() => setHoveredRow(null)}>
                 <td style={styles.td(hoveredRow === record.id)}>{idx + 1}</td>
                 <td style={{ ...styles.td(hoveredRow === record.id), fontWeight: '600', textAlign: 'right' }}>{record.name}</td>
                 {activeTab === 'students' && <td style={styles.td(hoveredRow === record.id)}>{record.classRoom || '-'}</td>}
@@ -356,9 +353,9 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
                   <span style={styles.statusBadge(record.status)}>{record.status}</span>
                 </td>
                 <td style={styles.td(hoveredRow === record.id)}>
-                  <button style={styles.statusBtn('حاضر', record.status === 'حاضر')} onClick={() => updateStatus(record.id, 'حاضر')}>حاضر</button>
-                  <button style={styles.statusBtn('غائب', record.status === 'غائب')} onClick={() => updateStatus(record.id, 'غائب')}>غائب</button>
-                  <button style={styles.statusBtn('متأخر', record.status === 'متأخر')} onClick={() => updateStatus(record.id, 'متأخر')}>متأخر</button>
+                  <button style={styles.statusBtn('حاضر', record.status === 'حاضر')} onClick={() => updateStatus(record.id as number, 'حاضر')}>حاضر</button>
+                  <button style={styles.statusBtn('غائب', record.status === 'غائب')} onClick={() => updateStatus(record.id as number, 'غائب')}>غائب</button>
+                  <button style={styles.statusBtn('متأخر', record.status === 'متأخر')} onClick={() => updateStatus(record.id as number, 'متأخر')}>متأخر</button>
                 </td>
                 <td style={{ ...styles.td(hoveredRow === record.id), fontWeight: record.checkIn !== '-' ? '600' : '400', color: record.checkIn !== '-' ? '#27ae60' : '#999' }}>
                   {record.checkIn}
@@ -370,7 +367,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
                   {editingNote === record.id ? (
                     <div style={styles.noteCell}>
                       <input style={styles.noteInput} value={noteText} onChange={e => setNoteText(e.target.value)} placeholder="أضف ملاحظة..." autoFocus />
-                      <button style={styles.noteSaveBtn} onClick={() => saveNote(record.id)}>حفظ</button>
+                      <button style={styles.noteSaveBtn} onClick={() => saveNote(record.id as number)}>حفظ</button>
                     </div>
                   ) : (
                     <div style={styles.noteCell}>
@@ -424,7 +421,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
           return count;
         })();
 
-        const filteredTeachers = reportPersonFilter === 'teacher' && reportPersonId ? teachers.filter(t => t.id === reportPersonId) : (reportPersonFilter === 'all' || reportPersonFilter === 'teacher') ? teachers : [];
+        const filteredTeachers = reportPersonFilter === 'teacher' && reportPersonId ? teachers.filter(t => t.id === reportPersonId) : (reportPersonFilter === 'all' || reportPersonFilter === 'all_teachers' || reportPersonFilter === 'teacher') ? teachers : [];
         const teacherRows = filteredTeachers.map(t => ({
           id: t.id, name: t.name, salary: t.salary, absent: 0,
           salaryDue: t.salary
@@ -449,6 +446,7 @@ export default function Attendance({ onBack }: { onBack: () => void }) {
                     <option value="all">كل الطلاب والمعلمين</option>
                     <option value="student">طالب بعينه</option>
                     <option value="bygrade">صف / فصل كامل</option>
+                    <option value="all_teachers">كل المعلمين فقط</option>
                     <option value="teacher">معلم بعينه</option>
                   </select>
                 </div>

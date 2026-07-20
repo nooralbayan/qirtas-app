@@ -6,8 +6,8 @@ interface ParentPortalProps {
 }
 
 export default function ParentPortal({ onLogout }: ParentPortalProps) {
-  const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees, refreshFromServer } = useAppContext();
-  const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance'>('info');
+  const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees, refreshFromServer, lessonLogs, studentEvaluations } = useAppContext();
+  const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance' | 'educationPath'>('info');
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -58,6 +58,10 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
   const totalPaid = studentReceipts.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
   const totalRemaining = totalFees - totalPaid;
   const dynamicPaymentStatus = totalPaid === 0 ? 'غير مسدد' : (totalPaid >= totalFees ? 'مسدد' : 'جزئي');
+
+  // Get Education Path Data
+  const studentLessonLogs = (lessonLogs || []).filter(l => l.grade === student.grade && l.classRoom === student.classRoom).sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const studentEvaluationsList = (studentEvaluations || []).filter(e => e.studentId === student.id).sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div style={{ padding: 24, maxWidth: 1000, margin: '0 auto', fontFamily: 'Cairo, sans-serif' }}>
@@ -110,6 +114,12 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
           style={{ flex: 1, padding: '16px', background: activeTab === 'results' ? 'var(--primary-color)' : 'var(--bg-card)', color: activeTab === 'results' ? '#fff' : 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 12, fontWeight: 'bold', fontSize: 18, cursor: 'pointer', transition: '0.3s' }}
         >
           📊 الدرجات والنتائج
+        </button>
+        <button 
+          onClick={() => setActiveTab('educationPath')}
+          style={{ flex: 1, padding: '16px', background: activeTab === 'educationPath' ? 'var(--primary-color)' : 'var(--bg-card)', color: activeTab === 'educationPath' ? '#fff' : 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 12, fontWeight: 'bold', fontSize: 18, cursor: 'pointer', transition: '0.3s' }}
+        >
+          🛣️ المسار التعليمي
         </button>
       </div>
 
@@ -335,6 +345,52 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                 </table>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Education Path Tab */}
+        {activeTab === 'educationPath' && (
+          <div>
+            <h3 style={{ color: 'var(--primary-color)', marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10 }}>المسار التعليمي والتواصل مع المعلمين</h3>
+            
+            <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
+              <div style={{ background: 'var(--input-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
+                <h4 style={{ color: '#27ae60', marginTop: 0 }}>📚 الدروس والواجبات الأخيرة</h4>
+                {studentLessonLogs.length === 0 ? (
+                  <p style={{ color: 'var(--text-muted)' }}>لا توجد دروس مضافة مؤخراً.</p>
+                ) : (
+                  studentLessonLogs.map(log => (
+                    <div key={log.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '8px', marginBottom: '12px', background: 'var(--bg-card)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                        <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{log.subject} - {log.type}: {log.topic}</span>
+                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{log.date}</span>
+                      </div>
+                      {log.homework && <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>الواجب: {log.homework}</div>}
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div style={{ background: 'var(--input-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
+                <h4 style={{ color: '#f59e0b', marginTop: 0 }}>⭐ تقييمات المعلمين وملاحظاتهم</h4>
+                {studentEvaluationsList.length === 0 ? (
+                  <p style={{ color: 'var(--text-muted)' }}>لا توجد تقييمات مضافة مؤخراً.</p>
+                ) : (
+                  studentEvaluationsList.map(ev => (
+                    <div key={ev.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '8px', marginBottom: '12px', background: 'var(--bg-card)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                        <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{ev.subject}</span>
+                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{ev.date}</span>
+                      </div>
+                      <div style={{ fontWeight: 'bold', color: ev.rating === 'ممتاز' ? '#27ae60' : ev.rating === 'ضعيف' ? '#ef4444' : '#f59e0b' }}>
+                        التقييم: {ev.rating}
+                      </div>
+                      {ev.notes && <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '8px' }}>ملاحظة: {ev.notes}</div>}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>

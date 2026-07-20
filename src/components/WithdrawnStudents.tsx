@@ -12,6 +12,7 @@ export default function WithdrawnStudents({ onBack }: { onBack: () => void }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [confirmReenroll, setConfirmReenroll] = useState<number | null>(null);
   const [selectFromList, setSelectFromList] = useState(false);
+  const [searchStudentQuery, setSearchStudentQuery] = useState('');
 
   const styles = {
     container: { direction: 'rtl' as const, fontFamily: 'Cairo, sans-serif', padding: '30px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' },
@@ -62,6 +63,7 @@ export default function WithdrawnStudents({ onBack }: { onBack: () => void }) {
         classRoom: student.classRoom || '',
       });
       setSelectFromList(false);
+      setSearchStudentQuery('');
     }
   };
 
@@ -100,7 +102,7 @@ export default function WithdrawnStudents({ onBack }: { onBack: () => void }) {
       classRoom: form.classRoom,
       withdrawalDate: form.withdrawalDate,
       reason: form.reason,
-      refundAmount: parseFloat(form.refundAmount) || 0,
+      refundAmount: parseFloat(form.refundAmount as any) || 0,
       originalStudent,
     };
     setWithdrawnStudents(prev => [...prev, newWithdrawn]);
@@ -213,18 +215,32 @@ export default function WithdrawnStudents({ onBack }: { onBack: () => void }) {
 
             <div style={styles.formGroup}>
               <label style={styles.formLabel}>اختيار الطالب من القائمة</label>
-              <button onClick={() => setSelectFromList(!selectFromList)} style={{ ...styles.addBtn, backgroundColor: '#0056b3', width: '100%', justifyContent: 'center' }}>
-                {form.name ? `✅ ${form.name}` : '📋 اختر طالباً من القائمة'}
-              </button>
-              {selectFromList && (
-                <div style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #ddd', borderRadius: 8, marginTop: 8 }}>
-                  {students.map(s => (
-                    <div key={s.id} onClick={() => handleSelectStudent(s.id)} style={{ padding: '8px 14px', cursor: 'pointer', borderBottom: '1px solid #eee', fontSize: 14 }}>
-                      {s.name} - {s.grade} {s.classRoom ? `(${s.classRoom})` : ''}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder={form.name ? `✅ ${form.name}` : '🔍 ابحث عن اسم الطالب هنا...'}
+                  value={searchStudentQuery}
+                  onChange={e => {
+                    setSearchStudentQuery(e.target.value);
+                    setSelectFromList(true);
+                  }}
+                  onFocus={() => setSelectFromList(true)}
+                  style={{ ...styles.formInput, borderColor: '#0056b3' }}
+                />
+                {selectFromList && (
+                  <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, maxHeight: 200, overflowY: 'auto', border: '1px solid #ddd', borderRadius: 8, marginTop: 4, backgroundColor: 'var(--bg-card)', zIndex: 10, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                    {students.filter(s => s.name.includes(searchStudentQuery)).length > 0 ? (
+                      students.filter(s => s.name.includes(searchStudentQuery)).map(s => (
+                        <div key={s.id} onClick={() => handleSelectStudent(s.id)} style={{ padding: '10px 14px', cursor: 'pointer', borderBottom: '1px solid #eee', fontSize: 14 }}>
+                          {s.name} - <span style={{ color: 'var(--text-secondary)', fontSize: 12 }}>{s.grade} {s.classRoom ? `(${s.classRoom})` : ''}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <div style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>لا توجد نتائج مطابقة</div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {!form.studentId && (

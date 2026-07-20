@@ -16,6 +16,7 @@ import RecycleBin from './components/RecycleBin';
 import Subjects from './components/Subjects';
 import Classrooms from './components/Classrooms';
 import ParentPortal from './components/ParentPortal';
+import TeacherPortal from './components/TeacherPortal';
 import { useAppContext } from './context/AppContext';
 
 function App() {
@@ -464,6 +465,19 @@ function App() {
     return (
       <div className="app-container" style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
         <ParentPortal onLogout={() => {
+          if(window.confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+            setCurrentUser(null);
+            setCurrentView('dashboard');
+          }
+        }} />
+      </div>
+    );
+  }
+
+  if (currentUser.role === 'teacher') {
+    return (
+      <div className="app-container" style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
+        <TeacherPortal onLogout={() => {
           if(window.confirm('هل أنت متأكد من تسجيل الخروج؟')) {
             setCurrentUser(null);
             setCurrentView('dashboard');

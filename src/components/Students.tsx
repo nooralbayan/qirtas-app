@@ -66,10 +66,10 @@ export default function Students({ onBack }: { onBack: () => void }) {
       if (studentToDelete) {
         // Delete student
         setStudents((prev) => prev.filter((s) => s.id !== id));
-        
+
         // Cascade delete attendance
         setAttendanceRecords(attendanceRecords.filter(a => a.studentId !== id));
-        
+
         // Cascade delete results
         setStudentResults(prev => {
           const newResults = { ...prev };
@@ -252,7 +252,7 @@ export default function Students({ onBack }: { onBack: () => void }) {
 
   const handleExportExcel = () => {
     const listStudents = (gradeFilter === 'الكل' && classRoomFilter === 'الكل') ? students : filtered;
-    
+
     if (listStudents.length === 0) {
       alert('لا توجد بيانات للتصدير.');
       return;
@@ -278,10 +278,10 @@ export default function Students({ onBack }: { onBack: () => void }) {
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'الطلاب');
-    
+
     const title = gradeFilter === 'الكل' ? 'جميع الطلاب' : `${gradeFilter} - ${classRoomFilter}`;
     const fileName = `قائمة_الطلاب_${title.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.xlsx`;
-    
+
     XLSX.writeFile(workbook, fileName);
   };
 
@@ -309,8 +309,8 @@ export default function Students({ onBack }: { onBack: () => void }) {
         const enrollment = String(row['رقم القيد'] || row['enrollmentNumber'] || '');
         const natId = String(row['الرقم الوطني'] || row['nationalId'] || '');
 
-        const isDup = newStudentsList.some(s => 
-          (enrollment && s.enrollmentNumber === enrollment) || 
+        const isDup = newStudentsList.some(s =>
+          (enrollment && s.enrollmentNumber === enrollment) ||
           (natId && s.nationalId === natId)
         );
 
@@ -322,7 +322,7 @@ export default function Students({ onBack }: { onBack: () => void }) {
         const nameParts = rowName.trim().split(/\s+/);
         const fatherNameExtracted = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
         const grade = row['الصف'] || row['grade'] || 'الصف الأول';
-        
+
         newStudentsList.push({
           id: newId++,
           name: rowName,
@@ -480,20 +480,20 @@ export default function Students({ onBack }: { onBack: () => void }) {
               {editingId !== null ? 'تعديل بيانات الطالب' : 'إضافة طالب جديد'}
             </h3>
 
-              <div>
+            <div>
               <div style={{ backgroundColor: '#f8fafc', padding: 20, borderRadius: 12, border: '1px solid #e2e8f0', marginBottom: 16 }}>
                 <h4 style={{ margin: '0 0 16px', color: '#334155', borderBottom: '2px solid #cbd5e1', paddingBottom: 8 }}>👨‍🎓 بيانات الطالب الأساسية</h4>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                   <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: 16, backgroundColor: 'var(--bg-card)', padding: 16, borderRadius: 8, border: '1px solid #e2e8f0' }}>
-                     {form.photo ? (
-                        <img src={form.photo} alt="Preview" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover' }} />
-                      ) : (
-                        <div style={{ width: 80, height: 80, borderRadius: '50%', backgroundColor: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📷</div>
-                      )}
-                     <div>
-                       <label style={labelStyle}>الصورة الشخصية (اختياري)</label>
-                       <input type="file" accept="image/*" onChange={handlePhotoUpload} style={{ marginTop: 8 }} />
-                     </div>
+                    {form.photo ? (
+                      <img src={form.photo} alt="Preview" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover' }} />
+                    ) : (
+                      <div style={{ width: 80, height: 80, borderRadius: '50%', backgroundColor: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📷</div>
+                    )}
+                    <div>
+                      <label style={labelStyle}>الصورة الشخصية (اختياري)</label>
+                      <input type="file" accept="image/*" onChange={handlePhotoUpload} style={{ marginTop: 8 }} />
+                    </div>
                   </div>
 
                   <div>
@@ -502,41 +502,41 @@ export default function Students({ onBack }: { onBack: () => void }) {
                   </div>
                   <div>
                     <label style={labelStyle}>الرقم الوطني</label>
-                    <input 
-                      value={form.nationalId} 
+                    <input
+                      value={form.nationalId}
                       onChange={(e) => {
                         const val = e.target.value;
                         let newGender = form.gender;
                         if (val.startsWith('1')) newGender = 'ذكر';
                         else if (val.startsWith('2')) newGender = 'أنثى';
-                        
+
                         setForm({ ...form, nationalId: val, gender: newGender });
-                      }} 
-                      style={inputStyle} 
-                      placeholder="مثال: 1198..." 
+                      }}
+                      style={inputStyle}
+                      placeholder="مثال: 1198..."
                     />
                   </div>
                   <div>
                     <label style={labelStyle}>اسم الطالب (رباعي)</label>
-                    <input 
-                      value={form.name} 
+                    <input
+                      value={form.name}
                       onChange={(e) => {
                         const newName = e.target.value;
                         setForm(prev => {
                           let newFatherName = prev.fatherName;
                           const oldParts = prev.name.trim().split(/\s+/);
                           const oldExpectedFather = oldParts.length > 1 ? oldParts.slice(1).join(' ') : '';
-                          
+
                           const newParts = newName.trim().split(/\s+/);
                           const newExpectedFather = newParts.length > 1 ? newParts.slice(1).join(' ') : '';
-                          
+
                           if (!prev.fatherName || prev.fatherName.trim() === oldExpectedFather) {
                             newFatherName = newExpectedFather;
                           }
                           return { ...prev, name: newName, fatherName: newFatherName };
                         });
-                      }} 
-                      style={inputStyle} 
+                      }}
+                      style={inputStyle}
                     />
                   </div>
                   <div>
@@ -573,7 +573,7 @@ export default function Students({ onBack }: { onBack: () => void }) {
                       </div>
                     )}
                   </div>
-                  
+
                   <div style={{ gridColumn: '1 / -1' }}>
                     <label style={labelStyle}>العنوان (عنوان السكن)</label>
                     <input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} style={inputStyle} placeholder="مثال: طرابلس، حي الأندلس" />

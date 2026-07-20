@@ -11,6 +11,28 @@ export interface AttendanceRecord {
   notes: string;
 }
 
+export interface LessonLog {
+  id: string;
+  date: string;
+  teacherId: number;
+  grade: string;
+  classRoom: string;
+  subject: string;
+  topic: string;
+  homework: string;
+  type: 'درس' | 'واجب' | 'امتحان';
+}
+
+export interface StudentEvaluation {
+  id: string;
+  date: string;
+  studentId: number;
+  teacherId: number;
+  subject: string;
+  rating: 'ممتاز' | 'جيد جداً' | 'جيد' | 'مقبول' | 'ضعيف';
+  notes: string;
+}
+
 let isInitializingFromServer = false;
 
 function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
@@ -139,7 +161,7 @@ export interface User {
   username: string;
   name: string;
   password?: string;
-  role: UserRole;
+  role: UserRole | 'teacher' | 'parent';
 }
 
 export interface RecycleBinItem {
@@ -187,6 +209,10 @@ interface AppContextType {
   setAcademicYear: (year: string) => void;
   attendanceRecords: AttendanceRecord[];
   setAttendanceRecords: React.Dispatch<React.SetStateAction<AttendanceRecord[]>>;
+  lessonLogs: LessonLog[];
+  setLessonLogs: React.Dispatch<React.SetStateAction<LessonLog[]>>;
+  studentEvaluations: StudentEvaluation[];
+  setStudentEvaluations: React.Dispatch<React.SetStateAction<StudentEvaluation[]>>;
   refreshFromServer: () => Promise<void>;
 }
 
@@ -274,6 +300,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useLocalStorage<ThemeType>('qirtas_theme', 'light');
   const [academicYear, setAcademicYear] = useLocalStorage('qirtas_academicYear', '2024 - 2025');
   const [attendanceRecords, setAttendanceRecords] = useLocalStorage<AttendanceRecord[]>('qirtas_attendanceRecords', []);
+  const [lessonLogs, setLessonLogs] = useLocalStorage<LessonLog[]>('qirtas_lessonLogs', []);
+  const [studentEvaluations, setStudentEvaluations] = useLocalStorage<StudentEvaluation[]>('qirtas_studentEvaluations', []);
   const [isServerLoaded, setIsServerLoaded] = useState(false);
 
   const refreshFromServer = async () => {
@@ -301,6 +329,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           if (state.studentResults) setStudentResults(state.studentResults);
           if (state.academicYear) setAcademicYear(state.academicYear);
           setAttendanceRecords(state.attendanceRecords || []);
+          setLessonLogs(state.lessonLogs || []);
+          setStudentEvaluations(state.studentEvaluations || []);
         }
         
         isInitializingFromServer = false;
@@ -419,6 +449,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       theme, setTheme,
       academicYear, setAcademicYear,
       attendanceRecords, setAttendanceRecords,
+      lessonLogs, setLessonLogs,
+      studentEvaluations, setStudentEvaluations,
       isServerLoaded,
       refreshFromServer
     }}>
