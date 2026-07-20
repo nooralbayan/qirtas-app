@@ -9,6 +9,8 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
   const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees, refreshFromServer, lessonLogs, studentEvaluations } = useAppContext();
   const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance' | 'educationPath'>('info');
   const [selectedPathSubject, setSelectedPathSubject] = useState('');
+  const [pathViewMode, setPathViewMode] = useState<'subject' | 'date'>('subject');
+  const [pathDate, setPathDate] = useState(new Date().toISOString().split('T')[0]);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -362,8 +364,39 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
 
           return (
           <div>
-            <h3 style={{ color: 'var(--primary-color)', marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10 }}>🛣️ المسار التعليمي</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10, flexWrap: 'wrap', gap: '16px' }}>
+              <h3 style={{ margin: 0, color: 'var(--primary-color)' }}>🛣️ المسار التعليمي</h3>
+              <div style={{ display: 'flex', gap: '8px', background: 'var(--input-bg)', padding: '4px', borderRadius: '12px' }}>
+                <button 
+                  onClick={() => setPathViewMode('subject')}
+                  style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', background: pathViewMode === 'subject' ? '#2563eb' : 'transparent', color: pathViewMode === 'subject' ? '#fff' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.3s' }}
+                >
+                  📖 عرض حسب المادة
+                </button>
+                <button 
+                  onClick={() => setPathViewMode('date')}
+                  style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', background: pathViewMode === 'date' ? '#2563eb' : 'transparent', color: pathViewMode === 'date' ? '#fff' : 'var(--text-secondary)', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.3s' }}
+                >
+                  📅 سجل اليوميات
+                </button>
+              </div>
+            </div>
             
+            {pathViewMode === 'date' && (
+              <div style={{ background: 'var(--bg-card)', padding: '20px', borderRadius: '16px', marginBottom: '24px', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+                <div style={{ fontSize: '24px' }}>📅</div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>اختر اليوم لعرض ما تم أخذه:</label>
+                  <input 
+                    type="date" 
+                    value={pathDate} 
+                    onChange={e => setPathDate(e.target.value)} 
+                    style={{ padding: '10px 16px', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--input-bg)', color: 'var(--text-primary)', outline: 'none', fontFamily: 'Cairo, sans-serif', fontSize: '16px' }} 
+                  />
+                </div>
+              </div>
+            )}
+
             {allPathSubjects.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', background: 'var(--input-bg)', borderRadius: '16px' }}>
                 <div style={{ fontSize: '48px', marginBottom: '16px' }}>📚</div>
@@ -372,43 +405,45 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
             ) : (
               <>
                 {/* Subject Tabs */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
-                  {allPathSubjects.map((sub, idx) => {
-                    const color = subjectColors[idx % subjectColors.length];
-                    const isActive = sub === activeSubject;
-                    return (
-                      <button
-                        key={sub}
-                        onClick={() => setSelectedPathSubject(sub)}
-                        style={{
-                          padding: '10px 20px',
-                          borderRadius: '25px',
-                          border: isActive ? 'none' : '2px solid ' + color,
-                          background: isActive ? color : 'transparent',
-                          color: isActive ? '#fff' : color,
-                          fontWeight: 'bold',
-                          fontSize: '15px',
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease',
-                          fontFamily: 'Cairo, sans-serif'
-                        }}
-                      >
-                        📖 {sub}
-                      </button>
-                    );
-                  })}
-                </div>
+                {pathViewMode === 'subject' && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
+                    {allPathSubjects.map((sub, idx) => {
+                      const color = subjectColors[idx % subjectColors.length];
+                      const isActive = sub === activeSubject;
+                      return (
+                        <button
+                          key={sub}
+                          onClick={() => setSelectedPathSubject(sub)}
+                          style={{
+                            padding: '10px 20px',
+                            borderRadius: '25px',
+                            border: isActive ? 'none' : '2px solid ' + color,
+                            background: isActive ? color : 'transparent',
+                            color: isActive ? '#fff' : color,
+                            fontWeight: 'bold',
+                            fontSize: '15px',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            fontFamily: 'Cairo, sans-serif'
+                          }}
+                        >
+                          📖 {sub}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
 
                 {/* Lessons Section */}
                 <div style={{ background: 'var(--input-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)', marginBottom: '20px' }}>
-                  <h4 style={{ color: '#27ae60', marginTop: 0 }}>📚 الدروس والواجبات - {activeSubject}</h4>
-                  {filteredLessons.length === 0 ? (
-                    <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px' }}>لا توجد دروس مسجلة لهذه المادة بعد.</p>
+                  <h4 style={{ color: '#27ae60', marginTop: 0 }}>📚 الدروس والواجبات {pathViewMode === 'subject' ? `- ${activeSubject}` : `(تاريخ: ${pathDate})`}</h4>
+                  {(pathViewMode === 'subject' ? filteredLessons : studentLessonLogs.filter(l => l.date === pathDate)).length === 0 ? (
+                    <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px' }}>لا توجد دروس مسجلة {pathViewMode === 'subject' ? 'لهذه المادة بعد' : 'في هذا اليوم'}.</p>
                   ) : (
-                    filteredLessons.map(log => (
+                    (pathViewMode === 'subject' ? filteredLessons : studentLessonLogs.filter(l => l.date === pathDate)).map(log => (
                       <div key={log.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '12px', marginBottom: '12px', background: 'var(--bg-card)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                             <span style={{ 
                               padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold',
                               background: log.type === 'درس' ? 'rgba(39, 174, 96, 0.15)' : log.type === 'واجب' ? 'rgba(243, 156, 18, 0.15)' : 'rgba(231, 76, 60, 0.15)',
@@ -416,6 +451,7 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                             }}>
                               {log.type === 'درس' ? '📖' : log.type === 'واجب' ? '📝' : '📋'} {log.type}
                             </span>
+                            {pathViewMode === 'date' && <span style={{ background: 'var(--primary-color)', color: '#fff', padding: '2px 8px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold' }}>{log.subject}</span>}
                             <span style={{ fontWeight: 'bold', color: 'var(--text-primary)', fontSize: '16px' }}>{log.topic}</span>
                           </div>
                           <span style={{ fontSize: '13px', color: 'var(--text-secondary)', background: 'var(--input-bg)', padding: '4px 10px', borderRadius: '8px' }}>📅 {log.date}</span>
@@ -425,6 +461,14 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                             <strong style={{ color: '#f39c12' }}>📝 الواجب:</strong> {log.homework}
                           </div>
                         )}
+                        {log.imageUrl && (
+                          <div style={{ marginTop: '12px', textAlign: 'center' }}>
+                            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '6px' }}>صورة مرفقة للدرس:</div>
+                            <a href={log.imageUrl} target="_blank" rel="noopener noreferrer">
+                              <img src={log.imageUrl} alt="مرفق الدرس" style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '12px', border: '2px solid var(--primary-color)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                            </a>
+                          </div>
+                        )}
                       </div>
                     ))
                   )}
@@ -432,20 +476,23 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
 
                 {/* Evaluations Section */}
                 <div style={{ background: 'var(--input-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
-                  <h4 style={{ color: '#f59e0b', marginTop: 0 }}>⭐ تقييمات المعلم - {activeSubject}</h4>
-                  {filteredEvals.length === 0 ? (
-                    <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px' }}>لا توجد تقييمات لهذه المادة بعد.</p>
+                  <h4 style={{ color: '#f59e0b', marginTop: 0 }}>⭐ تقييمات المعلم {pathViewMode === 'subject' ? `- ${activeSubject}` : `(تاريخ: ${pathDate})`}</h4>
+                  {(pathViewMode === 'subject' ? filteredEvals : studentEvaluationsList.filter(e => e.date === pathDate)).length === 0 ? (
+                    <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px' }}>لا توجد تقييمات {pathViewMode === 'subject' ? 'لهذه المادة بعد' : 'في هذا اليوم'}.</p>
                   ) : (
-                    filteredEvals.map(ev => (
+                    (pathViewMode === 'subject' ? filteredEvals : studentEvaluationsList.filter(e => e.date === pathDate)).map(ev => (
                       <div key={ev.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '12px', marginBottom: '12px', background: 'var(--bg-card)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
                         <div>
-                          <div style={{ 
-                            fontWeight: 'bold', fontSize: '18px',
-                            color: ev.rating === 'ممتاز' ? '#27ae60' : ev.rating === 'جيد جداً' ? '#2563eb' : ev.rating === 'جيد' ? '#f39c12' : ev.rating === 'ضعيف' ? '#e74c3c' : '#f59e0b'
-                          }}>
-                            {ev.rating === 'ممتاز' ? '⭐⭐⭐' : ev.rating === 'جيد جداً' ? '⭐⭐' : ev.rating === 'جيد' ? '⭐' : ev.rating === 'ضعيف' ? '🔻' : '😐'} {ev.rating}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                            {pathViewMode === 'date' && <span style={{ background: 'var(--primary-color)', color: '#fff', padding: '2px 8px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold' }}>{ev.subject}</span>}
+                            <div style={{ 
+                              fontWeight: 'bold', fontSize: '18px',
+                              color: ev.rating === 'ممتاز' ? '#27ae60' : ev.rating === 'جيد جداً' ? '#2563eb' : ev.rating === 'جيد' ? '#f39c12' : ev.rating === 'ضعيف' ? '#e74c3c' : '#f59e0b'
+                            }}>
+                              {ev.rating === 'ممتاز' ? '⭐⭐⭐' : ev.rating === 'جيد جداً' ? '⭐⭐' : ev.rating === 'جيد' ? '⭐' : ev.rating === 'ضعيف' ? '🔻' : '😐'} {ev.rating}
+                            </div>
                           </div>
-                          {ev.notes && <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '6px' }}>💬 {ev.notes}</div>}
+                          {ev.notes && <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>💬 {ev.notes}</div>}
                         </div>
                         <span style={{ fontSize: '13px', color: 'var(--text-secondary)', background: 'var(--input-bg)', padding: '4px 10px', borderRadius: '8px' }}>📅 {ev.date}</span>
                       </div>
