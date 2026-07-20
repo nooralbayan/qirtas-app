@@ -350,7 +350,7 @@ export default function TeacherPortal({ onLogout }: { onLogout: () => void }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {classStudents.map(student => {
+                      {myStudents.map(student => {
                         return (
                           <tr key={student.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                             <td style={{ padding: '12px', color: 'var(--text-primary)', fontWeight: 'bold' }}>{student.name}</td>

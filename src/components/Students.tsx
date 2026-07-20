@@ -718,7 +718,7 @@ export default function Students({ onBack }: { onBack: () => void }) {
                         const type = e.target.value as 'إيجابي' | 'سلبي';
                         setBehaviorForm({...behaviorForm, type, category: type === 'إيجابي' ? 'مشاركة متميزة' : 'غياب بدون عذر', points: type === 'إيجابي' ? 5 : 3});
                       }} 
-                      style={selectStyle}
+                      style={inputStyle}
                     >
                       <option value="إيجابي">إيجابي (نقاط إضافة)</option>
                       <option value="سلبي">سلبي (خصم نقاط)</option>
@@ -726,7 +726,7 @@ export default function Students({ onBack }: { onBack: () => void }) {
                   </div>
                   <div>
                     <label style={labelStyle}>التصنيف</label>
-                    <select value={behaviorForm.category} onChange={e => setBehaviorForm({...behaviorForm, category: e.target.value})} style={selectStyle}>
+                    <select value={behaviorForm.category} onChange={e => setBehaviorForm({...behaviorForm, category: e.target.value})} style={inputStyle}>
                       {behaviorForm.type === 'إيجابي' ? (
                         <>
                           <option value="مشاركة متميزة">مشاركة متميزة</option>
@@ -746,11 +746,11 @@ export default function Students({ onBack }: { onBack: () => void }) {
                   </div>
                   <div>
                     <label style={labelStyle}>النقاط</label>
-                    <input type="number" min="1" value={behaviorForm.points} onChange={e => setBehaviorForm({...behaviorForm, points: parseInt(e.target.value) || 0})} style={inputBaseStyle} />
+                    <input type="number" min="1" value={behaviorForm.points} onChange={e => setBehaviorForm({...behaviorForm, points: parseInt(e.target.value) || 0})} style={inputStyle} />
                   </div>
                   <div>
                     <label style={labelStyle}>ملاحظات إضافية</label>
-                    <input type="text" value={behaviorForm.notes} onChange={e => setBehaviorForm({...behaviorForm, notes: e.target.value})} style={inputBaseStyle} placeholder="تفاصيل الملاحظة..." />
+                    <input type="text" value={behaviorForm.notes} onChange={e => setBehaviorForm({...behaviorForm, notes: e.target.value})} style={inputStyle} placeholder="تفاصيل الملاحظة..." />
                   </div>
                 </div>
                 <button onClick={handleAddBehavior} style={{ marginTop: 16, width: '100%', padding: '12px', backgroundColor: 'var(--primary-color)', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold' }}>
