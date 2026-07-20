@@ -140,6 +140,7 @@ export interface Teacher {
   name: string;
   subject: string;
   phone: string;
+  nationalId?: string;
   salary: number;
   hireDate: string;
   isAbsent?: boolean;

@@ -7,13 +7,13 @@ export default function Teachers({ onBack }: { onBack: () => void }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [form, setForm] = useState<Partial<Teacher>>({ name: '', subject: '', phone: '', salary: 0, hireDate: '' });
+  const [form, setForm] = useState<Partial<Teacher>>({ name: '', subject: '', phone: '', nationalId: '', salary: 0, hireDate: '' });
 
   const filtered = teachers.filter((t) => t.name.includes(searchTerm) || t.subject.includes(searchTerm));
 
   const openAdd = () => {
     setEditingId(null);
-    setForm({ name: '', subject: '', phone: '', salary: 0, hireDate: new Date().toISOString().split('T')[0] });
+    setForm({ name: '', subject: '', phone: '', nationalId: '', salary: 0, hireDate: new Date().toISOString().split('T')[0] });
     setShowModal(true);
   };
 
@@ -89,6 +89,7 @@ export default function Teachers({ onBack }: { onBack: () => void }) {
               <tr style={{ backgroundColor: '#f8fafc', color: 'var(--text-primary)', borderBottom: '2px solid #eee' }}>
                 <th style={{ padding: '12px', fontWeight: 700 }}>الرقم</th>
                 <th style={{ padding: '12px', fontWeight: 700 }}>الاسم</th>
+                <th style={{ padding: '12px', fontWeight: 700 }}>الرقم الوطني</th>
                 <th style={{ padding: '12px', fontWeight: 700 }}>التخصص / الوظيفة</th>
                 <th style={{ padding: '12px', fontWeight: 700 }}>رقم الهاتف</th>
                 <th style={{ padding: '12px', fontWeight: 700 }}>الراتب الأساسي</th>
@@ -102,6 +103,7 @@ export default function Teachers({ onBack }: { onBack: () => void }) {
                 <tr key={t.id} style={{ backgroundColor: idx % 2 === 0 ? '#fafbfc' : '#fff' }}>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>{t.id}</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee', fontWeight: 600 }}>{t.name}</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>{t.nationalId || '-'}</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
                     <span style={{ backgroundColor: '#e0f2fe', color: '#0284c7', padding: '4px 8px', borderRadius: 12, fontSize: 12, fontWeight: 'bold' }}>{t.subject}</span>
                   </td>
@@ -123,7 +125,7 @@ export default function Teachers({ onBack }: { onBack: () => void }) {
                 </tr>
               ))}
               {filtered.length === 0 && (
-                <tr><td colSpan={7} style={{ padding: 30, textAlign: 'center', color: 'var(--text-secondary)' }}>لا توجد بيانات مطابقة</td></tr>
+                <tr><td colSpan={9} style={{ padding: 30, textAlign: 'center', color: 'var(--text-secondary)' }}>لا توجد بيانات مطابقة</td></tr>
               )}
             </tbody>
           </table>
@@ -141,6 +143,10 @@ export default function Teachers({ onBack }: { onBack: () => void }) {
               <div>
                 <label style={labelStyle}>اسم الموظف / المعلم</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} style={inputStyle} />
+              </div>
+              <div>
+                <label style={labelStyle}>الرقم الوطني</label>
+                <input value={form.nationalId} onChange={(e) => setForm({ ...form, nationalId: e.target.value })} style={inputStyle} placeholder="الرقم الوطني لتسجيل الدخول..." />
               </div>
               <div>
                 <label style={labelStyle}>التخصص / الوظيفة</label>
