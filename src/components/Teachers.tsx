@@ -134,7 +134,7 @@ export default function Teachers({ onBack }: { onBack: () => void }) {
 
       {showModal && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div style={{ backgroundColor: 'var(--bg-card)', borderRadius: 14, padding: 32, width: '90%', maxWidth: 500, boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+          <div style={{ backgroundColor: 'var(--bg-card)', borderRadius: 14, padding: 32, width: '90%', maxWidth: 500, boxShadow: '0 10px 25px rgba(0,0,0,0.2)', maxHeight: '90vh', overflowY: 'auto' }}>
             <h3 style={{ margin: '0 0 24px', color: '#0056b3', fontSize: 22 }}>
               {editingId !== null ? 'تعديل بيانات الموظف' : 'إضافة موظف جديد'}
             </h3>
