@@ -8,6 +8,7 @@ interface ParentPortalProps {
 export default function ParentPortal({ onLogout }: ParentPortalProps) {
   const { currentUser, students, timetables, studentResults, attendanceRecords, receipts, gradeFees, refreshFromServer, lessonLogs, studentEvaluations } = useAppContext();
   const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance' | 'educationPath'>('info');
+  const [selectedPathSubject, setSelectedPathSubject] = useState('');
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -349,50 +350,113 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
         )}
 
         {/* Education Path Tab */}
-        {activeTab === 'educationPath' && (
-          <div>
-            <h3 style={{ color: 'var(--primary-color)', marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10 }}>المسار التعليمي والتواصل مع المعلمين</h3>
-            
-            <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
-              <div style={{ background: 'var(--input-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
-                <h4 style={{ color: '#27ae60', marginTop: 0 }}>📚 الدروس والواجبات الأخيرة</h4>
-                {studentLessonLogs.length === 0 ? (
-                  <p style={{ color: 'var(--text-muted)' }}>لا توجد دروس مضافة مؤخراً.</p>
-                ) : (
-                  studentLessonLogs.map(log => (
-                    <div key={log.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '8px', marginBottom: '12px', background: 'var(--bg-card)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                        <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{log.subject} - {log.type}: {log.topic}</span>
-                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{log.date}</span>
-                      </div>
-                      {log.homework && <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>الواجب: {log.homework}</div>}
-                    </div>
-                  ))
-                )}
-              </div>
+        {activeTab === 'educationPath' && (() => {
+          const subjectColors = ['#2563eb', '#27ae60', '#e67e22', '#9b59b6', '#e74c3c', '#1abc9c', '#f39c12', '#3498db', '#e91e63', '#00bcd4'];
+          const allPathSubjects = Array.from(new Set([
+            ...studentLessonLogs.map(l => l.subject),
+            ...studentEvaluationsList.map(e => e.subject)
+          ]));
+          const activeSubject = selectedPathSubject && allPathSubjects.includes(selectedPathSubject) ? selectedPathSubject : (allPathSubjects[0] || '');
+          const filteredLessons = studentLessonLogs.filter(l => l.subject === activeSubject);
+          const filteredEvals = studentEvaluationsList.filter(e => e.subject === activeSubject);
 
-              <div style={{ background: 'var(--input-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
-                <h4 style={{ color: '#f59e0b', marginTop: 0 }}>⭐ تقييمات المعلمين وملاحظاتهم</h4>
-                {studentEvaluationsList.length === 0 ? (
-                  <p style={{ color: 'var(--text-muted)' }}>لا توجد تقييمات مضافة مؤخراً.</p>
-                ) : (
-                  studentEvaluationsList.map(ev => (
-                    <div key={ev.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '8px', marginBottom: '12px', background: 'var(--bg-card)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                        <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{ev.subject}</span>
-                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{ev.date}</span>
-                      </div>
-                      <div style={{ fontWeight: 'bold', color: ev.rating === 'ممتاز' ? '#27ae60' : ev.rating === 'ضعيف' ? '#ef4444' : '#f59e0b' }}>
-                        التقييم: {ev.rating}
-                      </div>
-                      {ev.notes && <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '8px' }}>ملاحظة: {ev.notes}</div>}
-                    </div>
-                  ))
-                )}
+          return (
+          <div>
+            <h3 style={{ color: 'var(--primary-color)', marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10 }}>🛣️ المسار التعليمي</h3>
+            
+            {allPathSubjects.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', background: 'var(--input-bg)', borderRadius: '16px' }}>
+                <div style={{ fontSize: '48px', marginBottom: '16px' }}>📚</div>
+                <p>لا توجد بيانات مسار تعليمي بعد. سيتم عرض الدروس والتقييمات هنا بمجرد إضافتها من قبل المعلمين.</p>
               </div>
-            </div>
+            ) : (
+              <>
+                {/* Subject Tabs */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
+                  {allPathSubjects.map((sub, idx) => {
+                    const color = subjectColors[idx % subjectColors.length];
+                    const isActive = sub === activeSubject;
+                    return (
+                      <button
+                        key={sub}
+                        onClick={() => setSelectedPathSubject(sub)}
+                        style={{
+                          padding: '10px 20px',
+                          borderRadius: '25px',
+                          border: isActive ? 'none' : '2px solid ' + color,
+                          background: isActive ? color : 'transparent',
+                          color: isActive ? '#fff' : color,
+                          fontWeight: 'bold',
+                          fontSize: '15px',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          fontFamily: 'Cairo, sans-serif'
+                        }}
+                      >
+                        📖 {sub}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Lessons Section */}
+                <div style={{ background: 'var(--input-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)', marginBottom: '20px' }}>
+                  <h4 style={{ color: '#27ae60', marginTop: 0 }}>📚 الدروس والواجبات - {activeSubject}</h4>
+                  {filteredLessons.length === 0 ? (
+                    <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px' }}>لا توجد دروس مسجلة لهذه المادة بعد.</p>
+                  ) : (
+                    filteredLessons.map(log => (
+                      <div key={log.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '12px', marginBottom: '12px', background: 'var(--bg-card)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <span style={{ 
+                              padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold',
+                              background: log.type === 'درس' ? 'rgba(39, 174, 96, 0.15)' : log.type === 'واجب' ? 'rgba(243, 156, 18, 0.15)' : 'rgba(231, 76, 60, 0.15)',
+                              color: log.type === 'درس' ? '#27ae60' : log.type === 'واجب' ? '#f39c12' : '#e74c3c'
+                            }}>
+                              {log.type === 'درس' ? '📖' : log.type === 'واجب' ? '📝' : '📋'} {log.type}
+                            </span>
+                            <span style={{ fontWeight: 'bold', color: 'var(--text-primary)', fontSize: '16px' }}>{log.topic}</span>
+                          </div>
+                          <span style={{ fontSize: '13px', color: 'var(--text-secondary)', background: 'var(--input-bg)', padding: '4px 10px', borderRadius: '8px' }}>📅 {log.date}</span>
+                        </div>
+                        {log.homework && (
+                          <div style={{ marginTop: '8px', padding: '10px 14px', background: 'rgba(243, 156, 18, 0.08)', borderRadius: '8px', border: '1px solid rgba(243, 156, 18, 0.2)', fontSize: '14px', color: 'var(--text-secondary)' }}>
+                            <strong style={{ color: '#f39c12' }}>📝 الواجب:</strong> {log.homework}
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Evaluations Section */}
+                <div style={{ background: 'var(--input-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
+                  <h4 style={{ color: '#f59e0b', marginTop: 0 }}>⭐ تقييمات المعلم - {activeSubject}</h4>
+                  {filteredEvals.length === 0 ? (
+                    <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px' }}>لا توجد تقييمات لهذه المادة بعد.</p>
+                  ) : (
+                    filteredEvals.map(ev => (
+                      <div key={ev.id} style={{ padding: '16px', border: '1px solid var(--border-color)', borderRadius: '12px', marginBottom: '12px', background: 'var(--bg-card)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                        <div>
+                          <div style={{ 
+                            fontWeight: 'bold', fontSize: '18px',
+                            color: ev.rating === 'ممتاز' ? '#27ae60' : ev.rating === 'جيد جداً' ? '#2563eb' : ev.rating === 'جيد' ? '#f39c12' : ev.rating === 'ضعيف' ? '#e74c3c' : '#f59e0b'
+                          }}>
+                            {ev.rating === 'ممتاز' ? '⭐⭐⭐' : ev.rating === 'جيد جداً' ? '⭐⭐' : ev.rating === 'جيد' ? '⭐' : ev.rating === 'ضعيف' ? '🔻' : '😐'} {ev.rating}
+                          </div>
+                          {ev.notes && <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '6px' }}>💬 {ev.notes}</div>}
+                        </div>
+                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)', background: 'var(--input-bg)', padding: '4px 10px', borderRadius: '8px' }}>📅 {ev.date}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </>
+            )}
           </div>
-        )}
+          );
+        })()}
       </div>
 
     </div>
