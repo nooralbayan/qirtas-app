@@ -185,6 +185,14 @@ function App() {
   const totalCollected = receipts.reduce((acc, r) => acc + r.paidAmount, 0);
   const totalExpenses = expenses.reduce((acc, e) => acc + e.amount, 0);
   const netProfit = totalCollected - totalExpenses;
+  
+  // Storage Calculations (ImgBB)
+  const totalStudentImages = students.filter(s => s.photo).length;
+  const totalTeacherImages = teachers.filter(t => t.photo).length;
+  const hasLogo = schoolLogo && schoolLogo.startsWith('http') ? 1 : 0;
+  const totalImagesCount = totalStudentImages + totalTeacherImages + hasLogo;
+  // Estimate ~500KB per image
+  const estimatedStorageMb = (totalImagesCount * 0.5).toFixed(1);
 
   const renderView = () => {
     switch (currentView) {
@@ -375,7 +383,7 @@ function App() {
         return (
           <div>
             {/* KPI Dashboard Strip */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 16, marginBottom: 32 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 32 }}>
               {currentUser?.role === 'admin' || currentUser?.role === 'accountant' ? (
                 <>
                   <div style={{ background: 'linear-gradient(135deg, #0056b3, #003d82)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
@@ -401,7 +409,7 @@ function App() {
                   </div>
                 </>
               ) : (
-                <div style={{ gridColumn: 'span 3', background: 'linear-gradient(135deg, #334155, #1e293b)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
+                <div style={{ gridColumn: 'span 2', background: 'linear-gradient(135deg, #334155, #1e293b)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
                   <h3 style={{ margin: 0, opacity: 0.9 }}>مرحباً بك مجدداً، {currentUser?.name}</h3>
                 </div>
               )}
@@ -412,6 +420,18 @@ function App() {
                 </div>
                 <div style={{ fontSize: 30, opacity: 0.5 }}>👨‍🎓</div>
               </div>
+              
+              {/* ImgBB Storage KPI */}
+              {(currentUser?.role === 'admin') && (
+                <div style={{ background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)', color: '#fff', padding: 24, borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
+                  <div>
+                    <h4 style={{ margin: 0, opacity: 0.8, fontSize: 14 }}>تخزين الصور (ImgBB)</h4>
+                    <h1 style={{ margin: '8px 0 0', fontSize: 26 }}>{totalImagesCount} <span style={{ fontSize: 12, opacity: 0.8 }}>صورة (~{estimatedStorageMb}MB)</span></h1>
+                    <div style={{ fontSize: 11, background: 'rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: 10, marginTop: 6, display: 'inline-block' }}>السعة المتبقية: غير محدودة ♾️</div>
+                  </div>
+                  <div style={{ fontSize: 30, opacity: 0.5 }}>☁️</div>
+                </div>
+              )}
             </div>
 
             <h2 style={{ color: 'var(--text-primary)', marginBottom: 20 }}>الوصول السريع</h2>
