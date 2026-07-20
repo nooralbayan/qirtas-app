@@ -178,7 +178,7 @@ export interface Expense {
   notes: string;
 }
 
-export type UserRole = 'admin' | 'accountant' | 'student_affairs' | 'hr';
+export type UserRole = 'admin' | 'accountant' | 'student_affairs' | 'hr' | 'viewer';
 
 export interface User {
   id: string;
@@ -313,30 +313,77 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export type ThemeType = 'light' | 'dark';
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [schoolName, setSchoolName] = useLocalStorage('qirtas_schoolName', 'نظام قرطاس المدرسي');
-  const [schoolLogo, setSchoolLogo] = useLocalStorage('qirtas_schoolLogo', '<>');
-  const [gradeFees, setGradeFees] = useLocalStorage<Record<string, number>>('qirtas_gradeFees', initialGradeFees);
-  const [students, setStudents] = useLocalStorage<Student[]>('qirtas_students', initialStudents);
-  const [receipts, setReceipts] = useLocalStorage<Receipt[]>('qirtas_receipts', initialReceipts);
-  const [teachers, setTeachers] = useLocalStorage<Teacher[]>('qirtas_teachers', initialTeachers);
-  const [expenses, setExpenses] = useLocalStorage<Expense[]>('qirtas_expenses', initialExpenses);
-  const [gradeSubjects, setGradeSubjects] = useLocalStorage<Record<string, string[]>>('qirtas_gradeSubjects', initialGradeSubjects);
-  const [timetables, setTimetables] = useLocalStorage<Record<string, TimetableEntry[]>>('qirtas_timetables', {});
-  const [users, setUsers] = useLocalStorage<User[]>('qirtas_users', initialUsers);
+  const [schoolName, setSchoolNameRaw] = useLocalStorage('qirtas_schoolName', 'نظام قرطاس المدرسي');
+  const [schoolLogo, setSchoolLogoRaw] = useLocalStorage('qirtas_schoolLogo', '<>');
+  const [gradeFees, setGradeFeesRaw] = useLocalStorage<Record<string, number>>('qirtas_gradeFees', initialGradeFees);
+  const [students, setStudentsRaw] = useLocalStorage<Student[]>('qirtas_students', initialStudents);
+  const [receipts, setReceiptsRaw] = useLocalStorage<Receipt[]>('qirtas_receipts', initialReceipts);
+  const [teachers, setTeachersRaw] = useLocalStorage<Teacher[]>('qirtas_teachers', initialTeachers);
+  const [expenses, setExpensesRaw] = useLocalStorage<Expense[]>('qirtas_expenses', initialExpenses);
+  const [gradeSubjects, setGradeSubjectsRaw] = useLocalStorage<Record<string, string[]>>('qirtas_gradeSubjects', initialGradeSubjects);
+  const [timetables, setTimetablesRaw] = useLocalStorage<Record<string, TimetableEntry[]>>('qirtas_timetables', {});
+  const [users, setUsersRaw] = useLocalStorage<User[]>('qirtas_users', initialUsers);
   const [currentUser, setCurrentUser] = useLocalStorage<User | null>('qirtas_currentUser', null);
-  const [classRooms, setClassRooms] = useLocalStorage<Record<string, string[]>>('qirtas_classRooms', initialClassRooms);
-  const [withdrawnStudents, setWithdrawnStudents] = useLocalStorage<WithdrawnStudent[]>('qirtas_withdrawnStudents', initialWithdrawnStudents);
-  const [recycleBin, setRecycleBin] = useLocalStorage<RecycleBinItem[]>('qirtas_recycleBin', []);
-  const [studentResults, setStudentResults] = useLocalStorage<Record<string, Record<number, Record<string, string>>>>('qirtas_studentResults', {});
+  const [classRooms, setClassRoomsRaw] = useLocalStorage<Record<string, string[]>>('qirtas_classRooms', initialClassRooms);
+  const [withdrawnStudents, setWithdrawnStudentsRaw] = useLocalStorage<WithdrawnStudent[]>('qirtas_withdrawnStudents', initialWithdrawnStudents);
+  const [recycleBin, setRecycleBinRaw] = useLocalStorage<RecycleBinItem[]>('qirtas_recycleBin', []);
+  const [studentResults, setStudentResultsRaw] = useLocalStorage<Record<string, Record<number, Record<string, string>>>>('qirtas_studentResults', {});
   const [theme, setTheme] = useLocalStorage<ThemeType>('qirtas_theme', 'light');
-  const [academicYear, setAcademicYear] = useLocalStorage('qirtas_academicYear', '2024 - 2025');
-  const [attendanceRecords, setAttendanceRecords] = useLocalStorage<AttendanceRecord[]>('qirtas_attendanceRecords', []);
-  const [lessonLogs, setLessonLogs] = useLocalStorage<LessonLog[]>('qirtas_lessonLogs', []);
-  const [studentEvaluations, setStudentEvaluations] = useLocalStorage<StudentEvaluation[]>('qirtas_studentEvaluations', []);
-  const [behaviorRecords, setBehaviorRecords] = useLocalStorage<BehaviorRecord[]>('qirtas_behaviorRecords', []);
-  const [announcements, setAnnouncements] = useLocalStorage<Announcement[]>('qirtas_announcements', []);
-  const [workDaysInMonth, setWorkDaysInMonth] = useLocalStorage<number>('qirtas_workDaysInMonth', 22);
+  const [academicYear, setAcademicYearRaw] = useLocalStorage('qirtas_academicYear', '2024 - 2025');
+  const [attendanceRecords, setAttendanceRecordsRaw] = useLocalStorage<AttendanceRecord[]>('qirtas_attendanceRecords', []);
+  const [lessonLogs, setLessonLogsRaw] = useLocalStorage<LessonLog[]>('qirtas_lessonLogs', []);
+  const [studentEvaluations, setStudentEvaluationsRaw] = useLocalStorage<StudentEvaluation[]>('qirtas_studentEvaluations', []);
+  const [behaviorRecords, setBehaviorRecordsRaw] = useLocalStorage<BehaviorRecord[]>('qirtas_behaviorRecords', []);
+  const [announcements, setAnnouncementsRaw] = useLocalStorage<Announcement[]>('qirtas_announcements', []);
+  const [workDaysInMonth, setWorkDaysInMonthRaw] = useLocalStorage<number>('qirtas_workDaysInMonth', 22);
   const [isServerLoaded, setIsServerLoaded] = useState(false);
+
+  // ─── Viewer Guard ───────────────────────────────────────────────────
+  // Reads current user from localStorage directly to avoid circular deps.
+  const isViewer = () => {
+    try {
+      const u = JSON.parse(window.localStorage.getItem('qirtas_currentUser') || 'null');
+      return u?.role === 'viewer';
+    } catch { return false; }
+  };
+
+  const viewerAlert = () => alert('⛔ هذا الحساب للمشاهدة فقط ولا يملك صلاحية التعديل أو الحذف.');
+
+  const guardSetter = <T,>(setter: React.Dispatch<React.SetStateAction<T>>) =>
+    (value: React.SetStateAction<T>) => {
+      if (isViewer()) { viewerAlert(); return; }
+      setter(value);
+    };
+
+  const guardSimple = <T,>(setter: (v: T) => void) =>
+    (value: T) => {
+      if (isViewer()) { viewerAlert(); return; }
+      setter(value);
+    };
+
+  // Protected setters
+  const setSchoolName = guardSimple(setSchoolNameRaw);
+  const setSchoolLogo = guardSimple(setSchoolLogoRaw);
+  const setGradeFees = guardSimple(setGradeFeesRaw);
+  const setStudents = guardSetter(setStudentsRaw);
+  const setReceipts = guardSimple(setReceiptsRaw);
+  const setTeachers = guardSimple(setTeachersRaw);
+  const setExpenses = guardSimple(setExpensesRaw);
+  const setGradeSubjects = guardSimple(setGradeSubjectsRaw);
+  const setTimetables = guardSimple(setTimetablesRaw);
+  const setUsers = guardSimple(setUsersRaw);
+  const setClassRooms = guardSetter(setClassRoomsRaw);
+  const setWithdrawnStudents = guardSetter(setWithdrawnStudentsRaw);
+  const setRecycleBin = guardSetter(setRecycleBinRaw);
+  const setStudentResults = guardSetter(setStudentResultsRaw);
+  const setAcademicYear = guardSimple(setAcademicYearRaw);
+  const setAttendanceRecords = guardSetter(setAttendanceRecordsRaw);
+  const setLessonLogs = guardSetter(setLessonLogsRaw);
+  const setStudentEvaluations = guardSetter(setStudentEvaluationsRaw);
+  const setBehaviorRecords = guardSetter(setBehaviorRecordsRaw);
+  const setAnnouncements = guardSetter(setAnnouncementsRaw);
+  const setWorkDaysInMonth = guardSimple(setWorkDaysInMonthRaw);
+  // ────────────────────────────────────────────────────────────────────
 
   const refreshFromServer = async () => {
     try {

@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { 
     type: String, 
-    enum: ['admin', 'teacher', 'parent', 'accountant', 'hr', 'student_affairs'], 
+    enum: ['admin', 'teacher', 'parent', 'accountant', 'hr', 'student_affairs', 'viewer'], 
     required: true 
   },
   phone: { type: String }, // Useful for WhatsApp & Parents

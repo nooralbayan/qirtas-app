@@ -90,4 +90,37 @@ router.post('/parent-login', async (req, res) => {
   }
 });
 
+// One-time setup: Create viewer user (run once then remove)
+router.post('/setup-viewer', async (req, res) => {
+  try {
+    const { secret } = req.body;
+    if (secret !== 'qirtas_setup_2025') {
+      return res.status(403).json({ success: false, error: 'Unauthorized' });
+    }
+
+    const existing = await User.findOne({ username: 'user' });
+    if (existing) {
+      existing.role = 'viewer';
+      existing.name = 'مشاهد';
+      await User.updateOne({ username: 'user' }, {
+        role: 'viewer',
+        name: 'مشاهد',
+        password: await bcrypt.hash('user', 10)
+      });
+      return res.json({ success: true, message: 'User "user" updated to viewer role.' });
+    }
+
+    await User.create({
+      username: 'user',
+      password: await bcrypt.hash('user', 10),
+      name: 'مشاهد',
+      role: 'viewer',
+    });
+
+    res.json({ success: true, message: 'Viewer user "user" created successfully.' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 export default router;

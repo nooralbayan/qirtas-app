@@ -151,21 +151,21 @@ function App() {
   };
 
   const menuItems = [
-    { id: 'students', label: 'إدارة بيانات الطلاب', icon: '👨‍🎓', roles: ['admin', 'student_affairs'] },
-    { id: 'classrooms', label: 'إدارة الفصول الدراسية', icon: '🏫', roles: ['admin', 'student_affairs'] },
-    { id: 'teachers', label: 'إدارة المعلمين', icon: '👨‍🏫', roles: ['admin', 'hr'] },
-    { id: 'payroll', label: 'إدارة الرواتب (Payroll)', icon: '💰', roles: ['admin', 'hr', 'accountant'] },
-    { id: 'withdrawn', label: 'الطلاب المنسحبون', icon: '⏳', roles: ['admin', 'student_affairs'] },
-    { id: 'attendance', label: 'الغياب والحضور', icon: '⏰', roles: ['admin', 'student_affairs', 'hr'] },
-    { id: 'timetable', label: 'الجدول الدراسي', icon: '📅', roles: ['admin', 'student_affairs'] },
-    { id: 'expenses', label: 'إدارة المصروفات', icon: '🧾', roles: ['admin', 'accountant'] },
-    { id: 'receipts', label: 'إدارة سندات القبض', icon: '💵', roles: ['admin', 'accountant'] },
-    { id: 'reports', label: 'التقارير', icon: '📋', roles: ['admin', 'accountant'] },
-    { id: 'analytics', label: 'الإحصائيات الشاملة', icon: '📊', roles: ['admin', 'accountant'] },
-    { id: 'whatsapp', label: 'تواصل أولياء الأمور', icon: '📱', roles: ['admin', 'accountant', 'student_affairs'] },
-    { id: 'announcements', label: 'الإعلانات والتعاميم', icon: '📢', roles: ['admin', 'student_affairs', 'hr'] },
-    { id: 'results', label: 'النتائج المدرسية', icon: '🏆', roles: ['admin', 'student_affairs'] },
-    { id: 'subjects', label: 'المواد الدراسية', icon: '📚', roles: ['admin', 'student_affairs'] },
+    { id: 'students', label: 'إدارة بيانات الطلاب', icon: '👨‍🎓', roles: ['admin', 'student_affairs', 'viewer'] },
+    { id: 'classrooms', label: 'إدارة الفصول الدراسية', icon: '🏫', roles: ['admin', 'student_affairs', 'viewer'] },
+    { id: 'teachers', label: 'إدارة المعلمين', icon: '👨‍🏫', roles: ['admin', 'hr', 'viewer'] },
+    { id: 'payroll', label: 'إدارة الرواتب (Payroll)', icon: '💰', roles: ['admin', 'hr', 'accountant', 'viewer'] },
+    { id: 'withdrawn', label: 'الطلاب المنسحبون', icon: '⏳', roles: ['admin', 'student_affairs', 'viewer'] },
+    { id: 'attendance', label: 'الغياب والحضور', icon: '⏰', roles: ['admin', 'student_affairs', 'hr', 'viewer'] },
+    { id: 'timetable', label: 'الجدول الدراسي', icon: '📅', roles: ['admin', 'student_affairs', 'viewer'] },
+    { id: 'expenses', label: 'إدارة المصروفات', icon: '🧾', roles: ['admin', 'accountant', 'viewer'] },
+    { id: 'receipts', label: 'إدارة سندات القبض', icon: '💵', roles: ['admin', 'accountant', 'viewer'] },
+    { id: 'reports', label: 'التقارير', icon: '📋', roles: ['admin', 'accountant', 'viewer'] },
+    { id: 'analytics', label: 'الإحصائيات الشاملة', icon: '📊', roles: ['admin', 'accountant', 'viewer'] },
+    { id: 'whatsapp', label: 'تواصل أولياء الأمور', icon: '📱', roles: ['admin', 'accountant', 'student_affairs', 'viewer'] },
+    { id: 'announcements', label: 'الإعلانات والتعاميم', icon: '📢', roles: ['admin', 'student_affairs', 'hr', 'viewer'] },
+    { id: 'results', label: 'النتائج المدرسية', icon: '🏆', roles: ['admin', 'student_affairs', 'viewer'] },
+    { id: 'subjects', label: 'المواد الدراسية', icon: '📚', roles: ['admin', 'student_affairs', 'viewer'] },
     { id: 'users', label: 'إدارة المستخدمين', icon: '👥', roles: ['admin'] },
     { id: 'settings', label: 'الإعدادات', icon: '⚙️', roles: ['admin'] },
     { id: 'recyclebin', label: 'سلة المحذوفات', icon: '🗑️', roles: ['admin'] },
@@ -512,6 +512,7 @@ function App() {
             <div className="grid-menu" style={{ gap: '24px' }}>
             {menuItems.filter(item => {
               if (currentUser?.role === 'admin') return true;
+              if (currentUser?.role === 'viewer') return true; // viewer sees everything
               if (currentUser?.permissions) return currentUser.permissions.includes(item.id);
               return item.roles.includes(currentUser?.role || '');
             }).map(item => (
@@ -618,7 +619,7 @@ function App() {
             <span style={{ 
               background: 'rgba(59, 130, 246, 0.1)', color: 'var(--primary-color)', padding: '4px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: 700 
             }}>
-              {currentUser.role === 'admin' ? 'مدير النظام' : currentUser.role === 'accountant' ? 'محاسب' : currentUser.role === 'hr' ? 'شؤون موظفين' : 'شؤون طلبة'}
+              {currentUser.role === 'admin' ? 'مدير النظام' : currentUser.role === 'accountant' ? 'محاسب' : currentUser.role === 'hr' ? 'شؤون موظفين' : currentUser.role === 'viewer' ? '👁️ مشاهد فقط' : 'شؤون طلبة'}
             </span>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
