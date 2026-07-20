@@ -4,7 +4,7 @@ import type { Receipt } from '../context/AppContext';
 import { generateReceiptPDFBase64 } from './pdfGenerator';
 
 export default function Receipts({ onBack }: { onBack: () => void }) {
-  const { receipts, setReceipts, students, withdrawnStudents, recycleBin, setRecycleBin, schoolName, schoolLogo } = useAppContext();
+  const { receipts, setReceipts, students, withdrawnStudents, recycleBin, setRecycleBin, schoolName, schoolLogo, gradeFees } = useAppContext();
   const withdrawnStudentIds = new Set((withdrawnStudents || []).map(w => w.studentId));
   const [showModal, setShowModal] = useState(false);
   const today = new Date().toISOString().split('T')[0];
@@ -35,9 +35,12 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
     const student = students.find(s => s.id === form.studentId);
     if (!student) return;
 
+    // Always use the current grade fees (dynamic), fallback to stored totalFees
+    const currentTotalFees = gradeFees[student.grade] || student.totalFees || 0;
+
     // Calculate previous payments for this student
     const prevPayments = receipts.filter(r => r.studentId === student.id).reduce((acc, r) => acc + r.paidAmount, 0);
-    const newRemaining = student.totalFees - prevPayments - form.paidAmount;
+    const newRemaining = currentTotalFees - prevPayments - form.paidAmount;
 
     const newReceipt: Receipt = {
       id: `REC-${String(receipts.length + 1).padStart(4, '0')}`,
@@ -45,7 +48,7 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
       studentName: student.name,
       grade: student.grade,
       installmentNo: receipts.filter(r => r.studentId === student.id).length + 1,
-      totalDue: student.totalFees,
+      totalDue: currentTotalFees,
       paidAmount: form.paidAmount,
       remaining: newRemaining < 0 ? 0 : newRemaining,
       paymentMethod: form.paymentMethod,
@@ -300,7 +303,8 @@ export default function Receipts({ onBack }: { onBack: () => void }) {
                     {(() => {
                       const st = students.find(s => s.id === form.studentId);
                       if (!st) return null;
-                      const installmentSize = st.totalFees / (st.installmentsCount || 2);
+                      const currentFees = gradeFees[st.grade] || st.totalFees || 0;
+                      const installmentSize = currentFees / (st.installmentsCount || 2);
                       return <span style={{ color: '#0056b3', fontSize: 14 }}>💡 قيمة القسط الواحد: {installmentSize.toFixed(2)} د.ل (بناءً على التقسيم إلى {st.installmentsCount || 2} أقساط)</span>;
                     })()}
                   </div>

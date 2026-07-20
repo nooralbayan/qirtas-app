@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 
 export default function WhatsApp({ onBack }: { onBack: () => void }) {
-  const { students, receipts, classRooms } = useAppContext();
+  const { students, receipts, classRooms, gradeFees } = useAppContext();
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [customMessage, setCustomMessage] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,12 +49,14 @@ export default function WhatsApp({ onBack }: { onBack: () => void }) {
     const student = students.find(s => s.id === studentId);
     if (!student) return { paidCount: 0, requiredCount: 2, totalPaid: 0, remaining: 0, unpaidLabel: '' };
     
+    // Use dynamic grade fees (always reflect current grade's fees)
+    const currentFees = gradeFees[student.grade] || student.totalFees || 0;
     const requiredCount = student.installmentsCount || 2;
     const studentReceipts = receipts.filter(r => r.studentId === studentId);
     const totalPaid = studentReceipts.reduce((a, r) => a + r.paidAmount, 0);
-    const remaining = Math.max(0, student.totalFees - totalPaid);
+    const remaining = Math.max(0, currentFees - totalPaid);
     
-    const installmentSize = student.totalFees / requiredCount;
+    const installmentSize = currentFees / requiredCount;
     const paidInstallmentsCount = Math.floor(totalPaid / installmentSize);
     
     let unpaidLabel = '';

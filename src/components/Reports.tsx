@@ -22,13 +22,14 @@ export default function Reports({ onBack }: { onBack: () => void }) {
   // Map financial data dynamically
   const reportData = students.map(s => {
     const paid = receipts.filter(r => r.studentId === s.id).reduce((acc, r) => acc + r.paidAmount, 0);
-    const remaining = s.totalFees - paid;
+    const currentFees = gradeFees[s.grade] || s.totalFees || 0;
+    const remaining = currentFees - paid;
     const studentClassKey = s.classRoom ? `${s.grade} - ${s.classRoom}` : s.grade;
     return {
       id: s.id,
       name: s.name,
       grade: studentClassKey,
-      due: s.totalFees,
+      due: currentFees,
       paid: paid,
       remaining: remaining < 0 ? 0 : remaining,
       status: remaining <= 0 ? 'مسدد' : (paid > 0 ? 'جزئي' : 'متأخر')

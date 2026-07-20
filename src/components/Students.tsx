@@ -270,7 +270,8 @@ export default function Students({ onBack }: { onBack: () => void }) {
       'حالة الدفع': (() => {
         const stdReceipts = receipts.filter(r => r.studentId === s.id);
         const totalPaid = stdReceipts.reduce((a, r) => a + r.paidAmount, 0);
-        return totalPaid === 0 ? 'غير مسدد' : (totalPaid >= s.totalFees ? 'مسدد' : 'جزئي');
+        const dynamicFees = gradeFees[s.grade] || s.totalFees || 0;
+        return totalPaid === 0 ? 'غير مسدد' : (totalPaid >= dynamicFees ? 'مسدد' : 'جزئي');
       })() || '-',
       'ملاحظات': s.notes || '-'
     }));
@@ -450,12 +451,13 @@ export default function Students({ onBack }: { onBack: () => void }) {
                   </td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>{s.grade}</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>{s.classRoom || '-'}</td>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #eee', fontWeight: 'bold' }}>{s.totalFees} د.ل</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #eee', fontWeight: 'bold' }}>{gradeFees[s.grade] || s.totalFees} د.ل</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
                     {(() => {
                       const stdReceipts = receipts.filter(r => r.studentId === s.id);
                       const totalPaid = stdReceipts.reduce((a, r) => a + r.paidAmount, 0);
-                      const currentStatus = totalPaid === 0 ? 'غير مسدد' : (totalPaid >= s.totalFees ? 'مسدد' : 'جزئي');
+                      const dynamicFees = gradeFees[s.grade] || s.totalFees || 0;
+                      const currentStatus = totalPaid === 0 ? 'غير مسدد' : (totalPaid >= dynamicFees ? 'مسدد' : 'جزئي');
                       return <span style={badgeStyle(currentStatus)}>{currentStatus}</span>;
                     })()}
                   </td>

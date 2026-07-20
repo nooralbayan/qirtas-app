@@ -32,8 +32,9 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
     );
   }
 
-  // Get Timetable for the student's grade
-  const gradeTimetable = timetables[student.grade] || [];
+  // Get Timetable for the student's grade and classroom
+  const activeKey = `${student.grade}${student.classRoom ? ` - ${student.classRoom}` : ''}`;
+  const gradeTimetable = timetables[activeKey] || timetables[student.grade] || [];
   const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
   const periods = [1, 2, 3, 4, 5, 6];
 
@@ -57,7 +58,7 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
 
   // Get Financial Data
   const studentReceipts = (receipts || []).filter(r => r.studentId === student.id).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const totalFees = student.totalFees || gradeFees?.[student.grade] || 0;
+  const totalFees = gradeFees?.[student.grade] || student.totalFees || 0;
   const totalPaid = studentReceipts.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
   const totalRemaining = totalFees - totalPaid;
   const dynamicPaymentStatus = totalPaid === 0 ? 'غير مسدد' : (totalPaid >= totalFees ? 'مسدد' : 'جزئي');
