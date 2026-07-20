@@ -23,7 +23,7 @@ function App() {
   const [currentView, setCurrentView] = useState(() => {
     return localStorage.getItem('qirtas_currentView') || 'dashboard';
   });
-  const { schoolName, setSchoolName, schoolLogo, setSchoolLogo, gradeFees, setGradeFees, students, setStudents, receipts, expenses, teachers, currentUser, setCurrentUser, theme, setTheme, timetables, classRooms, recycleBin, users, academicYear, setAcademicYear, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects, isServerLoaded } = useAppContext();
+  const { schoolName, setSchoolName, schoolLogo, setSchoolLogo, gradeFees, setGradeFees, students, setStudents, receipts, expenses, teachers, currentUser, setCurrentUser, theme, setTheme, timetables, classRooms, recycleBin, users, academicYear, setAcademicYear, studentResults, attendanceRecords, withdrawnStudents, gradeSubjects, isServerLoaded, lessonLogs } = useAppContext();
   
   const [notifications, setNotifications] = useState<{id: number, message: string, type: 'info' | 'warning'}[]>([]);
 
@@ -189,8 +189,14 @@ function App() {
   // Storage Calculations (ImgBB)
   const totalStudentImages = students.filter(s => s.photo).length;
   const totalTeacherImages = teachers.filter(t => t.photo).length;
+  const totalLessonImages = lessonLogs ? lessonLogs.reduce((acc, log) => {
+    let count = 0;
+    if (log.imageUrl) count += 1;
+    if (log.imageUrls && log.imageUrls.length > 0) count += log.imageUrls.length;
+    return acc + count;
+  }, 0) : 0;
   const hasLogo = schoolLogo && schoolLogo.startsWith('http') ? 1 : 0;
-  const totalImagesCount = totalStudentImages + totalTeacherImages + hasLogo;
+  const totalImagesCount = totalStudentImages + totalTeacherImages + totalLessonImages + hasLogo;
   // Estimate ~500KB per image
   const estimatedStorageMb = (totalImagesCount * 0.5).toFixed(1);
 
@@ -436,7 +442,11 @@ function App() {
 
             <h2 style={{ color: 'var(--text-primary)', marginBottom: 20 }}>الوصول السريع</h2>
             <div className="grid-menu" style={{ gap: '24px' }}>
-            {menuItems.filter(item => item.roles.includes(currentUser?.role || '')).map(item => (
+            {menuItems.filter(item => {
+              if (currentUser?.role === 'admin') return true;
+              if (currentUser?.permissions) return currentUser.permissions.includes(item.id);
+              return item.roles.includes(currentUser?.role || '');
+            }).map(item => (
               <div 
                 key={item.id} 
                 className="menu-card" 

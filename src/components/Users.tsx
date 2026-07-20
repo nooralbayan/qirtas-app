@@ -6,11 +6,37 @@ export default function Users({ onBack }: { onBack: () => void }) {
   const { users, setUsers } = useAppContext();
   const [showModal, setShowModal] = useState(false);
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
+  const ALL_MODULES = [
+    { id: 'students', label: 'إدارة بيانات الطلاب' },
+    { id: 'classrooms', label: 'إدارة الفصول الدراسية' },
+    { id: 'teachers', label: 'إدارة المعلمين' },
+    { id: 'withdrawn', label: 'الطلاب المنسحبون' },
+    { id: 'attendance', label: 'الغياب والحضور' },
+    { id: 'timetable', label: 'الجدول الدراسي' },
+    { id: 'expenses', label: 'إدارة المصروفات' },
+    { id: 'receipts', label: 'إدارة سندات القبض' },
+    { id: 'reports', label: 'التقارير' },
+    { id: 'whatsapp', label: 'تواصل أولياء الأمور' },
+    { id: 'results', label: 'النتائج المدرسية' },
+    { id: 'subjects', label: 'المواد الدراسية' },
+    { id: 'users', label: 'إدارة المستخدمين' },
+    { id: 'settings', label: 'الإعدادات' },
+    { id: 'recyclebin', label: 'سلة المحذوفات' },
+  ];
+
+  const DEFAULT_PERMISSIONS: Record<string, string[]> = {
+    accountant: ['expenses', 'receipts', 'reports', 'whatsapp'],
+    student_affairs: ['students', 'classrooms', 'withdrawn', 'attendance', 'timetable', 'whatsapp', 'results', 'subjects'],
+    hr: ['teachers', 'attendance'],
+    admin: ALL_MODULES.map(m => m.id)
+  };
+
   const [form, setForm] = useState<Partial<User>>({
     username: '',
     password: '',
     name: '',
-    role: 'student_affairs'
+    role: 'student_affairs',
+    permissions: DEFAULT_PERMISSIONS['student_affairs']
   });
 
   const handleEdit = (user: User) => {
@@ -19,7 +45,8 @@ export default function Users({ onBack }: { onBack: () => void }) {
       username: user.username,
       password: user.password,
       name: user.name,
-      role: user.role
+      role: user.role,
+      permissions: user.permissions || DEFAULT_PERMISSIONS[user.role as string] || []
     });
     setShowModal(true);
   };
@@ -32,7 +59,7 @@ export default function Users({ onBack }: { onBack: () => void }) {
     
     if (editingUserId) {
       setUsers(users.map(u => 
-        u.id === editingUserId ? { ...u, username: form.username!, password: form.password!, name: form.name!, role: form.role as UserRole } : u
+        u.id === editingUserId ? { ...u, username: form.username!, password: form.password!, name: form.name!, role: form.role as UserRole, permissions: form.permissions } : u
       ));
     } else {
       const newUser: User = {
@@ -40,14 +67,15 @@ export default function Users({ onBack }: { onBack: () => void }) {
         username: form.username,
         password: form.password,
         name: form.name,
-        role: form.role as UserRole
+        role: form.role as UserRole,
+        permissions: form.permissions
       };
       setUsers([...users, newUser]);
     }
     
     setShowModal(false);
     setEditingUserId(null);
-    setForm({ username: '', password: '', name: '', role: 'student_affairs' });
+    setForm({ username: '', password: '', name: '', role: 'student_affairs', permissions: DEFAULT_PERMISSIONS['student_affairs'] });
   };
 
   const handleDelete = (id: string) => {
@@ -74,7 +102,7 @@ export default function Users({ onBack }: { onBack: () => void }) {
           <h2 style={{ margin: 0, color: '#0056b3' }}>إدارة المستخدمين والصلاحيات</h2>
           <button onClick={() => {
             setEditingUserId(null);
-            setForm({ username: '', password: '', name: '', role: 'student_affairs' });
+            setForm({ username: '', password: '', name: '', role: 'student_affairs', permissions: DEFAULT_PERMISSIONS['student_affairs'] });
             setShowModal(true);
           }} style={{ backgroundColor: '#10b981', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700 }}>
             + مستخدم جديد
@@ -137,12 +165,41 @@ export default function Users({ onBack }: { onBack: () => void }) {
               
               <div>
                 <label style={{ display: 'block', marginBottom: 6, fontWeight: 'bold' }}>الصلاحية (الدور)</label>
-                <select value={form.role} onChange={e => setForm({...form, role: e.target.value as UserRole})} style={inputStyle}>
+                <select value={form.role} onChange={e => {
+                  const role = e.target.value as UserRole;
+                  setForm({...form, role, permissions: DEFAULT_PERMISSIONS[role] || []});
+                }} style={inputStyle}>
                   <option value="student_affairs">شؤون طلبة</option>
                   <option value="accountant">محاسب</option>
                   <option value="hr">شؤون موظفين</option>
                   <option value="admin">مدير عام</option>
                 </select>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: 6, fontWeight: 'bold', color: '#0369a1' }}>الشاشات المسموح بالوصول إليها (صلاحيات مخصصة)</label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, background: 'var(--bg-secondary)', padding: 16, borderRadius: 8, border: '1px solid var(--border-color)', maxHeight: 220, overflowY: 'auto' }}>
+                  {ALL_MODULES.map(mod => (
+                    <label key={mod.id} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: form.role === 'admin' ? 'not-allowed' : 'pointer', opacity: form.role === 'admin' ? 0.6 : 1 }}>
+                      <input 
+                        type="checkbox" 
+                        disabled={form.role === 'admin'}
+                        checked={form.role === 'admin' || (form.permissions || []).includes(mod.id)}
+                        onChange={(e) => {
+                          if (form.role === 'admin') return;
+                          const checked = e.target.checked;
+                          let current = form.permissions || [];
+                          if (checked) {
+                            setForm({ ...form, permissions: [...current, mod.id] });
+                          } else {
+                            setForm({ ...form, permissions: current.filter(p => p !== mod.id) });
+                          }
+                        }}
+                      />
+                      <span style={{ fontSize: 13 }}>{mod.label}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
             

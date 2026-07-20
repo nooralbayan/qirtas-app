@@ -222,11 +222,53 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
         {/* Timetable Tab */}
         {activeTab === 'timetable' && (
           <div>
-            <h3 style={{ color: 'var(--primary-color)', marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10 }}>الجدول الدراسي الأسبوعي - {student.grade}</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10 }}>
+              <h3 style={{ color: 'var(--primary-color)', margin: 0 }}>الجدول الدراسي الأسبوعي - {student.grade}</h3>
+              <button 
+                onClick={() => {
+                  const content = document.getElementById('timetable-container')?.innerHTML;
+                  if (!content) return;
+                  const printWindow = window.open('', '_blank');
+                  if (!printWindow) return;
+                  printWindow.document.write(`
+                    <html dir="rtl" lang="ar">
+                    <head>
+                      <title>طباعة الجدول الدراسي</title>
+                      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+                      <style>
+                        body { font-family: 'Cairo', sans-serif; padding: 20px; direction: rtl; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; text-align: center; }
+                        th, td { border: 1px solid #ddd; padding: 12px; }
+                        th { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; }
+                        .subject-cell { font-weight: bold; color: #1e40af; margin-bottom: 5px; }
+                        .teacher-cell { font-size: 12px; color: #4b5563; }
+                      </style>
+                    </head>
+                    <body>
+                      <div style="text-align: center; margin-bottom: 20px;">
+                        <h2>الجدول الدراسي الأسبوعي</h2>
+                        <h3>الطالب: ${student.name} - الصف: ${student.grade} ${student.classRoom ? `(فصل ${student.classRoom})` : ''}</h3>
+                      </div>
+                      ${content}
+                    </body>
+                    </html>
+                  `);
+                  printWindow.document.close();
+                  printWindow.focus();
+                  setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                  }, 500);
+                }}
+                style={{ background: 'var(--primary-color)', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontFamily: 'Cairo', display: 'flex', alignItems: 'center', gap: 8 }}
+              >
+                🖨️ طباعة الجدول
+              </button>
+            </div>
             {gradeTimetable.length === 0 ? (
               <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>لم يتم إعداد الجدول الدراسي بعد.</div>
             ) : (
-              <div className="table-responsive">
+              <div className="table-responsive" id="timetable-container">
                 <table className="table" style={{ textAlign: 'center' }}>
                   <thead>
                     <tr>
@@ -244,8 +286,8 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                             <td key={`${day}-${period}`} style={{ padding: 8 }}>
                               {entry ? (
                                 <div style={{ background: 'var(--input-bg)', padding: '8px', borderRadius: 8, border: '1px solid var(--border-color)' }}>
-                                  <div style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{entry.subject}</div>
-                                  <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{entry.teacher}</div>
+                                  <div className="subject-cell" style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{entry.subject}</div>
+                                  <div className="teacher-cell" style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{entry.teacher}</div>
                                 </div>
                               ) : (
                                 <span style={{ color: 'var(--text-muted)' }}>-</span>

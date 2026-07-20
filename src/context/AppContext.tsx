@@ -165,6 +165,7 @@ export interface User {
   name: string;
   password?: string;
   role: UserRole | 'teacher' | 'parent';
+  permissions?: string[];
 }
 
 export interface RecycleBinItem {
@@ -270,9 +271,9 @@ const initialGradeSubjects: Record<string, string[]> = {
 
 const initialUsers: User[] = [
   { id: '1', username: 'admin', password: '123', name: 'المدير العام', role: 'admin' },
-  { id: '2', username: 'acc', password: '123', name: 'المحاسب', role: 'accountant' },
-  { id: '3', username: 'std', password: '123', name: 'شؤون الطلبة', role: 'student_affairs' },
-  { id: '4', username: 'hr', password: '123', name: 'شؤون الموظفين', role: 'hr' }
+  { id: '2', username: 'acc', password: '123', name: 'المحاسب', role: 'accountant', permissions: ['expenses', 'receipts', 'reports', 'whatsapp'] },
+  { id: '3', username: 'std', password: '123', name: 'شؤون الطلبة', role: 'student_affairs', permissions: ['students', 'classrooms', 'withdrawn', 'attendance', 'timetable', 'whatsapp', 'results', 'subjects'] },
+  { id: '4', username: 'hr', password: '123', name: 'شؤون الموظفين', role: 'hr', permissions: ['teachers', 'attendance'] }
 ];
 
 import { initialStudentsFromExcel } from '../data/studentsData';
