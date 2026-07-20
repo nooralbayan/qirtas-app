@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { LogOut, Moon, Sun } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell, Legend } from 'recharts';
 import Students from './components/Students';
 import Teachers from './components/Teachers';
 import Expenses from './components/Expenses';
@@ -20,6 +19,7 @@ import ParentPortal from './components/ParentPortal';
 import TeacherPortal from './components/TeacherPortal';
 import Payroll from './components/Payroll';
 import Announcements from './components/Announcements';
+import Analytics from './components/Analytics';
 import { useAppContext } from './context/AppContext';
 
 function App() {
@@ -160,7 +160,8 @@ function App() {
     { id: 'timetable', label: 'الجدول الدراسي', icon: '📅', roles: ['admin', 'student_affairs'] },
     { id: 'expenses', label: 'إدارة المصروفات', icon: '🧾', roles: ['admin', 'accountant'] },
     { id: 'receipts', label: 'إدارة سندات القبض', icon: '💵', roles: ['admin', 'accountant'] },
-    { id: 'reports', label: 'التقارير', icon: '📊', roles: ['admin', 'accountant'] },
+    { id: 'reports', label: 'التقارير', icon: '📋', roles: ['admin', 'accountant'] },
+    { id: 'analytics', label: 'الإحصائيات الشاملة', icon: '📊', roles: ['admin', 'accountant'] },
     { id: 'whatsapp', label: 'تواصل أولياء الأمور', icon: '📱', roles: ['admin', 'accountant', 'student_affairs'] },
     { id: 'announcements', label: 'الإعلانات والتعاميم', icon: '📢', roles: ['admin', 'student_affairs', 'hr'] },
     { id: 'results', label: 'النتائج المدرسية', icon: '🏆', roles: ['admin', 'student_affairs'] },
@@ -216,6 +217,7 @@ function App() {
       case 'expenses': return <Expenses onBack={() => setCurrentView('dashboard')} />;
       case 'receipts': return <Receipts onBack={() => setCurrentView('dashboard')} />;
       case 'reports': return <Reports onBack={() => setCurrentView('dashboard')} />;
+      case 'analytics': return <Analytics onBack={() => setCurrentView('dashboard')} />;
       case 'whatsapp': return <WhatsApp onBack={() => setCurrentView('dashboard')} />;
       case 'announcements': return <Announcements onBack={() => setCurrentView('dashboard')} />;
       case 'results': return <Results onBack={() => setCurrentView('dashboard')} />;
@@ -505,78 +507,6 @@ function App() {
                 </div>
               )}
             </div>
-
-            {/* Charts Section */}
-            {(currentUser?.role === 'admin' || currentUser?.role === 'accountant') && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 24, marginBottom: 40 }}>
-                {/* Revenue vs Expenses Bar Chart */}
-                <div className="card" style={{ padding: 24, borderRadius: 16, background: 'var(--bg-card)', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-color)' }}>
-                  <h3 style={{ margin: '0 0 20px', color: 'var(--primary-color)' }}>📊 نظرة عامة على التدفق النقدي</h3>
-                  <div style={{ width: '100%', height: 300 }}>
-                    <ResponsiveContainer>
-                      <BarChart data={[
-                        { name: 'الإيرادات', value: totalCollected, fill: '#3b82f6' },
-                        { name: 'المصروفات', value: totalExpenses, fill: '#ef4444' },
-                        { name: 'الصافي', value: netProfit, fill: netProfit >= 0 ? '#10b981' : '#f59e0b' }
-                      ]} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
-                        <CartesianGrid strokeDasharray="3 3" opacity={0.2} vertical={false} />
-                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-secondary)' }} />
-                        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-secondary)' }} />
-                        <Tooltip cursor={{ fill: 'var(--bg-secondary)' }} contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-                        <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                          {
-                            [
-                              { name: 'الإيرادات', value: totalCollected, fill: '#3b82f6' },
-                              { name: 'المصروفات', value: totalExpenses, fill: '#ef4444' },
-                              { name: 'الصافي', value: netProfit, fill: netProfit >= 0 ? '#10b981' : '#f59e0b' }
-                            ].map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.fill} />
-                            ))
-                          }
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-
-                {/* Demographics Pie Chart */}
-                <div className="card" style={{ padding: 24, borderRadius: 16, background: 'var(--bg-card)', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-color)' }}>
-                  <h3 style={{ margin: '0 0 20px', color: 'var(--primary-color)' }}>👨‍🎓 ديموغرافية الطلاب (حسب الجنس)</h3>
-                  <div style={{ width: '100%', height: 300 }}>
-                    <ResponsiveContainer>
-                      <PieChart>
-                        <Pie
-                          data={[
-                            { name: 'ذكور', value: students.filter(s => s.gender === 'ذكر').length },
-                            { name: 'إناث', value: students.filter(s => s.gender === 'أنثى').length },
-                            { name: 'غير محدد', value: students.filter(s => s.gender === 'غير محدد').length }
-                          ].filter(d => d.value > 0)}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={100}
-                          paddingAngle={5}
-                          dataKey="value"
-                        >
-                          {
-                            [
-                              { name: 'ذكور', value: students.filter(s => s.gender === 'ذكر').length },
-                              { name: 'إناث', value: students.filter(s => s.gender === 'أنثى').length },
-                              { name: 'غير محدد', value: students.filter(s => s.gender === 'غير محدد').length }
-                            ].filter(d => d.value > 0).map((entry, index) => {
-                              const COLORS = ['#3b82f6', '#ec4899', '#94a3b8'];
-                              return <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />;
-                            })
-                          }
-                        </Pie>
-                        <Tooltip contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-                        <Legend verticalAlign="bottom" height={36} wrapperStyle={{ color: 'var(--text-primary)' }} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-              </div>
-            )}
 
             <h2 style={{ color: 'var(--text-primary)', marginBottom: 20 }}>الوصول السريع</h2>
             <div className="grid-menu" style={{ gap: '24px' }}>
