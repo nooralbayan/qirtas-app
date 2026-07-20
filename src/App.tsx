@@ -504,7 +504,6 @@ function App() {
                   <div style={{ fontSize: 30, opacity: 0.5 }}>☁️</div>
                 </div>
               )}
-              )}
             </div>
 
             {/* Charts Section */}
