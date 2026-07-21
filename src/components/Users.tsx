@@ -182,14 +182,24 @@ export default function Users({ onBack }: { onBack: () => void }) {
               <div>
                 <label style={{ display: 'block', marginBottom: 6, fontWeight: 'bold', color: '#0369a1' }}>الشاشات المسموح بالوصول إليها (صلاحيات مخصصة)</label>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, background: 'var(--bg-secondary)', padding: 16, borderRadius: 8, border: '1px solid var(--border-color)', maxHeight: 220, overflowY: 'auto' }}>
+                  {(form.role === 'viewer' || form.role === 'admin') && (
+                    <div style={{ gridColumn: '1 / -1', backgroundColor: form.role === 'viewer' ? '#fefce8' : '#f0f9ff', border: `1px solid ${form.role === 'viewer' ? '#fde047' : '#bae6fd'}`, borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 18 }}>{form.role === 'viewer' ? '👁️' : '🛡️'}</span>
+                      <span style={{ fontSize: 13, color: form.role === 'viewer' ? '#854d0e' : '#0369a1', fontWeight: 'bold' }}>
+                        {form.role === 'viewer'
+                          ? 'المشاهد يرى جميع الشاشات تلقائياً ولكنه لا يستطيع إجراء أي تعديل أو حذف أو إضافة.'
+                          : 'المدير العام يملك صلاحية كاملة على جميع الشاشات.'}
+                      </span>
+                    </div>
+                  )}
                   {ALL_MODULES.map(mod => (
-                    <label key={mod.id} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: form.role === 'admin' ? 'not-allowed' : 'pointer', opacity: form.role === 'admin' ? 0.6 : 1 }}>
+                    <label key={mod.id} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: (form.role === 'admin' || form.role === 'viewer') ? 'not-allowed' : 'pointer', opacity: (form.role === 'admin' || form.role === 'viewer') ? 0.4 : 1 }}>
                       <input 
                         type="checkbox" 
-                        disabled={form.role === 'admin'}
-                        checked={form.role === 'admin' || (form.permissions || []).includes(mod.id)}
+                        disabled={form.role === 'admin' || form.role === 'viewer'}
+                        checked={form.role === 'admin' || form.role === 'viewer' || (form.permissions || []).includes(mod.id)}
                         onChange={(e) => {
-                          if (form.role === 'admin') return;
+                          if (form.role === 'admin' || form.role === 'viewer') return;
                           const checked = e.target.checked;
                           let current = form.permissions || [];
                           if (checked) {
