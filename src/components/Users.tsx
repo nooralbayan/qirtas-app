@@ -28,7 +28,8 @@ export default function Users({ onBack }: { onBack: () => void }) {
     accountant: ['expenses', 'receipts', 'reports', 'whatsapp'],
     student_affairs: ['students', 'classrooms', 'withdrawn', 'attendance', 'timetable', 'whatsapp', 'results', 'subjects'],
     hr: ['teachers', 'attendance'],
-    admin: ALL_MODULES.map(m => m.id)
+    admin: ALL_MODULES.map(m => m.id),
+    viewer: ALL_MODULES.map(m => m.id)
   };
 
   const [form, setForm] = useState<Partial<User>>({
@@ -88,7 +89,8 @@ export default function Users({ onBack }: { onBack: () => void }) {
     'admin': 'مدير عام',
     'accountant': 'محاسب',
     'student_affairs': 'شؤون طلبة',
-    'hr': 'شؤون موظفين'
+    'hr': 'شؤون موظفين',
+    'viewer': 'مشاهد فقط'
   };
 
   return (
@@ -173,6 +175,7 @@ export default function Users({ onBack }: { onBack: () => void }) {
                   <option value="accountant">محاسب</option>
                   <option value="hr">شؤون موظفين</option>
                   <option value="admin">مدير عام</option>
+                  <option value="viewer">مشاهد فقط</option>
                 </select>
               </div>
 
