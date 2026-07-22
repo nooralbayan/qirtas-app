@@ -202,6 +202,7 @@ export default function LoginScreen() {
                     </View>
                   </Animated.View>
                 )}
+                <Text style={styles.demoHint}>استخدم "demo" لتجربة الدخول</Text>
               </View>
 
               {/* Error Message */}
@@ -398,5 +399,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  demoHint: {
+    color: '#38bdf8',
+    textAlign: 'center',
+    marginTop: 16,
+    fontWeight: 'bold',
+    fontSize: 14,
   }
 });

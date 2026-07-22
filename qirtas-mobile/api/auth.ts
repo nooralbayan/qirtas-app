@@ -6,6 +6,14 @@ export const USER_KEY = 'qirtas_user_data';
 
 // Login for Admin/Staff
 export async function loginUser(username, password) {
+  // DEMO BYPASS
+  if (username === 'demo' && password === 'demo') {
+    const demoUser = { id: 'demo_id', username: 'demo', name: 'حساب تجريبي (مدير)', role: 'admin' };
+    await AsyncStorage.setItem(TOKEN_KEY, 'demo_token_123');
+    await AsyncStorage.setItem(USER_KEY, JSON.stringify(demoUser));
+    return { success: true, token: 'demo_token_123', user: demoUser };
+  }
+
   try {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
@@ -32,6 +40,14 @@ export async function loginUser(username, password) {
 
 // Login for Parents
 export async function loginParent(enrollmentNumber, phone) {
+  // DEMO PARENT BYPASS
+  if (enrollmentNumber === 'demo' && phone === 'demo') {
+    const demoUser = { id: 'demo_parent_id', studentId: 'demo_student', name: 'حساب تجريبي (ولي أمر)', role: 'parent' };
+    await AsyncStorage.setItem(TOKEN_KEY, 'demo_token_parent_123');
+    await AsyncStorage.setItem(USER_KEY, JSON.stringify(demoUser));
+    return { success: true, token: 'demo_token_parent_123', user: demoUser };
+  }
+
   try {
     const response = await fetch(`${API_BASE_URL}/auth/parent-login`, {
       method: 'POST',
