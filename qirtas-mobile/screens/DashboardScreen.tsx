@@ -75,8 +75,13 @@ export default function DashboardScreen({ navigation }: any) {
             </View>
           </Animated.View>
 
-          {isParent ? (
-            // PARENT DASHBOARD
+          {isParent ? (() => {
+            const childId = user?.studentId;
+            const childEvals = (state.studentEvaluations || []).filter((e: any) => e.studentId === childId || e.studentId === Number(childId));
+            const childBehaviors = (state.behaviorRecords || []).filter((b: any) => b.studentId === childId || b.studentId === Number(childId));
+            const totalBehaviorPoints = childBehaviors.reduce((sum: number, b: any) => sum + (Number(b.points) || 0), 0);
+
+            return (
             <Animated.View style={[{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
               <View style={styles.parentCard}>
                 <LinearGradient colors={['#0f172a', '#1e1b4b']} style={styles.parentCardGradient}>
@@ -84,28 +89,32 @@ export default function DashboardScreen({ navigation }: any) {
                     <GraduationCap color="#38bdf8" size={32} />
                     <View>
                       <Text style={styles.parentCardTitle}>متابعة الأبناء</Text>
-                      <Text style={styles.parentCardSub}>اضغط للتفاصيل</Text>
+                      <Text style={styles.parentCardSub}>السجل الأكاديمي المباشر</Text>
                     </View>
                   </View>
                   
                   <View style={styles.parentStatsRow}>
                     <View style={styles.parentStatItem}>
-                      <Calendar color="#cbd5e1" size={20} />
-                      <Text style={styles.parentStatValue}>الجدول</Text>
+                      <Award color="#cbd5e1" size={20} />
+                      <Text style={[styles.parentStatValue, { color: totalBehaviorPoints >= 0 ? '#10b981' : '#ef4444', fontSize: 20 }]}>{totalBehaviorPoints > 0 ? '+' : ''}{totalBehaviorPoints}</Text>
+                      <Text style={styles.parentStatLabel}>نقاط السلوك</Text>
                     </View>
                     <View style={styles.parentStatItem}>
                       <TrendingUp color="#cbd5e1" size={20} />
-                      <Text style={styles.parentStatValue}>الدرجات</Text>
+                      <Text style={[styles.parentStatValue, { color: '#38bdf8', fontSize: 20 }]}>{childEvals.length}</Text>
+                      <Text style={styles.parentStatLabel}>التقييمات</Text>
                     </View>
                     <View style={styles.parentStatItem}>
-                      <Award color="#cbd5e1" size={20} />
-                      <Text style={styles.parentStatValue}>الحضور</Text>
+                      <Calendar color="#cbd5e1" size={20} />
+                      <Text style={[styles.parentStatValue, { color: '#f59e0b', fontSize: 20 }]}>{childBehaviors.length}</Text>
+                      <Text style={styles.parentStatLabel}>السجلات</Text>
                     </View>
                   </View>
                 </LinearGradient>
               </View>
             </Animated.View>
-          ) : (
+            );
+          })() : (
             // ADMIN DASHBOARD
             <Animated.View style={[styles.statsGrid, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
               <LinearGradient colors={['#4f46e5', '#3b82f6']} style={styles.statCardFull} start={{x:0, y:0}} end={{x:1, y:1}}>
@@ -227,6 +236,7 @@ const styles = StyleSheet.create({
   parentStatsRow: { flexDirection: 'row-reverse', justifyContent: 'space-around', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 20, padding: 16 },
   parentStatItem: { alignItems: 'center' },
   parentStatValue: { color: '#e2e8f0', marginTop: 8, fontWeight: 'bold', fontSize: 15 },
+  parentStatLabel: { color: '#94a3b8', fontSize: 12, marginTop: 4 },
   
   // Section
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },

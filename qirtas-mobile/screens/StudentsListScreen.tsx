@@ -5,7 +5,7 @@ import { Search, ChevronLeft, User as UserIcon, BookOpen, GraduationCap } from '
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppContext } from '../context/AppContext';
 
-export default function StudentsListScreen() {
+export default function StudentsListScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
   const { state, loading, user } = useAppContext();
   const scrollY = new Animated.Value(0);
@@ -125,6 +125,14 @@ export default function StudentsListScreen() {
           )}
         />
       )}
+
+      {!isParent && (
+        <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('AddStudent')}>
+          <LinearGradient colors={['#4f46e5', '#3b82f6']} style={styles.fabGradient}>
+            <Text style={{color: '#fff', fontSize: 32, marginTop: -4}}>+</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 }
@@ -160,5 +168,7 @@ const styles = StyleSheet.create({
   actionBtn: { padding: 8 },
   actionBtnInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#eff6ff', alignItems: 'center', justifyContent: 'center' },
   emptyState: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingBottom: 100 },
-  emptyStateText: { fontSize: 18, color: '#94a3b8', fontWeight: 'bold' }
+  emptyStateText: { fontSize: 18, color: '#94a3b8', fontWeight: 'bold' },
+  fab: { position: 'absolute', bottom: 24, left: 24, width: 64, height: 64, borderRadius: 32, shadowColor: '#4f46e5', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 8 },
+  fabGradient: { flex: 1, borderRadius: 32, justifyContent: 'center', alignItems: 'center' }
 });

@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
+import AddStudentScreen from './screens/AddStudentScreen';
 import { StatusBar } from 'expo-status-bar';
 import { I18nManager, View, ActivityIndicator } from 'react-native';
 import { AppProvider, useAppContext } from './context/AppContext';
@@ -30,7 +31,10 @@ function RootNavigator() {
       <StatusBar style="light" />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {token ? (
-          <Stack.Screen name="Main" component={BottomTabNavigator} />
+          <Stack.Group>
+            <Stack.Screen name="Main" component={BottomTabNavigator} />
+            <Stack.Screen name="AddStudent" component={AddStudentScreen} />
+          </Stack.Group>
         ) : (
           <Stack.Screen name="Login" component={LoginScreen} />
         )}
