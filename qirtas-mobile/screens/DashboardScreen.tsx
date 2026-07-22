@@ -1,22 +1,22 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Animated, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Users, GraduationCap, School, Bell, ArrowLeft } from 'lucide-react-native';
+import { Users, GraduationCap, School, Bell, ArrowLeft, TrendingUp, Calendar, Award } from 'lucide-react-native';
 import { useAppContext } from '../context/AppContext';
 
 const { width } = Dimensions.get('window');
 
-export default function DashboardScreen() {
-  const { state, loading } = useAppContext();
+export default function DashboardScreen({ navigation }: any) {
+  const { state, loading, user } = useAppContext();
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(30)).current;
+  const slideAnim = useRef(new Animated.Value(40)).current;
 
   useEffect(() => {
     if (!loading && state) {
       Animated.parallel([
-        Animated.timing(fadeAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
-        Animated.timing(slideAnim, { toValue: 0, duration: 600, useNativeDriver: true })
+        Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }),
+        Animated.timing(slideAnim, { toValue: 0, duration: 800, useNativeDriver: true })
       ]).start();
     }
   }, [loading, state]);
@@ -24,21 +24,23 @@ export default function DashboardScreen() {
   if (loading || !state) {
     return (
       <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <ActivityIndicator size="large" color="#f59e0b" />
-        <Text style={{ marginTop: 16, color: '#9ca3af', fontFamily: 'sans-serif' }}>جاري تحميل البيانات...</Text>
+        <ActivityIndicator size="large" color="#4f46e5" />
+        <Text style={{ marginTop: 16, color: '#94a3b8', fontFamily: 'sans-serif', fontWeight: 'bold' }}>جاري تهيئة لوحة التحكم...</Text>
       </View>
     );
   }
 
+  const role = user?.role || 'admin';
+  const isParent = role === 'parent';
+
+  // Stats calculation
   const studentCount = state.students?.filter((s: any) => !s.wasWithdrawn).length || 0;
   const teacherCount = state.teachers?.length || 0;
   let classCount = 0;
-  Object.values(state.classRooms || {}).forEach((classes: any) => {
-    classCount += classes.length;
-  });
+  Object.values(state.classRooms || {}).forEach((classes: any) => { classCount += classes.length; });
 
   const recentAnnouncements = (state.announcements || [])
-    .filter((a: any) => a.target === 'الكل' || a.target === 'أولياء الأمور')
+    .filter((a: any) => a.target === 'الكل' || a.target === (isParent ? 'أولياء الأمور' : 'المعلمين'))
     .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
 
@@ -51,72 +53,114 @@ export default function DashboardScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#f8fafc', '#f1f5f9']} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={['#f1f5f9', '#e2e8f0']} style={StyleSheet.absoluteFillObject} />
       
+      {/* Background Decor */}
+      <View style={[styles.bgCircle, { top: -100, right: -100, backgroundColor: 'rgba(79, 70, 229, 0.1)' }]} />
+      <View style={[styles.bgCircle, { bottom: 100, left: -100, backgroundColor: 'rgba(14, 165, 233, 0.1)' }]} />
+
       <SafeAreaView style={{ flex: 1 }} edges={['top']}>
         <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
           
           <Animated.View style={[styles.header, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
             <View>
               <Text style={styles.greeting}>{getGreeting()} 👋</Text>
-              <Text style={styles.title}>{state.schoolName || 'نظام قرطاس'}</Text>
+              <Text style={styles.title}>{user?.name || 'مرحباً بك'}</Text>
+              <Text style={styles.schoolName}>{state.schoolName || 'نظام قرطاس'}</Text>
             </View>
             <View style={styles.profileAvatar}>
-              <Text style={styles.profileAvatarText}>أ</Text>
+              <LinearGradient colors={['#4f46e5', '#3b82f6']} style={styles.avatarGradient}>
+                <Text style={styles.profileAvatarText}>{user?.name ? user.name.charAt(0) : 'أ'}</Text>
+              </LinearGradient>
             </View>
           </Animated.View>
 
-          <Animated.View style={[styles.statsGrid, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-            <LinearGradient colors={['#3b82f6', '#2563eb']} style={styles.statCardFull}>
-              <View style={styles.statIconBox}><GraduationCap color="#fff" size={24} /></View>
-              <View style={styles.statTextContainer}>
-                <Text style={styles.statLabelLight}>إجمالي الطلاب</Text>
-                <Text style={styles.statValueLight}>{studentCount}</Text>
+          {isParent ? (
+            // PARENT DASHBOARD
+            <Animated.View style={[{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+              <View style={styles.parentCard}>
+                <LinearGradient colors={['#0f172a', '#1e1b4b']} style={styles.parentCardGradient}>
+                  <View style={styles.parentCardHeader}>
+                    <GraduationCap color="#38bdf8" size={32} />
+                    <View>
+                      <Text style={styles.parentCardTitle}>متابعة الأبناء</Text>
+                      <Text style={styles.parentCardSub}>اضغط للتفاصيل</Text>
+                    </View>
+                  </View>
+                  
+                  <View style={styles.parentStatsRow}>
+                    <View style={styles.parentStatItem}>
+                      <Calendar color="#cbd5e1" size={20} />
+                      <Text style={styles.parentStatValue}>الجدول</Text>
+                    </View>
+                    <View style={styles.parentStatItem}>
+                      <TrendingUp color="#cbd5e1" size={20} />
+                      <Text style={styles.parentStatValue}>الدرجات</Text>
+                    </View>
+                    <View style={styles.parentStatItem}>
+                      <Award color="#cbd5e1" size={20} />
+                      <Text style={styles.parentStatValue}>الحضور</Text>
+                    </View>
+                  </View>
+                </LinearGradient>
               </View>
-            </LinearGradient>
+            </Animated.View>
+          ) : (
+            // ADMIN DASHBOARD
+            <Animated.View style={[styles.statsGrid, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+              <LinearGradient colors={['#4f46e5', '#3b82f6']} style={styles.statCardFull} start={{x:0, y:0}} end={{x:1, y:1}}>
+                <View style={styles.statIconBox}><GraduationCap color="#fff" size={28} /></View>
+                <View style={styles.statTextContainer}>
+                  <Text style={styles.statLabelLight}>إجمالي الطلاب المقيّدين</Text>
+                  <Text style={styles.statValueLight}>{studentCount}</Text>
+                </View>
+              </LinearGradient>
 
-            <View style={styles.rowGrid}>
-              <LinearGradient colors={['#10b981', '#059669']} style={styles.statCardHalf}>
-                <View style={styles.statIconBox}><Users color="#fff" size={20} /></View>
-                <Text style={styles.statValueLight}>{teacherCount}</Text>
-                <Text style={styles.statLabelLight}>المعلمين</Text>
-              </LinearGradient>
-              <LinearGradient colors={['#f59e0b', '#d97706']} style={styles.statCardHalf}>
-                <View style={styles.statIconBox}><School color="#fff" size={20} /></View>
-                <Text style={styles.statValueLight}>{classCount}</Text>
-                <Text style={styles.statLabelLight}>الفصول</Text>
-              </LinearGradient>
-            </View>
-          </Animated.View>
+              <View style={styles.rowGrid}>
+                <LinearGradient colors={['#0ea5e9', '#0284c7']} style={styles.statCardHalf}>
+                  <View style={styles.statIconBoxSmall}><Users color="#fff" size={20} /></View>
+                  <Text style={styles.statValueLight}>{teacherCount}</Text>
+                  <Text style={styles.statLabelLight}>الكادر التعليمي</Text>
+                </LinearGradient>
+                <LinearGradient colors={['#f59e0b', '#d97706']} style={styles.statCardHalf}>
+                  <View style={styles.statIconBoxSmall}><School color="#fff" size={20} /></View>
+                  <Text style={styles.statValueLight}>{classCount}</Text>
+                  <Text style={styles.statLabelLight}>الفصول الدراسية</Text>
+                </LinearGradient>
+              </View>
+            </Animated.View>
+          )}
 
           <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
             <View style={styles.sectionHeader}>
-              <ArrowLeft color="#9ca3af" size={20} />
-              <Text style={styles.sectionTitle}>آخر التعاميم</Text>
+              <ArrowLeft color="#94a3b8" size={24} />
+              <Text style={styles.sectionTitle}>أحدث التعاميم</Text>
             </View>
 
             {recentAnnouncements.length === 0 ? (
               <View style={styles.emptyState}>
-                <Bell color="#cbd5e1" size={48} />
-                <Text style={styles.emptyStateText}>لا توجد إعلانات حالية</Text>
+                <View style={styles.emptyIconCircle}>
+                  <Bell color="#94a3b8" size={32} />
+                </View>
+                <Text style={styles.emptyStateText}>لا توجد تعاميم جديدة في الوقت الحالي</Text>
               </View>
             ) : (
               recentAnnouncements.map((ann: any, index: number) => (
                 <View key={ann.id} style={[styles.announcementCard, { marginTop: index === 0 ? 0 : 16 }]}>
                   <View style={styles.announcementHeader}>
-                    <View style={[styles.badge, { backgroundColor: ann.priority === 'عاجل' ? '#fee2e2' : '#e0f2fe' }]}>
-                      <Text style={[styles.badgeText, { color: ann.priority === 'عاجل' ? '#ef4444' : '#0284c7' }]}>{ann.priority}</Text>
+                    <View style={[styles.badge, { backgroundColor: ann.priority === 'عاجل' ? '#fee2e2' : '#f1f5f9' }]}>
+                      <Text style={[styles.badgeText, { color: ann.priority === 'عاجل' ? '#ef4444' : '#64748b' }]}>{ann.priority}</Text>
                     </View>
                     <Text style={styles.announcementDate}>{new Date(ann.date).toLocaleDateString('ar-SA')}</Text>
                   </View>
                   <Text style={styles.announcementTitle}>{ann.title}</Text>
-                  <Text style={styles.announcementBody} numberOfLines={2}>{ann.content}</Text>
+                  <Text style={styles.announcementBody} numberOfLines={3}>{ann.content}</Text>
                 </View>
               ))
             )}
           </Animated.View>
           
-          <View style={{ height: 100 }} />
+          <View style={{ height: 120 }} />
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -125,6 +169,7 @@ export default function DashboardScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f8fafc' },
+  bgCircle: { position: 'absolute', width: 300, height: 300, borderRadius: 150, filter: 'blur(50px)' },
   scroll: { padding: 24 },
   header: {
     flexDirection: 'row-reverse',
@@ -133,48 +178,73 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   profileAvatar: {
-    width: 48, height: 48, borderRadius: 24,
+    width: 56, height: 56, borderRadius: 28,
     backgroundColor: '#fff',
-    borderWidth: 2, borderColor: '#f59e0b',
-    justifyContent: 'center', alignItems: 'center',
-    shadowColor: '#f59e0b', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 4,
+    shadowColor: '#4f46e5', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.3, shadowRadius: 12, elevation: 8,
   },
-  profileAvatarText: { fontSize: 20, fontWeight: 'bold', color: '#f59e0b' },
-  greeting: { fontSize: 16, color: '#64748b', textAlign: 'right', marginBottom: 4 },
-  title: { fontSize: 28, fontWeight: '900', color: '#0f172a', textAlign: 'right', letterSpacing: -0.5 },
-  statsGrid: { marginBottom: 32 },
+  avatarGradient: { flex: 1, borderRadius: 28, justifyContent: 'center', alignItems: 'center' },
+  profileAvatarText: { fontSize: 24, fontWeight: '900', color: '#fff' },
+  greeting: { fontSize: 15, color: '#64748b', textAlign: 'right', marginBottom: 4, fontWeight: '600' },
+  title: { fontSize: 32, fontWeight: '900', color: '#0f172a', textAlign: 'right', letterSpacing: -0.5 },
+  schoolName: { fontSize: 16, color: '#4f46e5', textAlign: 'right', fontWeight: 'bold', marginTop: 2 },
+  
+  // Stats
+  statsGrid: { marginBottom: 36 },
   statCardFull: {
     flexDirection: 'row-reverse', alignItems: 'center',
-    padding: 24, borderRadius: 24, marginBottom: 16,
-    shadowColor: '#3b82f6', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.3, shadowRadius: 12, elevation: 8,
+    padding: 24, borderRadius: 28, marginBottom: 16,
+    shadowColor: '#4f46e5', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.3, shadowRadius: 16, elevation: 10,
   },
   statIconBox: {
-    width: 48, height: 48, borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 56, height: 56, borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.25)',
     justifyContent: 'center', alignItems: 'center',
-    marginLeft: 16,
+    marginLeft: 20,
   },
   statTextContainer: { flex: 1, alignItems: 'flex-start' },
-  statLabelLight: { fontSize: 14, color: 'rgba(255,255,255,0.8)', marginBottom: 4, fontWeight: '500' },
-  statValueLight: { fontSize: 32, fontWeight: 'bold', color: '#fff' },
+  statLabelLight: { fontSize: 15, color: 'rgba(255,255,255,0.9)', marginBottom: 4, fontWeight: '600' },
+  statValueLight: { fontSize: 36, fontWeight: '900', color: '#fff', letterSpacing: -1 },
+  
   rowGrid: { flexDirection: 'row-reverse', justifyContent: 'space-between' },
   statCardHalf: {
-    width: (width - 64) / 2, padding: 20, borderRadius: 24,
+    width: (width - 64) / 2, padding: 24, borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#10b981', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.2, shadowRadius: 12, elevation: 6,
+    shadowColor: '#0ea5e9', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.25, shadowRadius: 12, elevation: 8,
   },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  sectionTitle: { fontSize: 22, fontWeight: 'bold', color: '#0f172a' },
-  emptyState: { alignItems: 'center', justifyContent: 'center', padding: 40, backgroundColor: '#fff', borderRadius: 24, borderWidth: 1, borderColor: '#f1f5f9' },
-  emptyStateText: { marginTop: 16, fontSize: 16, color: '#9ca3af', fontWeight: '500' },
+  statIconBoxSmall: {
+    width: 48, height: 48, borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    justifyContent: 'center', alignItems: 'center',
+    marginBottom: 12,
+  },
+  
+  // Parent Card
+  parentCard: { marginBottom: 36, borderRadius: 28, overflow: 'hidden', shadowColor: '#0f172a', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 10 },
+  parentCardGradient: { padding: 24 },
+  parentCardHeader: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
+  parentCardTitle: { fontSize: 24, fontWeight: 'bold', color: '#fff', textAlign: 'right' },
+  parentCardSub: { fontSize: 14, color: '#94a3b8', textAlign: 'right', marginTop: 4 },
+  parentStatsRow: { flexDirection: 'row-reverse', justifyContent: 'space-around', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 20, padding: 16 },
+  parentStatItem: { alignItems: 'center' },
+  parentStatValue: { color: '#e2e8f0', marginTop: 8, fontWeight: 'bold', fontSize: 15 },
+  
+  // Section
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
+  sectionTitle: { fontSize: 24, fontWeight: '900', color: '#0f172a', letterSpacing: -0.5 },
+  emptyState: { alignItems: 'center', justifyContent: 'center', padding: 40, backgroundColor: '#fff', borderRadius: 28, borderWidth: 1, borderColor: '#e2e8f0' },
+  emptyIconCircle: { width: 64, height: 64, borderRadius: 32, backgroundColor: '#f1f5f9', justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
+  emptyStateText: { fontSize: 16, color: '#64748b', fontWeight: '600' },
+  
+  // Announcement
   announcementCard: {
-    backgroundColor: '#fff', padding: 20, borderRadius: 20,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.05, shadowRadius: 12, elevation: 3,
+    backgroundColor: '#fff', padding: 24, borderRadius: 24,
+    shadowColor: '#64748b', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.1, shadowRadius: 16, elevation: 5,
+    borderWidth: 1, borderColor: '#f1f5f9'
   },
-  announcementHeader: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  badge: { paddingHorizontal: 12, paddingVertical: 4, borderRadius: 12 },
-  badgeText: { fontSize: 12, fontWeight: 'bold' },
-  announcementDate: { fontSize: 13, color: '#94a3b8' },
-  announcementTitle: { fontSize: 18, fontWeight: 'bold', color: '#0f172a', textAlign: 'right', marginBottom: 8 },
-  announcementBody: { fontSize: 15, color: '#475569', textAlign: 'right', lineHeight: 24 },
+  announcementHeader: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+  badge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12 },
+  badgeText: { fontSize: 13, fontWeight: 'bold' },
+  announcementDate: { fontSize: 14, color: '#94a3b8', fontWeight: '600' },
+  announcementTitle: { fontSize: 19, fontWeight: 'bold', color: '#0f172a', textAlign: 'right', marginBottom: 10 },
+  announcementBody: { fontSize: 16, color: '#475569', textAlign: 'right', lineHeight: 26 },
 });

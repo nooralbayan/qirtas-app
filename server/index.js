@@ -23,7 +23,36 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Connect to MongoDB
-connectDB();
+connectDB().then(async () => {
+    // Auto-seed admin user
+    try {
+        const User = (await import('./models/User.js')).default;
+        const bcrypt = (await import('bcrypt')).default;
+        const adminUser = await User.findOne({ username: 'admin' });
+        
+        if (adminUser) {
+            console.log('ℹ️ Admin user exists. Resetting password to "admin"...');
+            // Force reset password bypassing pre-save hook
+            await User.updateOne({ username: 'admin' }, { 
+                password: await bcrypt.hash('admin', 10),
+                role: 'admin'
+            });
+            console.log('✅ Admin password reset successfully to "admin"');
+        } else {
+            console.log('ℹ️ Creating default Admin user...');
+            const hashed = await bcrypt.hash('admin', 10);
+            await User.create({
+                username: 'admin',
+                password: hashed,
+                name: 'مدير النظام',
+                role: 'admin',
+            });
+            console.log('✅ Default Admin created (admin/admin)');
+        }
+    } catch (err) {
+        console.error('❌ Failed to auto-seed admin:', err.message);
+    }
+});
 
 // Register API Routes
 app.use('/api/auth', authRoutes);
