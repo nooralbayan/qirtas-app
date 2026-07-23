@@ -4,6 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import AddStudentScreen from './screens/AddStudentScreen';
+import TeachersScreen from './screens/TeachersScreen';
+import ReceiptsScreen from './screens/ReceiptsScreen';
+import ExpensesScreen from './screens/ExpensesScreen';
 import { StatusBar } from 'expo-status-bar';
 import { I18nManager, View, ActivityIndicator } from 'react-native';
 import { AppProvider, useAppContext } from './context/AppContext';
@@ -34,6 +37,9 @@ function RootNavigator() {
           <Stack.Group>
             <Stack.Screen name="Main" component={BottomTabNavigator} />
             <Stack.Screen name="AddStudent" component={AddStudentScreen} />
+            <Stack.Screen name="Teachers" component={TeachersScreen} />
+            <Stack.Screen name="Receipts" component={ReceiptsScreen} />
+            <Stack.Screen name="Expenses" component={ExpensesScreen} />
           </Stack.Group>
         ) : (
           <Stack.Screen name="Login" component={LoginScreen} />

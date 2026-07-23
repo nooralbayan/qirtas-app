@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Users, GraduationCap, School, Bell, ArrowLeft, TrendingUp, Calendar, Award } from 'lucide-react-native';
+import { Users, GraduationCap, School, Bell, ArrowLeft, TrendingUp, Calendar, Award, Wallet, CreditCard, Banknote } from 'lucide-react-native';
 import { useAppContext } from '../context/AppContext';
 
 const { width } = Dimensions.get('window');
@@ -43,6 +43,10 @@ export default function DashboardScreen({ navigation }: any) {
     .filter((a: any) => a.target === 'الكل' || a.target === (isParent ? 'أولياء الأمور' : 'المعلمين'))
     .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
+
+  const totalCollected = (state.receipts || []).reduce((acc: number, r: any) => acc + (Number(r.paidAmount) || Number(r.amount) || 0), 0);
+  const totalExpenses = (state.expenses || []).reduce((acc: number, e: any) => acc + (Number(e.amount) || 0), 0);
+  const netProfit = totalCollected - totalExpenses;
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -117,25 +121,61 @@ export default function DashboardScreen({ navigation }: any) {
           })() : (
             // ADMIN DASHBOARD
             <Animated.View style={[styles.statsGrid, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-              <LinearGradient colors={['#4f46e5', '#3b82f6']} style={styles.statCardFull} start={{x:0, y:0}} end={{x:1, y:1}}>
-                <View style={styles.statIconBox}><GraduationCap color="#fff" size={28} /></View>
-                <View style={styles.statTextContainer}>
-                  <Text style={styles.statLabelLight}>إجمالي الطلاب المقيّدين</Text>
-                  <Text style={styles.statValueLight}>{studentCount}</Text>
-                </View>
-              </LinearGradient>
+              
+              {(role === 'admin' || role === 'accountant') && (
+                <>
+                  <View style={styles.rowGrid}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Receipts')} style={{ width: '48%' }}>
+                      <LinearGradient colors={['#10b981', '#059669']} style={[styles.statCardHalf, { width: '100%' }]}>
+                        <View style={styles.statIconBoxSmall}><Banknote color="#fff" size={20} /></View>
+                        <Text style={styles.statValueLight}>{totalCollected}</Text>
+                        <Text style={styles.statLabelLight}>الإيرادات (د.ل)</Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Expenses')} style={{ width: '48%' }}>
+                      <LinearGradient colors={['#ef4444', '#dc2626']} style={[styles.statCardHalf, { width: '100%' }]}>
+                        <View style={styles.statIconBoxSmall}><CreditCard color="#fff" size={20} /></View>
+                        <Text style={styles.statValueLight}>{totalExpenses}</Text>
+                        <Text style={styles.statLabelLight}>المصروفات (د.ل)</Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </View>
+
+                  <LinearGradient colors={['#0f172a', '#1e293b']} style={styles.statCardFull} start={{x:0, y:0}} end={{x:1, y:1}}>
+                    <View style={[styles.statIconBox, { backgroundColor: 'rgba(16, 185, 129, 0.2)' }]}><Wallet color="#10b981" size={28} /></View>
+                    <View style={styles.statTextContainer}>
+                      <Text style={styles.statLabelLight}>السيولة الصافية</Text>
+                      <Text style={[styles.statValueLight, { color: netProfit >= 0 ? '#34d399' : '#f87171' }]}>{netProfit} د.ل</Text>
+                    </View>
+                  </LinearGradient>
+                </>
+              )}
+
+              <TouchableOpacity onPress={() => navigation.navigate('أبنائي')}>
+                <LinearGradient colors={['#4f46e5', '#3b82f6']} style={styles.statCardFull} start={{x:0, y:0}} end={{x:1, y:1}}>
+                  <View style={styles.statIconBox}><GraduationCap color="#fff" size={28} /></View>
+                  <View style={styles.statTextContainer}>
+                    <Text style={styles.statLabelLight}>إجمالي الطلاب المقيّدين</Text>
+                    <Text style={styles.statValueLight}>{studentCount}</Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
 
               <View style={styles.rowGrid}>
-                <LinearGradient colors={['#0ea5e9', '#0284c7']} style={styles.statCardHalf}>
-                  <View style={styles.statIconBoxSmall}><Users color="#fff" size={20} /></View>
-                  <Text style={styles.statValueLight}>{teacherCount}</Text>
-                  <Text style={styles.statLabelLight}>الكادر التعليمي</Text>
-                </LinearGradient>
-                <LinearGradient colors={['#f59e0b', '#d97706']} style={styles.statCardHalf}>
-                  <View style={styles.statIconBoxSmall}><School color="#fff" size={20} /></View>
-                  <Text style={styles.statValueLight}>{classCount}</Text>
-                  <Text style={styles.statLabelLight}>الفصول الدراسية</Text>
-                </LinearGradient>
+                <TouchableOpacity onPress={() => navigation.navigate('Teachers')} style={{ width: '48%' }}>
+                  <LinearGradient colors={['#0ea5e9', '#0284c7']} style={[styles.statCardHalf, { width: '100%' }]}>
+                    <View style={styles.statIconBoxSmall}><Users color="#fff" size={20} /></View>
+                    <Text style={styles.statValueLight}>{teacherCount}</Text>
+                    <Text style={styles.statLabelLight}>الكادر التعليمي</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+                <View style={{ width: '48%' }}>
+                  <LinearGradient colors={['#f59e0b', '#d97706']} style={[styles.statCardHalf, { width: '100%' }]}>
+                    <View style={styles.statIconBoxSmall}><School color="#fff" size={20} /></View>
+                    <Text style={styles.statValueLight}>{classCount}</Text>
+                    <Text style={styles.statLabelLight}>الفصول الدراسية</Text>
+                  </LinearGradient>
+                </View>
               </View>
             </Animated.View>
           )}

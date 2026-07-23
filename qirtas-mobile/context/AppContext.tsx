@@ -10,6 +10,17 @@ interface AppState {
   classRooms: Record<string, string[]>;
   timetables: Record<string, any[]>;
   announcements: any[];
+  receipts: any[];
+  expenses: any[];
+  studentEvaluations: any[];
+  behaviorRecords: any[];
+  attendanceRecords: any[];
+  studentResults: any[];
+  gradeFees: Record<string, number>;
+  gradeSubjects: Record<string, string[]>;
+  lessonLogs: any[];
+  recycleBin: any[];
+  withdrawnStudents: any[];
 }
 
 interface AppContextType {
