@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, ActivityIndicator, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Search, ChevronLeft, Award, User, BookOpen, Star, Trophy, Download } from 'lucide-react-native';
+import { Search, ChevronLeft, DollarSign, User, Calendar, CheckCircle } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppContext } from '../context/AppContext';
 
-export default function ResultsScreen({ navigation }: any) {
+export default function PayrollScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
   const { state, loading } = useAppContext();
   const scrollY = new Animated.Value(0);
@@ -13,42 +13,18 @@ export default function ResultsScreen({ navigation }: any) {
   if (loading || !state) {
     return (
       <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <ActivityIndicator size="large" color="#f59e0b" />
+        <ActivityIndicator size="large" color="#10b981" />
       </View>
     );
   }
 
-  const results = state.studentResults || {};
-  const students = state.students || [];
-
-  const resultsList = useMemo(() => {
-    let list: any[] = [];
-    Object.keys(results).forEach(studentId => {
-      const student = students.find((s: any) => s.id === studentId || s.id === Number(studentId));
-      if (student) {
-        let totalScore = 0;
-        let count = 0;
-        Object.keys(results[studentId]).forEach(sub => {
-           totalScore += Number(results[studentId][sub]);
-           count++;
-        });
-        
-        list.push({
-          id: studentId,
-          studentName: student.name,
-          grade: student.grade,
-          subjects: results[studentId],
-          average: count > 0 ? (totalScore / count).toFixed(1) : 0
-        });
-      }
-    });
-    return list;
-  }, [results, students]);
-
-  const filteredResults = resultsList.filter((r: any) => 
-    (r.studentName && r.studentName.includes(search)) || 
-    (r.grade && r.grade.includes(search))
+  // We use teachers for payroll
+  const teachers = state.teachers || [];
+  const filteredTeachers = teachers.filter((t: any) => 
+    t.name && t.name.includes(search)
   );
+
+  const totalPayroll = teachers.reduce((sum, t) => sum + (Number(t.salary) || 0), 0);
 
   const renderItem = ({ item, index }: any) => {
     const inputRange = [-1, 0, (index * 120), (index + 2) * 120];
@@ -59,34 +35,25 @@ export default function ResultsScreen({ navigation }: any) {
         <LinearGradient colors={['#ffffff', '#f8fafc']} style={styles.card}>
           <View style={styles.cardHeader}>
             <View style={styles.avatar}>
-              <LinearGradient colors={['#fef3c7', '#fde68a']} style={styles.avatarInner}>
-                <Trophy color="#f59e0b" size={24} />
+              <LinearGradient colors={['#d1fae5', '#a7f3d0']} style={styles.avatarInner}>
+                <DollarSign color="#059669" size={24} />
               </LinearGradient>
             </View>
             <View style={styles.info}>
-              <Text style={styles.name}>{item.studentName}</Text>
-              <Text style={styles.grade}>{item.grade}</Text>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.subject}>{item.subject}</Text>
             </View>
-            <View style={styles.avgBadge}>
-              <Text style={styles.avgText}>{item.average}%</Text>
+            <View style={styles.salaryBadge}>
+              <Text style={styles.salaryText}>{item.salary || 0} د.ع</Text>
             </View>
           </View>
           
           <View style={styles.divider} />
 
-          <View style={styles.subjectsList}>
-            {Object.keys(item.subjects).map((subject, idx) => (
-              <View key={idx} style={styles.subjectItem}>
-                <Text style={styles.subjectScore}>{item.subjects[subject]}</Text>
-                <Text style={styles.subjectName}>{subject}</Text>
-              </View>
-            ))}
-          </View>
-
           <View style={styles.actionRow}>
-            <TouchableOpacity style={[styles.actionBtn, { backgroundColor: 'rgba(59, 130, 246, 0.1)' }]}>
-              <Download color="#3b82f6" size={16} />
-              <Text style={[styles.actionBtnText, { color: '#3b82f6' }]}>تحميل الشهادة</Text>
+            <TouchableOpacity style={[styles.actionBtn, { backgroundColor: 'rgba(16, 185, 129, 0.1)' }]}>
+              <CheckCircle color="#10b981" size={18} />
+              <Text style={[styles.actionBtnText, { color: '#10b981' }]}>صرف الراتب</Text>
             </TouchableOpacity>
           </View>
         </LinearGradient>
@@ -104,8 +71,8 @@ export default function ResultsScreen({ navigation }: any) {
             <ChevronLeft color="#0f172a" size={28} />
           </TouchableOpacity>
           <View>
-            <Text style={styles.title}>النتائج المدرسية</Text>
-            <Text style={styles.subtitle}>{resultsList.length} طالب له نتائج</Text>
+            <Text style={styles.title}>مسير الرواتب</Text>
+            <Text style={styles.subtitle}>الإجمالي: {totalPayroll.toLocaleString()} د.ع</Text>
           </View>
         </View>
       </View>
@@ -114,7 +81,7 @@ export default function ResultsScreen({ navigation }: any) {
         <View style={styles.searchContainer}>
           <TextInput 
             style={styles.searchInput}
-            placeholder="ابحث باسم الطالب أو الصف..."
+            placeholder="ابحث عن موظف..."
             placeholderTextColor="#94a3b8"
             value={search}
             onChangeText={setSearch}
@@ -124,14 +91,14 @@ export default function ResultsScreen({ navigation }: any) {
         </View>
       </View>
 
-      {filteredResults.length === 0 ? (
+      {filteredTeachers.length === 0 ? (
         <View style={styles.emptyState}>
-          <Star color="#cbd5e1" size={64} style={{ marginBottom: 16 }} />
-          <Text style={styles.emptyStateText}>لم يتم رصد نتائج حتى الآن</Text>
+          <DollarSign color="#cbd5e1" size={64} style={{ marginBottom: 16 }} />
+          <Text style={styles.emptyStateText}>لا يوجد موظفين</Text>
         </View>
       ) : (
         <Animated.FlatList
-          data={filteredResults}
+          data={filteredTeachers}
           keyExtractor={(item, idx) => (item.id || idx).toString()}
           renderItem={renderItem}
           contentContainerStyle={styles.list}
@@ -148,18 +115,18 @@ export default function ResultsScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f1f5f9' },
-  bgCircle: { position: 'absolute', top: -150, right: -50, width: 300, height: 300, borderRadius: 150, backgroundColor: 'rgba(245, 158, 11, 0.05)', filter: 'blur(40px)' },
+  bgCircle: { position: 'absolute', top: -150, right: -50, width: 300, height: 300, borderRadius: 150, backgroundColor: 'rgba(16, 185, 129, 0.05)', filter: 'blur(40px)' },
   header: { padding: 24, paddingBottom: 16 },
   headerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: {width: 0, height: 2}, shadowOpacity: 0.1, shadowRadius: 4, elevation: 2 },
   title: { fontSize: 26, fontWeight: '900', color: '#0f172a', marginBottom: 4, textAlign: 'right' },
-  subtitle: { fontSize: 15, color: '#f59e0b', fontWeight: 'bold', textAlign: 'right' },
+  subtitle: { fontSize: 15, color: '#10b981', fontWeight: 'bold', textAlign: 'right' },
   
   searchSection: { marginBottom: 16 },
   searchContainer: {
     flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff',
     marginHorizontal: 24, borderRadius: 20, paddingHorizontal: 16,
-    height: 56, shadowColor: '#f59e0b', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 4,
+    height: 56, shadowColor: '#10b981', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 4,
     borderWidth: 1, borderColor: '#e2e8f0', zIndex: 10
   },
   searchIcon: { marginLeft: 12 },
@@ -173,24 +140,19 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: '#fff'
   },
   cardHeader: { flexDirection: 'row-reverse', alignItems: 'center' },
-  avatar: { width: 50, height: 50, borderRadius: 25, marginLeft: 12, shadowColor: '#f59e0b', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 4 },
+  avatar: { width: 50, height: 50, borderRadius: 25, marginLeft: 12, shadowColor: '#10b981', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 4 },
   avatarInner: { flex: 1, borderRadius: 25, alignItems: 'center', justifyContent: 'center' },
   info: { flex: 1, alignItems: 'flex-end' },
   name: { fontSize: 18, fontWeight: '900', color: '#0f172a', marginBottom: 4 },
-  grade: { fontSize: 14, color: '#64748b', fontWeight: '600' },
-  avgBadge: { backgroundColor: '#fef3c7', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, borderColor: '#fde68a' },
-  avgText: { fontSize: 16, fontWeight: 'bold', color: '#d97706' },
+  subject: { fontSize: 14, color: '#64748b', fontWeight: '600' },
+  salaryBadge: { backgroundColor: '#f1f5f9', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e2e8f0' },
+  salaryText: { fontSize: 15, fontWeight: 'bold', color: '#0f172a' },
   
   divider: { height: 1, backgroundColor: '#e2e8f0', marginVertical: 16 },
-  
-  subjectsList: { flexDirection: 'row-reverse', flexWrap: 'wrap', justifyContent: 'flex-start', gap: 8 },
-  subjectItem: { flexDirection: 'row-reverse', alignItems: 'center', backgroundColor: '#f1f5f9', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e2e8f0', gap: 6 },
-  subjectName: { color: '#475569', fontSize: 13, fontWeight: '600' },
-  subjectScore: { color: '#0f172a', fontSize: 15, fontWeight: '900' },
 
-  actionRow: { flexDirection: 'row-reverse', justifyContent: 'flex-start', gap: 12, borderTopWidth: 1, borderTopColor: '#f1f5f9', paddingTop: 16, marginTop: 16 },
-  actionBtn: { flexDirection: 'row-reverse', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12, gap: 8 },
-  actionBtnText: { fontSize: 14, fontWeight: 'bold' },
+  actionRow: { flexDirection: 'row-reverse', justifyContent: 'flex-start' },
+  actionBtn: { flexDirection: 'row-reverse', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 12, borderRadius: 12, gap: 8 },
+  actionBtnText: { fontSize: 15, fontWeight: 'bold' },
 
   emptyState: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingBottom: 100 },
   emptyStateText: { fontSize: 18, color: '#94a3b8', fontWeight: 'bold' }
