@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Users, GraduationCap, School, Bell, ArrowLeft, TrendingUp, Calendar, Award, Wallet, CreditCard, Banknote } from 'lucide-react-native';
+import { Users, GraduationCap, School, Bell, ArrowLeft, TrendingUp, Calendar, Award, Wallet, CreditCard, Banknote, Clock, Megaphone, FileText } from 'lucide-react-native';
 import { useAppContext } from '../context/AppContext';
 
 const { width } = Dimensions.get('window');
@@ -180,6 +180,41 @@ export default function DashboardScreen({ navigation }: any) {
             </Animated.View>
           )}
 
+          <Animated.View style={[{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }, { marginBottom: 32 }]}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>الوصول السريع</Text>
+            </View>
+            <View style={styles.quickAccessGrid}>
+              <TouchableOpacity onPress={() => navigation.navigate('Attendance')} style={styles.quickAccessCard}>
+                <View style={[styles.qaIconContainer, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]}>
+                  <Clock color="#ef4444" size={24} />
+                </View>
+                <Text style={styles.qaText}>الغياب والحضور</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => navigation.navigate('Results')} style={styles.quickAccessCard}>
+                <View style={[styles.qaIconContainer, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]}>
+                  <Award color="#f59e0b" size={24} />
+                </View>
+                <Text style={styles.qaText}>النتائج المدرسية</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => navigation.navigate('Announcements')} style={styles.quickAccessCard}>
+                <View style={[styles.qaIconContainer, { backgroundColor: 'rgba(139, 92, 246, 0.1)' }]}>
+                  <Megaphone color="#8b5cf6" size={24} />
+                </View>
+                <Text style={styles.qaText}>الإعلانات</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => navigation.navigate('التقارير')} style={styles.quickAccessCard}>
+                <View style={[styles.qaIconContainer, { backgroundColor: 'rgba(56, 189, 248, 0.1)' }]}>
+                  <FileText color="#38bdf8" size={24} />
+                </View>
+                <Text style={styles.qaText}>التقارير</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+
           <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
             <View style={styles.sectionHeader}>
               <ArrowLeft color="#94a3b8" size={24} />
@@ -278,6 +313,12 @@ const styles = StyleSheet.create({
   parentStatValue: { color: '#e2e8f0', marginTop: 8, fontWeight: 'bold', fontSize: 15 },
   parentStatLabel: { color: '#94a3b8', fontSize: 12, marginTop: 4 },
   
+  // Quick Access
+  quickAccessGrid: { flexDirection: 'row-reverse', flexWrap: 'wrap', justifyContent: 'space-between' },
+  quickAccessCard: { width: (width - 64) / 2, backgroundColor: '#fff', padding: 16, borderRadius: 24, alignItems: 'center', marginBottom: 16, shadowColor: '#64748b', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 2, borderWidth: 1, borderColor: '#f1f5f9' },
+  qaIconContainer: { width: 56, height: 56, borderRadius: 28, justifyContent: 'center', alignItems: 'center', marginBottom: 12 },
+  qaText: { fontSize: 14, fontWeight: 'bold', color: '#1e293b' },
+
   // Section
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
   sectionTitle: { fontSize: 24, fontWeight: '900', color: '#0f172a', letterSpacing: -0.5 },

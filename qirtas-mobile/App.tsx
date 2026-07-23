@@ -7,6 +7,9 @@ import AddStudentScreen from './screens/AddStudentScreen';
 import TeachersScreen from './screens/TeachersScreen';
 import ReceiptsScreen from './screens/ReceiptsScreen';
 import ExpensesScreen from './screens/ExpensesScreen';
+import AttendanceScreen from './screens/AttendanceScreen';
+import ResultsScreen from './screens/ResultsScreen';
+import AnnouncementsScreen from './screens/AnnouncementsScreen';
 import { StatusBar } from 'expo-status-bar';
 import { I18nManager, View, ActivityIndicator } from 'react-native';
 import { AppProvider, useAppContext } from './context/AppContext';
@@ -40,6 +43,9 @@ function RootNavigator() {
             <Stack.Screen name="Teachers" component={TeachersScreen} />
             <Stack.Screen name="Receipts" component={ReceiptsScreen} />
             <Stack.Screen name="Expenses" component={ExpensesScreen} />
+            <Stack.Screen name="Attendance" component={AttendanceScreen} />
+            <Stack.Screen name="Results" component={ResultsScreen} />
+            <Stack.Screen name="Announcements" component={AnnouncementsScreen} />
           </Stack.Group>
         ) : (
           <Stack.Screen name="Login" component={LoginScreen} />
