@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Switch } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { User, LogOut, Bell, Moon, Globe, ChevronLeft } from 'lucide-react-native';
+import { User, LogOut, Bell, Moon, Globe, ChevronLeft, CreditCard, RefreshCw, ShieldCheck } from 'lucide-react-native';
 import { useAppContext } from '../context/AppContext';
 
 export default function SettingsScreen() {
@@ -12,13 +12,13 @@ export default function SettingsScreen() {
     await logout();
   };
 
-  const renderSettingItem = (icon: any, title: string, subtitle?: string, action?: any, hasSwitch?: boolean) => (
+  const renderSettingItem = (icon: any, title: string, subtitle?: string, action?: any, hasSwitch?: boolean, titleColor?: string) => (
     <TouchableOpacity style={styles.settingItem} onPress={action} disabled={hasSwitch} activeOpacity={0.7}>
       <View style={styles.settingIconContainer}>
         {icon}
       </View>
       <View style={styles.settingTextContainer}>
-        <Text style={styles.settingTitle}>{title}</Text>
+        <Text style={[styles.settingTitle, titleColor && { color: titleColor }]}>{title}</Text>
         {subtitle && <Text style={styles.settingSubtitle}>{subtitle}</Text>}
       </View>
       {hasSwitch ? (
@@ -49,6 +49,19 @@ export default function SettingsScreen() {
               </Text>
             </View>
           </LinearGradient>
+
+          {(user?.role === 'admin' || user?.role === 'accountant') && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>إدارة النظام</Text>
+              <View style={styles.sectionCard}>
+                {renderSettingItem(<RefreshCw color="#d97706" size={20} />, 'الترحيل الأكاديمي', 'نقل الطلاب للعام الدراسي الجديد', undefined, false, '#d97706')}
+                <View style={styles.divider} />
+                {renderSettingItem(<CreditCard color="#059669" size={20} />, 'إعدادات الرسوم', 'تعديل رسوم المراحل الدراسية', undefined, false, '#059669')}
+                <View style={styles.divider} />
+                {renderSettingItem(<ShieldCheck color="#2563eb" size={20} />, 'الأدوار والصلاحيات', 'إدارة صلاحيات المستخدمين', undefined, false, '#2563eb')}
+              </View>
+            </View>
+          )}
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>تفضيلات التطبيق</Text>
