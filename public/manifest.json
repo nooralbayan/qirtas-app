@@ -1,0 +1,17 @@
+{
+  "name": "نظام قرطاس المدرسي",
+  "short_name": "قرطاس",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e40af",
+  "description": "نظام الإدارة المدرسية وبوابة أولياء الأمور",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

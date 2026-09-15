@@ -1,0 +1,5567 @@
+{
+  "totalStudents": 569,
+  "duplicateNamesCount": 163,
+  "duplicateNatIdsCount": 162,
+  "duplicateNamesList": [
+    {
+      "name": "ابراهيم فتحى إبراهيم عبد الدائم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190502235",
+          "enrollmentNumber": "5928076"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "120190502235",
+          "enrollmentNumber": "20260421"
+        }
+      ]
+    },
+    {
+      "name": "أفنان فتحي احمد الكرغلى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190440343",
+          "enrollmentNumber": "5933932"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190440343",
+          "enrollmentNumber": "20260422"
+        }
+      ]
+    },
+    {
+      "name": "الحارث عبد الله أبو بكر عيسى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190756056",
+          "enrollmentNumber": "5928070"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "120190756056",
+          "enrollmentNumber": "20260423"
+        }
+      ]
+    },
+    {
+      "name": "الزبير جلال البشير الشنطة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190837764",
+          "enrollmentNumber": "5928116"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190837764",
+          "enrollmentNumber": "20260442"
+        }
+      ]
+    },
+    {
+      "name": "العنود احمد عيسى على",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191078475",
+          "enrollmentNumber": "5933928"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220191078475",
+          "enrollmentNumber": "20260424"
+        }
+      ]
+    },
+    {
+      "name": "آمنه محمد الشريف اصنيبة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190017446",
+          "enrollmentNumber": "5928122"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190017446",
+          "enrollmentNumber": "20260393"
+        }
+      ]
+    },
+    {
+      "name": "أوسمة سالم المولدى المزوغى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191179408",
+          "enrollmentNumber": "5933920"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220191179408",
+          "enrollmentNumber": "20260443"
+        }
+      ]
+    },
+    {
+      "name": "أويس يوسف زيدان أبو بكر",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190225613",
+          "enrollmentNumber": "5933923"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190225613",
+          "enrollmentNumber": "20260444"
+        }
+      ]
+    },
+    {
+      "name": "آيه حسين فرج بن رمضان",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190800075",
+          "enrollmentNumber": "5933925"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190800075",
+          "enrollmentNumber": "20260394"
+        }
+      ]
+    },
+    {
+      "name": "اية محمد مسعود اسديرة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191066168",
+          "enrollmentNumber": "5934522"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191066168",
+          "enrollmentNumber": "20260395"
+        }
+      ]
+    },
+    {
+      "name": "إيلاف محمود عبد الوهاب بشير",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190329576",
+          "enrollmentNumber": "5933924"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190329576",
+          "enrollmentNumber": "20260445"
+        }
+      ]
+    },
+    {
+      "name": "تالين وليد عبد الله علي الورشفانى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191120277",
+          "enrollmentNumber": "5933951"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220191120277",
+          "enrollmentNumber": "20260425"
+        }
+      ]
+    },
+    {
+      "name": "تسنيم مراد إبراهيم الجالي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190737481",
+          "enrollmentNumber": "5933938"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190737481",
+          "enrollmentNumber": "20260426"
+        }
+      ]
+    },
+    {
+      "name": "تولين فتحى إبراهيم عبد الدائم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190467638",
+          "enrollmentNumber": "5933956"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190467638",
+          "enrollmentNumber": "20260427"
+        }
+      ]
+    },
+    {
+      "name": "تيم محمد بلقاسم المحجوب",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190304370",
+          "enrollmentNumber": "5933961"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190304370",
+          "enrollmentNumber": "20260396"
+        }
+      ]
+    },
+    {
+      "name": "جنى الطاهر سليمان أبو الزمازم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "221090045526",
+          "enrollmentNumber": "5933963"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "221090045526",
+          "enrollmentNumber": "20260397"
+        }
+      ]
+    },
+    {
+      "name": "جنى جبريل مفتاح مفتاح",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190908351",
+          "enrollmentNumber": "5933968"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190908351",
+          "enrollmentNumber": "20260428"
+        }
+      ]
+    },
+    {
+      "name": "حسين أبو عجيلة حسين جحى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120191126818",
+          "enrollmentNumber": "5933970"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120191126818",
+          "enrollmentNumber": "20260398"
+        }
+      ]
+    },
+    {
+      "name": "خديجة علي جمعة البزويك",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190285645",
+          "enrollmentNumber": "5933975"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190285645",
+          "enrollmentNumber": "20260399"
+        }
+      ]
+    },
+    {
+      "name": "خديجة غيث مادى رمضان",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190073378",
+          "enrollmentNumber": "5933972"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190073378",
+          "enrollmentNumber": "20260429"
+        }
+      ]
+    },
+    {
+      "name": "خديجة محمد ارخيص النيهوم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190039163",
+          "enrollmentNumber": "5933977"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190039163",
+          "enrollmentNumber": "20260446"
+        }
+      ]
+    },
+    {
+      "name": "دانة حمزة علي علي الدرار",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190833372",
+          "enrollmentNumber": "5933980"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190833372",
+          "enrollmentNumber": "20260400"
+        }
+      ]
+    },
+    {
+      "name": "دانه معاوية ابو القاسم المناخ",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190449401",
+          "enrollmentNumber": "5933987"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190449401",
+          "enrollmentNumber": "20260430"
+        }
+      ]
+    },
+    {
+      "name": "رانية عابدين محمد محمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "لا يوجد رقم وطني",
+          "enrollmentNumber": "6021053"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "لا يوجد رقم وطني",
+          "enrollmentNumber": "20260431"
+        }
+      ]
+    },
+    {
+      "name": "رتيل اسامة المهدي القاضى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190845504",
+          "enrollmentNumber": "5934523"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190845504",
+          "enrollmentNumber": "20260447"
+        }
+      ]
+    },
+    {
+      "name": "رفان جمعة فرج امساعد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191014303",
+          "enrollmentNumber": "5934524"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191014303",
+          "enrollmentNumber": "20260401"
+        }
+      ]
+    },
+    {
+      "name": "رهف أحمد خليل إبراهيم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "فلسطينية",
+          "enrollmentNumber": "6021048"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "فلسطينية",
+          "enrollmentNumber": "20260448"
+        }
+      ]
+    },
+    {
+      "name": "روسن محمد ابو القاسم الديب",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190500108",
+          "enrollmentNumber": "5934525"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190500108",
+          "enrollmentNumber": "20260449"
+        }
+      ]
+    },
+    {
+      "name": "ريفان رضا محمد التومي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190813514",
+          "enrollmentNumber": "5934526"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190813514",
+          "enrollmentNumber": "20260450"
+        }
+      ]
+    },
+    {
+      "name": "سالم عبد المنعم سالم جعيد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190639076",
+          "enrollmentNumber": "5934527"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "120190639076",
+          "enrollmentNumber": "20260432"
+        }
+      ]
+    },
+    {
+      "name": "سجى اسامه عبد الله اشتيوي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190451107",
+          "enrollmentNumber": "5934530"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190451107",
+          "enrollmentNumber": "20260451"
+        }
+      ]
+    },
+    {
+      "name": "سجى عاشور علي رحومة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190249540",
+          "enrollmentNumber": "5934529"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190249540",
+          "enrollmentNumber": "20260433"
+        }
+      ]
+    },
+    {
+      "name": "سدينة علي امحمد هيبة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190655169",
+          "enrollmentNumber": "5934528"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190655169",
+          "enrollmentNumber": "20260434"
+        }
+      ]
+    },
+    {
+      "name": "سما أنس عبد الرؤوف الباسط",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190032544",
+          "enrollmentNumber": "5934531"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190032544",
+          "enrollmentNumber": "20260452"
+        }
+      ]
+    },
+    {
+      "name": "عبد البارئ عمران فرج ابو زنان",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190904930",
+          "enrollmentNumber": "5954885"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190904930",
+          "enrollmentNumber": "20260402"
+        }
+      ]
+    },
+    {
+      "name": "عبد الحميد عادل سالم ابورخيص",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190113130",
+          "enrollmentNumber": "5934538"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190113130",
+          "enrollmentNumber": "20260453"
+        }
+      ]
+    },
+    {
+      "name": "عبدالرحمن عبدالرزاق عبدالرحيم احمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120191149231",
+          "enrollmentNumber": "5934535"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120191149231",
+          "enrollmentNumber": "20260454"
+        }
+      ]
+    },
+    {
+      "name": "علي احمد علي على",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190398924",
+          "enrollmentNumber": "5934539"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "120190398924",
+          "enrollmentNumber": "20260435"
+        }
+      ]
+    },
+    {
+      "name": "غدي حوسين مجيد فرحات",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190344315",
+          "enrollmentNumber": "5934581"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190344315",
+          "enrollmentNumber": "20260455"
+        }
+      ]
+    },
+    {
+      "name": "غزل سالم عبدالفتاح عونيه",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190637598",
+          "enrollmentNumber": "5934543"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190637598",
+          "enrollmentNumber": "20260436"
+        }
+      ]
+    },
+    {
+      "name": "فارس فراس نورى المبروك",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190970166",
+          "enrollmentNumber": "5934547"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "120190970166",
+          "enrollmentNumber": "20260437"
+        }
+      ]
+    },
+    {
+      "name": "فاطمة محمد على الاطرش",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190058454",
+          "enrollmentNumber": "5934549"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220190058454",
+          "enrollmentNumber": "20260438"
+        }
+      ]
+    },
+    {
+      "name": "فرج عبدالرؤوف محمد دلف",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120191119568",
+          "enrollmentNumber": "5954887"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120191119568",
+          "enrollmentNumber": "20260403"
+        }
+      ]
+    },
+    {
+      "name": "قصىي علاء الدين علي انفيص",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190361410",
+          "enrollmentNumber": "5934551"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190361410",
+          "enrollmentNumber": "20260404"
+        }
+      ]
+    },
+    {
+      "name": "قيس عبدالوهاب محمد عبدالوهاب",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190823352",
+          "enrollmentNumber": "5934554"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190823352",
+          "enrollmentNumber": "20260405"
+        }
+      ]
+    },
+    {
+      "name": "كيندا عماد علي يوسف",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190182968",
+          "enrollmentNumber": "5934557"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190182968",
+          "enrollmentNumber": "20260406"
+        }
+      ]
+    },
+    {
+      "name": "لارين عبدالمعطي سالم رحيم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190685337",
+          "enrollmentNumber": "5934560"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190685337",
+          "enrollmentNumber": "20260407"
+        }
+      ]
+    },
+    {
+      "name": "لارين محمد حمدو الاكسح",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "سورية",
+          "enrollmentNumber": "6021050"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "سورية",
+          "enrollmentNumber": "20260456"
+        }
+      ]
+    },
+    {
+      "name": "لجين عبدالباسط المشاط عاشور",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190648604",
+          "enrollmentNumber": "5934561"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190648604",
+          "enrollmentNumber": "20260408"
+        }
+      ]
+    },
+    {
+      "name": "لين أحمد عمر الاحمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "سورية",
+          "enrollmentNumber": "6024003"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "سورية",
+          "enrollmentNumber": "20260439"
+        }
+      ]
+    },
+    {
+      "name": "ماريه محمد مسعود الصويعي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191065509",
+          "enrollmentNumber": "5934570"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "220191065509",
+          "enrollmentNumber": "20260440"
+        }
+      ]
+    },
+    {
+      "name": "مارين احمد فتحي الذيب",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191163601",
+          "enrollmentNumber": "5959644"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191163601",
+          "enrollmentNumber": "20260409"
+        }
+      ]
+    },
+    {
+      "name": "مأوى سعيد سالم جعيد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191114791",
+          "enrollmentNumber": "5934566"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220191114791",
+          "enrollmentNumber": "20260411"
+        }
+      ]
+    },
+    {
+      "name": "متاب محمد على خليفة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190957605",
+          "enrollmentNumber": "5934564"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190957605",
+          "enrollmentNumber": "20260412"
+        }
+      ]
+    },
+    {
+      "name": "محمد رضاء محمد ابوصيدة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190992890",
+          "enrollmentNumber": "5954976"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190992890",
+          "enrollmentNumber": "20260413"
+        }
+      ]
+    },
+    {
+      "name": "محمد عادل جمعه ابوالقاسم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190135291",
+          "enrollmentNumber": "5965014"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190135291",
+          "enrollmentNumber": "20260414"
+        }
+      ]
+    },
+    {
+      "name": "محمد معتز محمد حسن",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190071861",
+          "enrollmentNumber": "5934573"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190071861",
+          "enrollmentNumber": "20260457"
+        }
+      ]
+    },
+    {
+      "name": "مصعب عصام العمورى المختار",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190215562",
+          "enrollmentNumber": "5934588"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190215562",
+          "enrollmentNumber": "20260415"
+        }
+      ]
+    },
+    {
+      "name": "معاوية المعتصم احمد خلف الله",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190014981",
+          "enrollmentNumber": "5934592"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ب",
+          "nationalId": "120190014981",
+          "enrollmentNumber": "20260441"
+        }
+      ]
+    },
+    {
+      "name": "معتصم بالله الفاتح شعبان القعود",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190402243",
+          "enrollmentNumber": "5934574"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190402243",
+          "enrollmentNumber": "20260416"
+        }
+      ]
+    },
+    {
+      "name": "معمر محمد معمر خليفه",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190066845",
+          "enrollmentNumber": "5934591"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190066845",
+          "enrollmentNumber": "20260417"
+        }
+      ]
+    },
+    {
+      "name": "ميرال الفاتح شعبان القعود",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190359188",
+          "enrollmentNumber": "5934578"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190359188",
+          "enrollmentNumber": "20260418"
+        }
+      ]
+    },
+    {
+      "name": "ميرال محمد خليفة بعيج",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190843638",
+          "enrollmentNumber": "5934576"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190843638",
+          "enrollmentNumber": "20260459"
+        }
+      ]
+    },
+    {
+      "name": "نوح سالم عثمان الهمالى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190975048",
+          "enrollmentNumber": "5934586"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190975048",
+          "enrollmentNumber": "20260460"
+        }
+      ]
+    },
+    {
+      "name": "ياسين توفيق صالح يوسف",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190098316",
+          "enrollmentNumber": "5934584"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190098316",
+          "enrollmentNumber": "20260419"
+        }
+      ]
+    },
+    {
+      "name": "يزن عبدالعزيز على بلقاسم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190484559",
+          "enrollmentNumber": "5934582"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190484559",
+          "enrollmentNumber": "20260461"
+        }
+      ]
+    },
+    {
+      "name": "يوسف محمد فوزي الشتيوي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190654877",
+          "enrollmentNumber": "5934585"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190654877",
+          "enrollmentNumber": "20260462"
+        }
+      ]
+    },
+    {
+      "name": "يوسف مفتاح ابراهيم الورفلى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190463187",
+          "enrollmentNumber": "5934583"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190463187",
+          "enrollmentNumber": "20260420"
+        }
+      ]
+    },
+    {
+      "name": "يوسف يحى غياث السرا ج",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "سوري",
+          "enrollmentNumber": "6021055"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "سوري",
+          "enrollmentNumber": "20260463"
+        }
+      ]
+    },
+    {
+      "name": "رياض على ابوبكر أدم",
+      "count": 4,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120180734004",
+          "enrollmentNumber": "5715783"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180734004",
+          "enrollmentNumber": "20260173"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120180734004",
+          "enrollmentNumber": "20260464"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180734004",
+          "enrollmentNumber": "20260528"
+        }
+      ]
+    },
+    {
+      "name": "سراج الدين وليد ابراهيم خليفة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190225088",
+          "enrollmentNumber": "5970482"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190225088",
+          "enrollmentNumber": "20260465"
+        }
+      ]
+    },
+    {
+      "name": "اسوه عبد الله مسعود الأطرش",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "220190672775",
+          "enrollmentNumber": "5830065"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "220190672775",
+          "enrollmentNumber": "20260466"
+        }
+      ]
+    },
+    {
+      "name": "البراء رجب مرعي قويدر",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120191225081",
+          "enrollmentNumber": "20260111"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120191225081",
+          "enrollmentNumber": "20260467"
+        }
+      ]
+    },
+    {
+      "name": "محمد عبد الباسط المختار نصير",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "أ",
+          "nationalId": "120190718306",
+          "enrollmentNumber": "6020212"
+        },
+        {
+          "grade": "الصف الثاني",
+          "classRoom": "ج",
+          "nationalId": "120190718306",
+          "enrollmentNumber": "20260468"
+        }
+      ]
+    },
+    {
+      "name": "ابو زيد خالد أبو زيد مسعود",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180333098",
+          "enrollmentNumber": "5695049"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120180333098",
+          "enrollmentNumber": "20260483"
+        }
+      ]
+    },
+    {
+      "name": "أحمد صلاح على الشويرف",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180902456",
+          "enrollmentNumber": "5576318"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180902456",
+          "enrollmentNumber": "20260504"
+        }
+      ]
+    },
+    {
+      "name": "أريام احمد المبروك العقبى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180524824",
+          "enrollmentNumber": "5694882"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220180524824",
+          "enrollmentNumber": "20260505"
+        }
+      ]
+    },
+    {
+      "name": "المبروك محمد المبروك عبد الرحمن",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180025557",
+          "enrollmentNumber": "5577549"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180025557",
+          "enrollmentNumber": "20260469"
+        }
+      ]
+    },
+    {
+      "name": "اميرة عبدالحميد صالح اعوينات",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180284553",
+          "enrollmentNumber": "5694868"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220180284553",
+          "enrollmentNumber": "20260506"
+        }
+      ]
+    },
+    {
+      "name": "اوس عمر محمد الدرويش",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181210884",
+          "enrollmentNumber": "5695053"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181210884",
+          "enrollmentNumber": "20260470"
+        }
+      ]
+    },
+    {
+      "name": "إياد حمد رحيم محمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180593517",
+          "enrollmentNumber": "5575069"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180593517",
+          "enrollmentNumber": "20260507"
+        }
+      ]
+    },
+    {
+      "name": "إياد عبد الروؤف الصديق لامين",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181111406",
+          "enrollmentNumber": "5695047"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120181111406",
+          "enrollmentNumber": "20260484"
+        }
+      ]
+    },
+    {
+      "name": "بلقيس عادل عبد الصمد النقاز",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181043106",
+          "enrollmentNumber": "5694869"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220181043106",
+          "enrollmentNumber": "20260508"
+        }
+      ]
+    },
+    {
+      "name": "بنان محمد بلعيد منصور",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180950461",
+          "enrollmentNumber": "5694870"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220180950461",
+          "enrollmentNumber": "20260509"
+        }
+      ]
+    },
+    {
+      "name": "تالين محمود محمد الورفلى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181180166",
+          "enrollmentNumber": "5694872"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181180166",
+          "enrollmentNumber": "20260471"
+        }
+      ]
+    },
+    {
+      "name": "تميم منير محمود الاسطي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180046165",
+          "enrollmentNumber": "5694861"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180046165",
+          "enrollmentNumber": "20260510"
+        }
+      ]
+    },
+    {
+      "name": "تولين حاتم عاشور عياد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180403033",
+          "enrollmentNumber": "5694871"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180403033",
+          "enrollmentNumber": "20260472"
+        }
+      ]
+    },
+    {
+      "name": "جنى هيثم بشير الدالى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180559288",
+          "enrollmentNumber": "5694885"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220180559288",
+          "enrollmentNumber": "20260511"
+        }
+      ]
+    },
+    {
+      "name": "حذيفة عمر محمد العلوانى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181075982",
+          "enrollmentNumber": "5695073"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181075982",
+          "enrollmentNumber": "20260473"
+        }
+      ]
+    },
+    {
+      "name": "حسين سامي المقطوف العزيبى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180716518",
+          "enrollmentNumber": "5621579"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120180716518",
+          "enrollmentNumber": "20260503"
+        }
+      ]
+    },
+    {
+      "name": "رائف هيثم عبد الرحمن الاى امين",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180217639",
+          "enrollmentNumber": "5699831"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180217639",
+          "enrollmentNumber": "20260512"
+        }
+      ]
+    },
+    {
+      "name": "رسيل علاق على قرقاب",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181049005",
+          "enrollmentNumber": "5694886"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "220181049005",
+          "enrollmentNumber": "20260487"
+        }
+      ]
+    },
+    {
+      "name": "رنا عبد السلام نصر الدين فرحات",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180154959",
+          "enrollmentNumber": "5694877"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "220180154959",
+          "enrollmentNumber": "20260488"
+        }
+      ]
+    },
+    {
+      "name": "رؤى سالم عثمان الهمالى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180760712",
+          "enrollmentNumber": "5694874"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "220180760712",
+          "enrollmentNumber": "20260489"
+        }
+      ]
+    },
+    {
+      "name": "ريم محمد سعيد أبو القاسم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180965753",
+          "enrollmentNumber": "5706295"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220180965753",
+          "enrollmentNumber": "20260513"
+        }
+      ]
+    },
+    {
+      "name": "زينة مصعب خالد الجهاني",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181140359",
+          "enrollmentNumber": "5659479"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181140359",
+          "enrollmentNumber": "20260475"
+        }
+      ]
+    },
+    {
+      "name": "ساري محمد ابو القاسم الديب",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180241472",
+          "enrollmentNumber": "5695078"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120180241472",
+          "enrollmentNumber": "20260490"
+        }
+      ]
+    },
+    {
+      "name": "سيفاو وسام السيفاو كرناص",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181057014",
+          "enrollmentNumber": "5695080"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181057014",
+          "enrollmentNumber": "20260476"
+        }
+      ]
+    },
+    {
+      "name": "شاهين محمد حمدو الاكسح",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "سوري",
+          "enrollmentNumber": "5503028"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "سوري",
+          "enrollmentNumber": "20260515"
+        }
+      ]
+    },
+    {
+      "name": "شموخ وسام محمد زائد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180759491",
+          "enrollmentNumber": "5694891"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180759491",
+          "enrollmentNumber": "20260477"
+        }
+      ]
+    },
+    {
+      "name": "شهد محمد جمعة يحمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181132297",
+          "enrollmentNumber": "5722320"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "220181132297",
+          "enrollmentNumber": "20260491"
+        }
+      ]
+    },
+    {
+      "name": "صهيب وليد محمد البوراوي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180912231",
+          "enrollmentNumber": "6021045"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120180912231",
+          "enrollmentNumber": "20260492"
+        }
+      ]
+    },
+    {
+      "name": "صهيب محمود صالح المنتصر",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180798299",
+          "enrollmentNumber": "5695081"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120180798299",
+          "enrollmentNumber": "20260502"
+        }
+      ]
+    },
+    {
+      "name": "ظريفة احمد علي الحاج مبارك",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180518621",
+          "enrollmentNumber": "5698548"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220180518621",
+          "enrollmentNumber": "20260516"
+        }
+      ]
+    },
+    {
+      "name": "عبد الرحمن يوسف صالح اجوان",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180208932",
+          "enrollmentNumber": "5695082"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180208932",
+          "enrollmentNumber": "20260517"
+        }
+      ]
+    },
+    {
+      "name": "عبد المؤمن هشام فرج اصبيع",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180383420",
+          "enrollmentNumber": "5572044"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180383420",
+          "enrollmentNumber": "20260518"
+        }
+      ]
+    },
+    {
+      "name": "فرج عمران فرج أبو زنان",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181208140",
+          "enrollmentNumber": "5580127"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120181208140",
+          "enrollmentNumber": "20260493"
+        }
+      ]
+    },
+    {
+      "name": "فرح وليد عبد الحميد مصيصة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181041520",
+          "enrollmentNumber": "5704556"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220181041520",
+          "enrollmentNumber": "20260519"
+        }
+      ]
+    },
+    {
+      "name": "فهد بدر عبد السلام الصويعي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181099759",
+          "enrollmentNumber": "5695086"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120181099759",
+          "enrollmentNumber": "20260494"
+        }
+      ]
+    },
+    {
+      "name": "كرم وليد مصباح سالم",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181168860",
+          "enrollmentNumber": "5694866"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181168860",
+          "enrollmentNumber": "20260478"
+        }
+      ]
+    },
+    {
+      "name": "مارية نيزار حمة عوينات",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180329128",
+          "enrollmentNumber": "5694892"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "220180329128",
+          "enrollmentNumber": "20260495"
+        }
+      ]
+    },
+    {
+      "name": "محمد اكرم مصطفى بن سعود",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180344593",
+          "enrollmentNumber": "5714432"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120180344593",
+          "enrollmentNumber": "20260496"
+        }
+      ]
+    },
+    {
+      "name": "محمد طارق الهادي العتيرى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180284264",
+          "enrollmentNumber": "5720094"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180284264",
+          "enrollmentNumber": "20260520"
+        }
+      ]
+    },
+    {
+      "name": "محمد يونس محمد قصيل",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181096392",
+          "enrollmentNumber": "5695095"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120181096392",
+          "enrollmentNumber": "20260521"
+        }
+      ]
+    },
+    {
+      "name": "مريم محمد خليفة بعيج",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180759576",
+          "enrollmentNumber": "5694894"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "220180759576",
+          "enrollmentNumber": "20260497"
+        }
+      ]
+    },
+    {
+      "name": "معاد نجيب إبراهيم القطيوي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180221423",
+          "enrollmentNumber": "5695097"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120180221423",
+          "enrollmentNumber": "20260522"
+        }
+      ]
+    },
+    {
+      "name": "منير محمد ميلاد القفر",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180106395",
+          "enrollmentNumber": "5694867"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120180106395",
+          "enrollmentNumber": "20260498"
+        }
+      ]
+    },
+    {
+      "name": "مؤمن حمزة أبو القاسم الناجح",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180106449",
+          "enrollmentNumber": "5695088"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180106449",
+          "enrollmentNumber": "20260479"
+        }
+      ]
+    },
+    {
+      "name": "ميرال المعتصم بالله محمود الزليطني",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180663231",
+          "enrollmentNumber": "5694897"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220180663231",
+          "enrollmentNumber": "20260523"
+        }
+      ]
+    },
+    {
+      "name": "نجاة عبد العزيز عمران ميلاد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181132921",
+          "enrollmentNumber": "5694879"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181132921",
+          "enrollmentNumber": "20260480"
+        }
+      ]
+    },
+    {
+      "name": "نجية محسن عبد الحميد محمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181152512",
+          "enrollmentNumber": "5694984"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "220181152512",
+          "enrollmentNumber": "20260499"
+        }
+      ]
+    },
+    {
+      "name": "نور أسامة أحمد حموده",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180014013",
+          "enrollmentNumber": "5694988"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180014013",
+          "enrollmentNumber": "20260481"
+        }
+      ]
+    },
+    {
+      "name": "هدى عمر عبد الرحيم المجبري",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220181157104",
+          "enrollmentNumber": "5694880"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220181157104",
+          "enrollmentNumber": "20260525"
+        }
+      ]
+    },
+    {
+      "name": "وئام سليمان عيسى علي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181214244",
+          "enrollmentNumber": "5695100"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181214244",
+          "enrollmentNumber": "20260482"
+        }
+      ]
+    },
+    {
+      "name": "يزيد طلال قاسم المانع",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120180095532",
+          "enrollmentNumber": "5682530"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ب",
+          "nationalId": "120180095532",
+          "enrollmentNumber": "20260500"
+        }
+      ]
+    },
+    {
+      "name": "ميمونة منير حسن حسن",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "220180922497",
+          "enrollmentNumber": "5731440"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "220180922497",
+          "enrollmentNumber": "20260526"
+        }
+      ]
+    },
+    {
+      "name": "أبراهيم عبد الله ابراهيم بالراس على",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "أ",
+          "nationalId": "120181197127",
+          "enrollmentNumber": "4751138"
+        },
+        {
+          "grade": "الصف الثالث",
+          "classRoom": "ج",
+          "nationalId": "120181197127",
+          "enrollmentNumber": "20260527"
+        }
+      ]
+    },
+    {
+      "name": "أبو بكر عمر محمد احمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170516414",
+          "enrollmentNumber": "5380237"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120170516414",
+          "enrollmentNumber": "20260550"
+        }
+      ]
+    },
+    {
+      "name": "أحمد عبد السلام معتوق مرية",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171189068",
+          "enrollmentNumber": "5388577"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171189068",
+          "enrollmentNumber": "20260529"
+        }
+      ]
+    },
+    {
+      "name": "المعتصم بالله امين مفتاح الكايخ",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170970421",
+          "enrollmentNumber": "5486232"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170970421",
+          "enrollmentNumber": "20260530"
+        }
+      ]
+    },
+    {
+      "name": "أنس صلاح حسين صوان",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170893425",
+          "enrollmentNumber": "5316459"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120170893425",
+          "enrollmentNumber": "20260551"
+        }
+      ]
+    },
+    {
+      "name": "بحر منصور علي فليفل",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170593749",
+          "enrollmentNumber": "5437139"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170593749",
+          "enrollmentNumber": "20260531"
+        }
+      ]
+    },
+    {
+      "name": "ترتيل ابوالقاسم عبد الله عقيل",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170053929",
+          "enrollmentNumber": "5466076"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "220170053929",
+          "enrollmentNumber": "20260552"
+        }
+      ]
+    },
+    {
+      "name": "تميم أبو عجيله حسين جحي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171116008",
+          "enrollmentNumber": "5339652"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171116008",
+          "enrollmentNumber": "20260532"
+        }
+      ]
+    },
+    {
+      "name": "جنى محمد احمد بن ياقه",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170896126",
+          "enrollmentNumber": "5316440"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170896126",
+          "enrollmentNumber": "20260533"
+        }
+      ]
+    },
+    {
+      "name": "حذيفة محمد الهادي الوحيشي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170873766",
+          "enrollmentNumber": "5344722"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120170873766",
+          "enrollmentNumber": "20260553"
+        }
+      ]
+    },
+    {
+      "name": "حفصة اكرم الطاهر تربيل",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170511500",
+          "enrollmentNumber": "5322887"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170511500",
+          "enrollmentNumber": "20260534"
+        }
+      ]
+    },
+    {
+      "name": "ربيع رضاء محمد ابو صيدة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171162865",
+          "enrollmentNumber": "5316468"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120171162865",
+          "enrollmentNumber": "20260554"
+        }
+      ]
+    },
+    {
+      "name": "رندة رفيق السنوسى العزابى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220160920985",
+          "enrollmentNumber": "5450496"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220160920985",
+          "enrollmentNumber": "20260535"
+        }
+      ]
+    },
+    {
+      "name": "روبين المعتصم احمد خلف الله",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170741127",
+          "enrollmentNumber": "5373200"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "220170741127",
+          "enrollmentNumber": "20260555"
+        }
+      ]
+    },
+    {
+      "name": "رياض عبد المنعم المختار البيباص",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170683826",
+          "enrollmentNumber": "5428799"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170683826",
+          "enrollmentNumber": "20260536"
+        }
+      ]
+    },
+    {
+      "name": "سما اسامة عبد الله اشتيوي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220171144606",
+          "enrollmentNumber": "5316450"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220171144606",
+          "enrollmentNumber": "20260537"
+        }
+      ]
+    },
+    {
+      "name": "شام عبد المنعم احمد الخودي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220171165184",
+          "enrollmentNumber": "5433486"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220171165184",
+          "enrollmentNumber": "20260538"
+        }
+      ]
+    },
+    {
+      "name": "عبد الرحمن محمد على الأطرش",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170015317",
+          "enrollmentNumber": "5316421"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170015317",
+          "enrollmentNumber": "20260539"
+        }
+      ]
+    },
+    {
+      "name": "عبد الرحمن موسى عياد ابو قصيعة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170985553",
+          "enrollmentNumber": "5443310"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170985553",
+          "enrollmentNumber": "20260540"
+        }
+      ]
+    },
+    {
+      "name": "عبد الرحمن علي فرج يونس",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170695041",
+          "enrollmentNumber": "5289918"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120170695041",
+          "enrollmentNumber": "20260557"
+        }
+      ]
+    },
+    {
+      "name": "عبد المالك عاشور علي رحومة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170342194",
+          "enrollmentNumber": "5316384"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170342194",
+          "enrollmentNumber": "20260541"
+        }
+      ]
+    },
+    {
+      "name": "عبد المالك محمد عبد الحميد محمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171218669",
+          "enrollmentNumber": "5316295"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171218669",
+          "enrollmentNumber": "20260542"
+        }
+      ]
+    },
+    {
+      "name": "عبد المؤمن بدر عبد السلام الصويعي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171099127",
+          "enrollmentNumber": "5316304"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120171099127",
+          "enrollmentNumber": "20260558"
+        }
+      ]
+    },
+    {
+      "name": "غالية سعيد مسعود ميطار",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170852119",
+          "enrollmentNumber": "5315550"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "220170852119",
+          "enrollmentNumber": "20260559"
+        }
+      ]
+    },
+    {
+      "name": "غزالة حوسين مجيد فرحات",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170364223",
+          "enrollmentNumber": "5274791"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "220170364223",
+          "enrollmentNumber": "20260561"
+        }
+      ]
+    },
+    {
+      "name": "فاطمة عبد السلام على الطبولى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170470050",
+          "enrollmentNumber": "5300635"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170470050",
+          "enrollmentNumber": "20260543"
+        }
+      ]
+    },
+    {
+      "name": "قيس احمد ماجد بن طاهر",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171090625",
+          "enrollmentNumber": "5447743"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120171090625",
+          "enrollmentNumber": "20260562"
+        }
+      ]
+    },
+    {
+      "name": "محمد أكرم عبد السلام المقرحى",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170913350",
+          "enrollmentNumber": "5316399"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120170913350",
+          "enrollmentNumber": "20260563"
+        }
+      ]
+    },
+    {
+      "name": "محمد نجيب إبراهيم القطيوي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170275935",
+          "enrollmentNumber": "5286181"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170275935",
+          "enrollmentNumber": "20260547"
+        }
+      ]
+    },
+    {
+      "name": "محمود وليد جمعة البزويك",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170190195",
+          "enrollmentNumber": "5315581"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120170190195",
+          "enrollmentNumber": "20260564"
+        }
+      ]
+    },
+    {
+      "name": "ملاك احمد فتحي الذيب",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220171138373",
+          "enrollmentNumber": "5315590"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "220171138373",
+          "enrollmentNumber": "20260565"
+        }
+      ]
+    },
+    {
+      "name": "نور هشام محمد التركي",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220171130812",
+          "enrollmentNumber": "5287054"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220171130812",
+          "enrollmentNumber": "20260548"
+        }
+      ]
+    },
+    {
+      "name": "هبة احمد منصور ابو ذيب",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "220170036443",
+          "enrollmentNumber": "5286131"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "220170036443",
+          "enrollmentNumber": "20260566"
+        }
+      ]
+    },
+    {
+      "name": "هيثم معاوية أبو القاسم المناخ",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170751293",
+          "enrollmentNumber": "5363998"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120170751293",
+          "enrollmentNumber": "20260567"
+        }
+      ]
+    },
+    {
+      "name": "وقاص محمود عبد الكريم زعطوط",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120170578931",
+          "enrollmentNumber": "5316299"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120170578931",
+          "enrollmentNumber": "20260568"
+        }
+      ]
+    },
+    {
+      "name": "يزن محمد جمعة يحمد",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120160349280",
+          "enrollmentNumber": "5300492"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "ب",
+          "nationalId": "120160349280",
+          "enrollmentNumber": "20260569"
+        }
+      ]
+    },
+    {
+      "name": "يزيد عبد المطلب ابو بكر ابو شعيرة",
+      "count": 2,
+      "instances": [
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171073873",
+          "enrollmentNumber": "5316435"
+        },
+        {
+          "grade": "الصف الرابع",
+          "classRoom": "أ",
+          "nationalId": "120171073873",
+          "enrollmentNumber": "20260549"
+        }
+      ]
+    }
+  ],
+  "duplicateNatIdsList": [
+    {
+      "nationalId": "120190502235",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ابراهيم فتحى إبراهيم عبد الدائم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ابراهيم فتحى إبراهيم عبد الدائم",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190440343",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أفنان فتحي احمد الكرغلى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أفنان فتحي احمد الكرغلى",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190756056",
+      "count": 2,
+      "instances": [
+        {
+          "name": "الحارث عبد الله أبو بكر عيسى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "الحارث عبد الله أبو بكر عيسى",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190837764",
+      "count": 2,
+      "instances": [
+        {
+          "name": "الزبير جلال البشير الشنطة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "الزبير جلال البشير الشنطة",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220191078475",
+      "count": 2,
+      "instances": [
+        {
+          "name": "العنود احمد عيسى على",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "العنود احمد عيسى على",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190017446",
+      "count": 2,
+      "instances": [
+        {
+          "name": "آمنه محمد الشريف اصنيبة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "آمنه محمد الشريف اصنيبة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220191179408",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أوسمة سالم المولدى المزوغى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أوسمة سالم المولدى المزوغى",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190225613",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أويس يوسف زيدان أبو بكر",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أويس يوسف زيدان أبو بكر",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190800075",
+      "count": 2,
+      "instances": [
+        {
+          "name": "آيه حسين فرج بن رمضان",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "آيه حسين فرج بن رمضان",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220191066168",
+      "count": 2,
+      "instances": [
+        {
+          "name": "اية محمد مسعود اسديرة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "اية محمد مسعود اسديرة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190329576",
+      "count": 2,
+      "instances": [
+        {
+          "name": "إيلاف محمود عبد الوهاب بشير",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "إيلاف محمود عبد الوهاب بشير",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220191120277",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تالين وليد عبد الله علي الورشفانى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تالين وليد عبد الله علي الورشفانى",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190737481",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تسنيم مراد إبراهيم الجالي",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تسنيم مراد إبراهيم الجالي",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190467638",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تولين فتحى إبراهيم عبد الدائم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تولين فتحى إبراهيم عبد الدائم",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190304370",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تيم محمد بلقاسم المحجوب",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تيم محمد بلقاسم المحجوب",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "221090045526",
+      "count": 2,
+      "instances": [
+        {
+          "name": "جنى الطاهر سليمان أبو الزمازم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "جنى الطاهر سليمان أبو الزمازم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190908351",
+      "count": 2,
+      "instances": [
+        {
+          "name": "جنى جبريل مفتاح مفتاح",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "جنى جبريل مفتاح مفتاح",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120191126818",
+      "count": 2,
+      "instances": [
+        {
+          "name": "حسين أبو عجيلة حسين جحى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "حسين أبو عجيلة حسين جحى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190285645",
+      "count": 2,
+      "instances": [
+        {
+          "name": "خديجة علي جمعة البزويك",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "خديجة علي جمعة البزويك",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190073378",
+      "count": 2,
+      "instances": [
+        {
+          "name": "خديجة غيث مادى رمضان",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "خديجة غيث مادى رمضان",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190039163",
+      "count": 2,
+      "instances": [
+        {
+          "name": "خديجة محمد ارخيص النيهوم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "خديجة محمد ارخيص النيهوم",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190833372",
+      "count": 2,
+      "instances": [
+        {
+          "name": "دانة حمزة علي علي الدرار",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "دانة حمزة علي علي الدرار",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190449401",
+      "count": 2,
+      "instances": [
+        {
+          "name": "دانه معاوية ابو القاسم المناخ",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "دانه معاوية ابو القاسم المناخ",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "لا يوجد رقم وطني",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رانية عابدين محمد محمد",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رانية عابدين محمد محمد",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190845504",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رتيل اسامة المهدي القاضى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رتيل اسامة المهدي القاضى",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220191014303",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رفان جمعة فرج امساعد",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رفان جمعة فرج امساعد",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "فلسطينية",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رهف أحمد خليل إبراهيم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رهف أحمد خليل إبراهيم",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190500108",
+      "count": 2,
+      "instances": [
+        {
+          "name": "روسن محمد ابو القاسم الديب",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "روسن محمد ابو القاسم الديب",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190813514",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ريفان رضا محمد التومي",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ريفان رضا محمد التومي",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190639076",
+      "count": 2,
+      "instances": [
+        {
+          "name": "سالم عبد المنعم سالم جعيد",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "سالم عبد المنعم سالم جعيد",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190451107",
+      "count": 2,
+      "instances": [
+        {
+          "name": "سجى اسامه عبد الله اشتيوي",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "سجى اسامه عبد الله اشتيوي",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190249540",
+      "count": 2,
+      "instances": [
+        {
+          "name": "سجى عاشور علي رحومة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "سجى عاشور علي رحومة",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190655169",
+      "count": 2,
+      "instances": [
+        {
+          "name": "سدينة علي امحمد هيبة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "سدينة علي امحمد هيبة",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190032544",
+      "count": 2,
+      "instances": [
+        {
+          "name": "سما أنس عبد الرؤوف الباسط",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "سما أنس عبد الرؤوف الباسط",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190904930",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد البارئ عمران فرج ابو زنان",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد البارئ عمران فرج ابو زنان",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190113130",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد الحميد عادل سالم ابورخيص",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد الحميد عادل سالم ابورخيص",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120191149231",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبدالرحمن عبدالرزاق عبدالرحيم احمد",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبدالرحمن عبدالرزاق عبدالرحيم احمد",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190398924",
+      "count": 2,
+      "instances": [
+        {
+          "name": "علي احمد علي على",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "علي احمد علي على",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190344315",
+      "count": 2,
+      "instances": [
+        {
+          "name": "غدي حوسين مجيد فرحات",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "غدي حوسين مجيد فرحات",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190637598",
+      "count": 2,
+      "instances": [
+        {
+          "name": "غزل سالم عبدالفتاح عونيه",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "غزل سالم عبدالفتاح عونيه",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190970166",
+      "count": 2,
+      "instances": [
+        {
+          "name": "فارس فراس نورى المبروك",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "فارس فراس نورى المبروك",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190058454",
+      "count": 2,
+      "instances": [
+        {
+          "name": "فاطمة محمد على الاطرش",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "فاطمة محمد على الاطرش",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120191119568",
+      "count": 2,
+      "instances": [
+        {
+          "name": "فرج عبدالرؤوف محمد دلف",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "فرج عبدالرؤوف محمد دلف",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190361410",
+      "count": 2,
+      "instances": [
+        {
+          "name": "قصىي علاء الدين علي انفيص",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "قصىي علاء الدين علي انفيص",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190823352",
+      "count": 2,
+      "instances": [
+        {
+          "name": "قيس عبدالوهاب محمد عبدالوهاب",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "قيس عبدالوهاب محمد عبدالوهاب",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190182968",
+      "count": 2,
+      "instances": [
+        {
+          "name": "كيندا عماد علي يوسف",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "كيندا عماد علي يوسف",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190685337",
+      "count": 2,
+      "instances": [
+        {
+          "name": "لارين عبدالمعطي سالم رحيم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "لارين عبدالمعطي سالم رحيم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190648604",
+      "count": 2,
+      "instances": [
+        {
+          "name": "لجين عبدالباسط المشاط عاشور",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "لجين عبدالباسط المشاط عاشور",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220191065509",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ماريه محمد مسعود الصويعي",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ماريه محمد مسعود الصويعي",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220191163601",
+      "count": 2,
+      "instances": [
+        {
+          "name": "مارين احمد فتحي الذيب",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "مارين احمد فتحي الذيب",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220191114791",
+      "count": 2,
+      "instances": [
+        {
+          "name": "مأوى سعيد سالم جعيد",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "مأوى سعيد سالم جعيد",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190957605",
+      "count": 2,
+      "instances": [
+        {
+          "name": "متاب محمد على خليفة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "متاب محمد على خليفة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190992890",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد رضاء محمد ابوصيدة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد رضاء محمد ابوصيدة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190135291",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد عادل جمعه ابوالقاسم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد عادل جمعه ابوالقاسم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190071861",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد معتز محمد حسن",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد معتز محمد حسن",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190215562",
+      "count": 2,
+      "instances": [
+        {
+          "name": "مصعب عصام العمورى المختار",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "مصعب عصام العمورى المختار",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190014981",
+      "count": 2,
+      "instances": [
+        {
+          "name": "معاوية المعتصم احمد خلف الله",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "معاوية المعتصم احمد خلف الله",
+          "grade": "الصف الثاني",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190402243",
+      "count": 2,
+      "instances": [
+        {
+          "name": "معتصم بالله الفاتح شعبان القعود",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "معتصم بالله الفاتح شعبان القعود",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190066845",
+      "count": 2,
+      "instances": [
+        {
+          "name": "معمر محمد معمر خليفه",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "معمر محمد معمر خليفه",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190698463",
+      "count": 2,
+      "instances": [
+        {
+          "name": "مها محمود صالح المنتصر",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "مها محمود صالح النتصر",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190359188",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ميرال الفاتح شعبان القعود",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ميرال الفاتح شعبان القعود",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190843638",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ميرال محمد خليفة بعيج",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ميرال محمد خليفة بعيج",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190975048",
+      "count": 2,
+      "instances": [
+        {
+          "name": "نوح سالم عثمان الهمالى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "نوح سالم عثمان الهمالى",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190098316",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ياسين توفيق صالح يوسف",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ياسين توفيق صالح يوسف",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190484559",
+      "count": 2,
+      "instances": [
+        {
+          "name": "يزن عبدالعزيز على بلقاسم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "يزن عبدالعزيز على بلقاسم",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190654877",
+      "count": 2,
+      "instances": [
+        {
+          "name": "يوسف محمد فوزي الشتيوي",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "يوسف محمد فوزي الشتيوي",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190463187",
+      "count": 2,
+      "instances": [
+        {
+          "name": "يوسف مفتاح ابراهيم الورفلى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "يوسف مفتاح ابراهيم الورفلى",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "سوري",
+      "count": 4,
+      "instances": [
+        {
+          "name": "يوسف يحى غياث السرا ج",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "شاهين محمد حمدو الاكسح",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "يوسف يحى غياث السرا ج",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        },
+        {
+          "name": "شاهين محمد حمدو الاكسح",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180734004",
+      "count": 4,
+      "instances": [
+        {
+          "name": "رياض على ابوبكر أدم",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رياض على ابوبكر أدم",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رياض على ابوبكر أدم",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        },
+        {
+          "name": "رياض على ابوبكر أدم",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190225088",
+      "count": 2,
+      "instances": [
+        {
+          "name": "سراج الدين وليد ابراهيم خليفة",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "سراج الدين وليد ابراهيم خليفة",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220190672775",
+      "count": 2,
+      "instances": [
+        {
+          "name": "اسوه عبد الله مسعود الأطرش",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "اسوه عبد الله مسعود الأطرش",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120191225081",
+      "count": 2,
+      "instances": [
+        {
+          "name": "البراء رجب مرعي قويدر",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "البراء رجب مرعي قويدر",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120190718306",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد عبد الباسط المختار نصير",
+          "grade": "الصف الثاني",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد عبد الباسط المختار نصير",
+          "grade": "الصف الثاني",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180333098",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ابو زيد خالد أبو زيد مسعود",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ابو زيد خالد أبو زيد مسعود",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180902456",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أحمد صلاح على الشويرف",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أحمد صلاح على الشويرف",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180524824",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أريام احمد المبروك العقبى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أريام احمد المبروك العقبى",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180025557",
+      "count": 2,
+      "instances": [
+        {
+          "name": "المبروك محمد المبروك عبد الرحمن",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "المبروك محمد المبروك عبد الرحمن",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180284553",
+      "count": 2,
+      "instances": [
+        {
+          "name": "اميرة عبدالحميد صالح اعوينات",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "اميرة عبدالحميد صالح اعوينات",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181210884",
+      "count": 2,
+      "instances": [
+        {
+          "name": "اوس عمر محمد الدرويش",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "اوس عمر محمد الدرويش",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180593517",
+      "count": 2,
+      "instances": [
+        {
+          "name": "إياد حمد رحيم محمد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "إياد حمد رحيم محمد",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181111406",
+      "count": 2,
+      "instances": [
+        {
+          "name": "إياد عبد الروؤف الصديق لامين",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "إياد عبد الروؤف الصديق لامين",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181043106",
+      "count": 2,
+      "instances": [
+        {
+          "name": "بلقيس عادل عبد الصمد النقاز",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "بلقيس عادل عبد الصمد النقاز",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180950461",
+      "count": 2,
+      "instances": [
+        {
+          "name": "بنان محمد بلعيد منصور",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "بنان محمد بلعيد منصور",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181180166",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تالين محمود محمد الورفلى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تالين محمود محمد الورفلى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180046165",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تميم منير محمود الاسطي",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تميم منير محمود الاسطي",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180403033",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تولين حاتم عاشور عياد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تولين حاتم عاشور عياد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180859347",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تيم الله بو سويق محمد ذيوبه",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تيم الله بوسويق محمد ذيوبه",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180559288",
+      "count": 2,
+      "instances": [
+        {
+          "name": "جنى هيثم بشير الدالى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "جنى هيثم بشير الدالى",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181075982",
+      "count": 2,
+      "instances": [
+        {
+          "name": "حذيفة عمر محمد العلوانى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "حذيفة عمر محمد العلوانى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180716518",
+      "count": 2,
+      "instances": [
+        {
+          "name": "حسين سامي المقطوف العزيبى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "حسين سامي المقطوف العزيبى",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180217639",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رائف هيثم عبد الرحمن الاى امين",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رائف هيثم عبد الرحمن الاى امين",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181049005",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رسيل علاق على قرقاب",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رسيل علاق على قرقاب",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180154959",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رنا عبد السلام نصر الدين فرحات",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رنا عبد السلام نصر الدين فرحات",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180760712",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رؤى سالم عثمان الهمالى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رؤى سالم عثمان الهمالى",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180965753",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ريم محمد سعيد أبو القاسم",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ريم محمد سعيد أبو القاسم",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181140359",
+      "count": 2,
+      "instances": [
+        {
+          "name": "زينة مصعب خالد الجهاني",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "زينة مصعب خالد الجهاني",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180241472",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ساري محمد ابو القاسم الديب",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ساري محمد ابو القاسم الديب",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181057014",
+      "count": 2,
+      "instances": [
+        {
+          "name": "سيفاو وسام السيفاو كرناص",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "سيفاو وسام السيفاو كرناص",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180759491",
+      "count": 2,
+      "instances": [
+        {
+          "name": "شموخ وسام محمد زائد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "شموخ وسام محمد زائد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181132297",
+      "count": 2,
+      "instances": [
+        {
+          "name": "شهد محمد جمعة يحمد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "شهد محمد جمعة يحمد",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180912231",
+      "count": 2,
+      "instances": [
+        {
+          "name": "صهيب وليد محمد البوراوي",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "صهيب وليد محمد البوراوي",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180798299",
+      "count": 2,
+      "instances": [
+        {
+          "name": "صهيب محمود صالح المنتصر",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "صهيب محمود صالح المنتصر",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180518621",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ظريفة احمد علي الحاج مبارك",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ظريفة احمد علي الحاج مبارك",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180208932",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد الرحمن يوسف صالح اجوان",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد الرحمن يوسف صالح اجوان",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180383420",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد المؤمن هشام فرج اصبيع",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد المؤمن هشام فرج اصبيع",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181208140",
+      "count": 2,
+      "instances": [
+        {
+          "name": "فرج عمران فرج أبو زنان",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "فرج عمران فرج أبو زنان",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181041520",
+      "count": 2,
+      "instances": [
+        {
+          "name": "فرح وليد عبد الحميد مصيصة",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "فرح وليد عبد الحميد مصيصة",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181099759",
+      "count": 2,
+      "instances": [
+        {
+          "name": "فهد بدر عبد السلام الصويعي",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "فهد بدر عبد السلام الصويعي",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181168860",
+      "count": 2,
+      "instances": [
+        {
+          "name": "كرم وليد مصباح سالم",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "كرم وليد مصباح سالم",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180329128",
+      "count": 2,
+      "instances": [
+        {
+          "name": "مارية نيزار حمة عوينات",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "مارية نيزار حمة عوينات",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180344593",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد اكرم مصطفى بن سعود",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد اكرم مصطفى بن سعود",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180284264",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد طارق الهادي العتيرى",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد طارق الهادي العتيرى",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181096392",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد يونس محمد قصيل",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد يونس محمد قصيل",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180759576",
+      "count": 2,
+      "instances": [
+        {
+          "name": "مريم محمد خليفة بعيج",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "مريم محمد خليفة بعيج",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180221423",
+      "count": 2,
+      "instances": [
+        {
+          "name": "معاد نجيب إبراهيم القطيوي",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "معاد نجيب إبراهيم القطيوي",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180106395",
+      "count": 2,
+      "instances": [
+        {
+          "name": "منير محمد ميلاد القفر",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "منير محمد ميلاد القفر",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180106449",
+      "count": 2,
+      "instances": [
+        {
+          "name": "مؤمن حمزة أبو القاسم الناجح",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "مؤمن حمزة أبو القاسم الناجح",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180663231",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ميرال المعتصم بالله محمود الزليطني",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ميرال المعتصم بالله محمود الزليطني",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181132921",
+      "count": 2,
+      "instances": [
+        {
+          "name": "نجاة عبد العزيز عمران ميلاد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "نجاة عبد العزيز عمران ميلاد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181152512",
+      "count": 2,
+      "instances": [
+        {
+          "name": "نجية محسن عبد الحميد محمد",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "نجية محسن عبد الحميد محمد",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180014013",
+      "count": 2,
+      "instances": [
+        {
+          "name": "نور أسامة أحمد حموده",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "نور أسامة أحمد حموده",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220181157104",
+      "count": 2,
+      "instances": [
+        {
+          "name": "هدى عمر عبد الرحيم المجبري",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "هدى عمر عبد الرحيم المجبري",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181214244",
+      "count": 2,
+      "instances": [
+        {
+          "name": "وئام سليمان عيسى علي",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "وئام سليمان عيسى علي",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120180095532",
+      "count": 2,
+      "instances": [
+        {
+          "name": "يزيد طلال قاسم المانع",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "يزيد طلال قاسم المانع",
+          "grade": "الصف الثالث",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220180922497",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ميمونة منير حسن حسن",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ميمونة منير حسن حسن",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120181197127",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أبراهيم عبد الله ابراهيم بالراس على",
+          "grade": "الصف الثالث",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أبراهيم عبد الله ابراهيم بالراس على",
+          "grade": "الصف الثالث",
+          "classRoom": "ج"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170516414",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أبو بكر عمر محمد احمد",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أبو بكر عمر محمد احمد",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120171189068",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أحمد عبد السلام معتوق مرية",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أحمد عبد السلام معتوق مرية",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170970421",
+      "count": 2,
+      "instances": [
+        {
+          "name": "المعتصم بالله امين مفتاح الكايخ",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "المعتصم بالله امين مفتاح الكايخ",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170893425",
+      "count": 2,
+      "instances": [
+        {
+          "name": "أنس صلاح حسين صوان",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "أنس صلاح حسين صوان",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170593749",
+      "count": 2,
+      "instances": [
+        {
+          "name": "بحر منصور علي فليفل",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "بحر منصور علي فليفل",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220170053929",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ترتيل ابوالقاسم عبد الله عقيل",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ترتيل ابوالقاسم عبد الله عقيل",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120171116008",
+      "count": 2,
+      "instances": [
+        {
+          "name": "تميم أبو عجيله حسين جحي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "تميم أبو عجيله حسين جحي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220170896126",
+      "count": 2,
+      "instances": [
+        {
+          "name": "جنى محمد احمد بن ياقه",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "جنى محمد احمد بن ياقه",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170873766",
+      "count": 2,
+      "instances": [
+        {
+          "name": "حذيفة محمد الهادي الوحيشي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "حذيفة محمد الهادي الوحيشي",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220170511500",
+      "count": 2,
+      "instances": [
+        {
+          "name": "حفصة اكرم الطاهر تربيل",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "حفصة اكرم الطاهر تربيل",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120171162865",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ربيع رضاء محمد ابو صيدة",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ربيع رضاء محمد ابو صيدة",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220160920985",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رندة رفيق السنوسى العزابى",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رندة رفيق السنوسى العزابى",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220170741127",
+      "count": 2,
+      "instances": [
+        {
+          "name": "روبين المعتصم احمد خلف الله",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "روبين المعتصم احمد خلف الله",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170683826",
+      "count": 2,
+      "instances": [
+        {
+          "name": "رياض عبد المنعم المختار البيباص",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "رياض عبد المنعم المختار البيباص",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220171144606",
+      "count": 2,
+      "instances": [
+        {
+          "name": "سما اسامة عبد الله اشتيوي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "سما اسامة عبد الله اشتيوي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220171165184",
+      "count": 2,
+      "instances": [
+        {
+          "name": "شام عبد المنعم احمد الخودي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "شام عبد المنعم احمد الخودي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170015317",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد الرحمن محمد على الأطرش",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد الرحمن محمد على الأطرش",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170985553",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد الرحمن موسى عياد ابو قصيعة",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد الرحمن موسى عياد ابو قصيعة",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170695041",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد الرحمن علي فرج يونس",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد الرحمن علي فرج يونس",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170342194",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد المالك عاشور علي رحومة",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد المالك عاشور علي رحومة",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120171218669",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد المالك محمد عبد الحميد محمد",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد المالك محمد عبد الحميد محمد",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120171099127",
+      "count": 2,
+      "instances": [
+        {
+          "name": "عبد المؤمن بدر عبد السلام الصويعي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "عبد المؤمن بدر عبد السلام الصويعي",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220170852119",
+      "count": 2,
+      "instances": [
+        {
+          "name": "غالية سعيد مسعود ميطار",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "غالية سعيد مسعود ميطار",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220170364223",
+      "count": 2,
+      "instances": [
+        {
+          "name": "غزالة حوسين مجيد فرحات",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "غزالة حوسين مجيد فرحات",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220170470050",
+      "count": 2,
+      "instances": [
+        {
+          "name": "فاطمة عبد السلام على الطبولى",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "فاطمة عبد السلام على الطبولى",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120171090625",
+      "count": 2,
+      "instances": [
+        {
+          "name": "قيس احمد ماجد بن طاهر",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "قيس احمد ماجد بن طاهر",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170913350",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد أكرم عبد السلام المقرحى",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد أكرم عبد السلام المقرحى",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170275935",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمد نجيب إبراهيم القطيوي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمد نجيب إبراهيم القطيوي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170190195",
+      "count": 2,
+      "instances": [
+        {
+          "name": "محمود وليد جمعة البزويك",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "محمود وليد جمعة البزويك",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220171138373",
+      "count": 2,
+      "instances": [
+        {
+          "name": "ملاك احمد فتحي الذيب",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "ملاك احمد فتحي الذيب",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "220171130812",
+      "count": 2,
+      "instances": [
+        {
+          "name": "نور هشام محمد التركي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "نور هشام محمد التركي",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    },
+    {
+      "nationalId": "220170036443",
+      "count": 2,
+      "instances": [
+        {
+          "name": "هبة احمد منصور ابو ذيب",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "هبة احمد منصور ابو ذيب",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170751293",
+      "count": 2,
+      "instances": [
+        {
+          "name": "هيثم معاوية أبو القاسم المناخ",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "هيثم معاوية أبو القاسم المناخ",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120170578931",
+      "count": 2,
+      "instances": [
+        {
+          "name": "وقاص محمود عبد الكريم زعطوط",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "وقاص محمود عبد الكريم زعطوط",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120160349280",
+      "count": 2,
+      "instances": [
+        {
+          "name": "يزن محمد جمعة يحمد",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "يزن محمد جمعة يحمد",
+          "grade": "الصف الرابع",
+          "classRoom": "ب"
+        }
+      ]
+    },
+    {
+      "nationalId": "120171073873",
+      "count": 2,
+      "instances": [
+        {
+          "name": "يزيد عبد المطلب ابو بكر ابو شعيرة",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        },
+        {
+          "name": "يزيد عبد المطلب ابو بكر ابو شعيرة",
+          "grade": "الصف الرابع",
+          "classRoom": "أ"
+        }
+      ]
+    }
+  ]
+}

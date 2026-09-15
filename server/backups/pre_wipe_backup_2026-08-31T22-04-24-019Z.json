@@ -1,0 +1,1588 @@
+{
+  "students": [],
+  "teachers": [
+    {
+      "_id": "6a7943c40fc97b9b308608b5",
+      "id": 1786332047107,
+      "name": "عائشة مفتاح علي أبو صيدة",
+      "subject": "المدير",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2004-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.581Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608b6",
+      "id": 1786332047108,
+      "name": "صفاء سالم علي الذيب",
+      "subject": "نائب المدير",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2024-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.581Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608b7",
+      "id": 1786332047109,
+      "name": "كوثر علي الشامس عصمان",
+      "subject": "شؤون ادارية",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2016-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.582Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608b8",
+      "id": 1786332047110,
+      "name": "فوزية حسين إمحمد مسعود",
+      "subject": "إشراف",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2000-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.582Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608b9",
+      "id": 1786332047111,
+      "name": "خلود علي محمود اعيال عمر",
+      "subject": "اشراف",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2010-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.582Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608ba",
+      "id": 1786332047112,
+      "name": "فتحية محمد علي فرحات",
+      "subject": "اشراف",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2024-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.582Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608bb",
+      "id": 1786332047113,
+      "name": "عائشة سعد مصباح الجبو",
+      "subject": "برمجة و تحاليل نظم",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2004-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.583Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608bc",
+      "id": 1786332047114,
+      "name": "مرام محمد ابوقرش",
+      "subject": "إدارة اعمال",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2024-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.583Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608bd",
+      "id": 1786332047115,
+      "name": "مودة محمد ابو القاسم الاشخم",
+      "subject": "حاسب",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2020-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.583Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608be",
+      "id": 1786332047116,
+      "name": "غادة صالح محمد سالم",
+      "subject": "فيزياء",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2017-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.583Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608bf",
+      "id": 1786332047117,
+      "name": "فايزة محمد علي امحمد",
+      "subject": "علوم",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "1994-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.584Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608c0",
+      "id": 1786332047118,
+      "name": "سهير سالم",
+      "subject": "معلم فصل",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2024-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.584Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608c1",
+      "id": 1786332047119,
+      "name": "احلام عبد الرزاق محمد الهروال",
+      "subject": "معلم فصل",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2024-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.584Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608c2",
+      "id": 1786332047120,
+      "name": "مروة مسعود صالح القرام",
+      "subject": "إدارة اعمال",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2024-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.584Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7943c40fc97b9b308608c3",
+      "id": 1786332047121,
+      "name": "أمل البهلول محمد شكري",
+      "subject": "إدارة اعمال",
+      "phone": "0000000000",
+      "salary": 0,
+      "hireDate": "2024-09-01",
+      "isAbsent": false,
+      "createdAt": "2026-08-10T03:21:40.585Z",
+      "__v": 0
+    }
+  ],
+  "receipts": [
+    {
+      "_id": "6a85974fd5f54de4adef03fa",
+      "id": "REC-0054",
+      "studentId": 327,
+      "studentName": "سهيل محمد صالح لبه ",
+      "grade": "الصف التاسع",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 900,
+      "remaining": 1600,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-19",
+      "createdAt": "2026-08-19T11:45:19.594Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef03fb",
+      "id": "REC-0053",
+      "studentId": 154,
+      "studentName": "أبو بكر عمر محمد احمد",
+      "grade": "الصف الرابع",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 1200,
+      "remaining": 1300,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-19",
+      "createdAt": "2026-08-19T11:45:19.594Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef03fc",
+      "id": "REC-0052",
+      "studentId": 365,
+      "studentName": "غنى ايمن الطاهر مريحيل ",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1100,
+      "remaining": 1300,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-19",
+      "createdAt": "2026-08-19T11:45:19.595Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef03fd",
+      "id": "REC-0051",
+      "studentId": 362,
+      "studentName": "أنس علي عبد الله عليان ",
+      "grade": "الصف الخامس",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 2500,
+      "remaining": 0,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-18",
+      "createdAt": "2026-08-19T11:45:19.595Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef03fe",
+      "id": "REC-0050",
+      "studentId": 353,
+      "studentName": "مصعب محمود صالح المنتصر ",
+      "grade": "KG1",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 500,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-17",
+      "createdAt": "2026-08-19T11:45:19.595Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef03ff",
+      "id": "REC-0049",
+      "studentId": 127,
+      "studentName": "صهيب محمود صالح المنتصر",
+      "grade": "الصف الثالث",
+      "installmentNo": 2,
+      "totalDue": 2400,
+      "paidAmount": 500,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-17",
+      "createdAt": "2026-08-19T11:45:19.595Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0400",
+      "id": "REC-0048",
+      "studentId": 127,
+      "studentName": "صهيب محمود صالح المنتصر",
+      "grade": "الصف الثالث",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 500,
+      "remaining": 1900,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-17",
+      "createdAt": "2026-08-19T11:45:19.596Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0401",
+      "id": "REC-0047",
+      "studentId": 349,
+      "studentName": "محمد عبد القادر عبد الحفيظ عمار ",
+      "grade": "KG1",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 1000,
+      "remaining": 900,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-17",
+      "createdAt": "2026-08-19T11:45:19.596Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0402",
+      "id": "REC-0046",
+      "studentId": 348,
+      "studentName": "عبد الحفيظ عبد القادر عبد الحفيظ عمار ",
+      "grade": "الصف الثالث",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-17",
+      "createdAt": "2026-08-19T11:45:19.596Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0403",
+      "id": "REC-0045",
+      "studentId": 344,
+      "studentName": "مهاب وليد محمد نصر ",
+      "grade": "KG2",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 950,
+      "remaining": 950,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-17",
+      "createdAt": "2026-08-19T11:45:19.596Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0404",
+      "id": "REC-0044",
+      "studentId": 343,
+      "studentName": "مثاب وليد محمد نصر ",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1200,
+      "remaining": 1200,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-17",
+      "createdAt": "2026-08-19T11:45:19.596Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0405",
+      "id": "REC-0043",
+      "studentId": 319,
+      "studentName": "ياسمين محمد محمود الزليطني ",
+      "grade": "KG2",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 500,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-17",
+      "createdAt": "2026-08-19T11:45:19.596Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0406",
+      "id": "REC-0042",
+      "studentId": 7,
+      "studentName": "تيم خالد ميلاد جعيدة",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 2000,
+      "remaining": 400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-16",
+      "createdAt": "2026-08-19T11:45:19.597Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0407",
+      "id": "REC-0041",
+      "studentId": 207,
+      "studentName": "شاهين المعتصم بالله مسعود عبد الهادى",
+      "grade": "الصف الخامس",
+      "installmentNo": 3,
+      "totalDue": 2500,
+      "paidAmount": 100,
+      "remaining": 300,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-16",
+      "createdAt": "2026-08-19T11:45:19.597Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0408",
+      "id": "REC-0040",
+      "studentId": 5,
+      "studentName": "آية المعتصم بالله مسعود عبد الهادى",
+      "grade": "الصف الأول",
+      "installmentNo": 2,
+      "totalDue": 2400,
+      "paidAmount": 1400,
+      "remaining": 500,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-16",
+      "createdAt": "2026-08-19T11:45:19.597Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0409",
+      "id": "REC-0039",
+      "studentId": 316,
+      "studentName": "مزن عبد الباسط المختار نصير ",
+      "grade": "KG1",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 1000,
+      "remaining": 900,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.597Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef040a",
+      "id": "REC-0038",
+      "studentId": 95,
+      "studentName": "محمد عبد الباسط المختار نصير",
+      "grade": "الصف الثاني",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1300,
+      "remaining": 1100,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.597Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef040b",
+      "id": "REC-0037",
+      "studentId": 315,
+      "studentName": "ميس محمد زائد المبروك ",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1500,
+      "remaining": 900,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.598Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef040c",
+      "id": "REC-0036",
+      "studentId": 314,
+      "studentName": "روان جمعة فرج امساعد ",
+      "grade": "KG2",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 500,
+      "remaining": 1400,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.598Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef040d",
+      "id": "REC-0035",
+      "studentId": 45,
+      "studentName": "رفان جمعة فرج امساعد",
+      "grade": "الصف الثاني",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 500,
+      "remaining": 1900,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.598Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef040e",
+      "id": "REC-0034",
+      "studentId": 313,
+      "studentName": "صمود خالد عيسى الشوين ",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 500,
+      "remaining": 1900,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.598Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef040f",
+      "id": "REC-0033",
+      "studentId": 207,
+      "studentName": "شاهين المعتصم بالله مسعود عبد الهادى",
+      "grade": "الصف الخامس",
+      "installmentNo": 2,
+      "totalDue": 2500,
+      "paidAmount": 1100,
+      "remaining": 400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.598Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0410",
+      "id": "REC-0032",
+      "studentId": 77,
+      "studentName": "محمد معتز محمد حسن",
+      "grade": "الصف الثاني",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1200,
+      "remaining": 1200,
+      "paymentMethod": "حوالة مصرفية",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.599Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0411",
+      "id": "REC-0031",
+      "studentId": 300,
+      "studentName": "رهف معتز محمد حسن",
+      "grade": "KG2",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 900,
+      "remaining": 1000,
+      "paymentMethod": "حوالة مصرفية",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.599Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0412",
+      "id": "REC-0030",
+      "studentId": 312,
+      "studentName": "جنى معتز محمد الغزيل ",
+      "grade": "KG2",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 1000,
+      "remaining": 900,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.599Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0413",
+      "id": "REC-0029",
+      "studentId": 2,
+      "studentName": "المعتصم بالله هيثم خليفة الاجهر",
+      "grade": "الصف الأول",
+      "installmentNo": 3,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 100,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.599Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0414",
+      "id": "REC-0028",
+      "studentId": 68,
+      "studentName": "لجين عبدالباسط المشاط عاشور",
+      "grade": "الصف الثاني",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.599Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0415",
+      "id": "REC-0027",
+      "studentId": 2,
+      "studentName": "المعتصم بالله هيثم خليفة الاجهر",
+      "grade": "الصف الأول",
+      "installmentNo": 2,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1100,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.600Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0416",
+      "id": "REC-0026",
+      "studentId": 2,
+      "studentName": "المعتصم بالله هيثم خليفة الاجهر",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 300,
+      "remaining": 2100,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.600Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0417",
+      "id": "REC-0025",
+      "studentId": 34,
+      "studentName": "تيم محمد بلقاسم المحجوب",
+      "grade": "الصف الثاني",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 500,
+      "remaining": 1900,
+      "paymentMethod": "حوالة مصرفية",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.600Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0418",
+      "id": "REC-0024",
+      "studentId": 11,
+      "studentName": "روفان محمد بلقاسم المحجوب",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 500,
+      "remaining": 1900,
+      "paymentMethod": "حوالة مصرفية",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.600Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0419",
+      "id": "REC-0023",
+      "studentId": 309,
+      "studentName": "إياد محمد النيش ",
+      "grade": "الصف الثاني",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.601Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef041a",
+      "id": "REC-0022",
+      "studentId": 308,
+      "studentName": "فارس محمد النيش ",
+      "grade": "الصف الخامس",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 1000,
+      "remaining": 1500,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-12",
+      "createdAt": "2026-08-19T11:45:19.601Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef041b",
+      "id": "REC-0021",
+      "studentId": 261,
+      "studentName": "ردينه أمجد محمد ديرة",
+      "grade": "الصف السابع",
+      "installmentNo": 1,
+      "totalDue": 2600,
+      "paidAmount": 1000,
+      "remaining": 1600,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.601Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef041c",
+      "id": "REC-0020",
+      "studentId": 202,
+      "studentName": "رانسي أمجد محمد ديرة",
+      "grade": "الصف الخامس",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 1000,
+      "remaining": 1500,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.601Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef041d",
+      "id": "REC-0019",
+      "studentId": 299,
+      "studentName": "رزان أمجد محمد ديرة",
+      "grade": "KG2",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 1000,
+      "remaining": 900,
+      "paymentMethod": "بطاقة مصرفية",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.602Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef041e",
+      "id": "REC-0018",
+      "studentId": 274,
+      "studentName": "آلاء محمد المبروك عبد الرحمن",
+      "grade": "الصف السابع",
+      "installmentNo": 1,
+      "totalDue": 2600,
+      "paidAmount": 500,
+      "remaining": 2100,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.602Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef041f",
+      "id": "REC-0017",
+      "studentId": 12,
+      "studentName": "زيد فؤاد المبروك احمد",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1400,
+      "paymentMethod": "حوالة مصرفية",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.602Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0420",
+      "id": "REC-0016",
+      "studentId": 160,
+      "studentName": "تميم أبو عجيله حسين جحي",
+      "grade": "الصف الرابع",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 1000,
+      "remaining": 1500,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.602Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0421",
+      "id": "REC-0015",
+      "studentId": 99,
+      "studentName": "المبروك محمد المبروك عبد الرحمن",
+      "grade": "الصف الثالث",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 500,
+      "remaining": 1900,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.602Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0422",
+      "id": "REC-0014",
+      "studentId": 5,
+      "studentName": "آية المعتصم بالله مسعود عبد الهادى",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 500,
+      "remaining": 1900,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.603Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0423",
+      "id": "REC-0013",
+      "studentId": 207,
+      "studentName": "شاهين المعتصم بالله مسعود عبد الهادى",
+      "grade": "الصف الخامس",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 1000,
+      "remaining": 1500,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.603Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0424",
+      "id": "REC-0012",
+      "studentId": 123,
+      "studentName": "سيفاو وسام السيفاو كرناص",
+      "grade": "الصف الثالث",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 300,
+      "remaining": 2100,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.603Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0425",
+      "id": "REC-0011",
+      "studentId": 252,
+      "studentName": "محمد رضاء امحمد نيقرو",
+      "grade": "الصف السادس",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 1000,
+      "remaining": 1500,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.603Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0426",
+      "id": "REC-0010",
+      "studentId": 301,
+      "studentName": "صهيب يوسف محمد الترهوني",
+      "grade": "KG2",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 500,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.604Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0427",
+      "id": "REC-0009",
+      "studentId": 102,
+      "studentName": "إياد حمد رحيم محمد",
+      "grade": "الصف الثالث",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 300,
+      "remaining": 2100,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.604Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0428",
+      "id": "REC-0008",
+      "studentId": 13,
+      "studentName": "سيدرا حمد رحيم محمد",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 300,
+      "remaining": 2100,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.604Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef0429",
+      "id": "REC-0007",
+      "studentId": 19,
+      "studentName": "مهاب رضوان محمد امبارك",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.604Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef042a",
+      "id": "REC-0006",
+      "studentId": 225,
+      "studentName": "سيرين وليد ابراهيم خليفة",
+      "grade": "الصف الخامس",
+      "installmentNo": 1,
+      "totalDue": 2500,
+      "paidAmount": 1200,
+      "remaining": 1300,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.604Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef042b",
+      "id": "REC-0005",
+      "studentId": 92,
+      "studentName": "سراج الدين وليد ابراهيم خليفة",
+      "grade": "الصف الثاني",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1150,
+      "remaining": 1250,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.605Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef042c",
+      "id": "REC-0004",
+      "studentId": 8,
+      "studentName": "جنة اشرف عبد الله رضوان",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.605Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef042d",
+      "id": "REC-0003",
+      "studentId": 35,
+      "studentName": "جنى الطاهر سليمان أبو الزمازم",
+      "grade": "الصف الثاني",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.605Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef042e",
+      "id": "REC-0002",
+      "studentId": 1,
+      "studentName": "ادم الطاهر سليمان أبو الزمازم",
+      "grade": "الصف الأول",
+      "installmentNo": 1,
+      "totalDue": 2400,
+      "paidAmount": 1000,
+      "remaining": 1400,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.605Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a85974fd5f54de4adef042f",
+      "id": "REC-0001",
+      "studentId": 307,
+      "studentName": "ماريا عبد الباري الحمرونى الشرع",
+      "grade": "KG2",
+      "installmentNo": 1,
+      "totalDue": 1900,
+      "paidAmount": 900,
+      "remaining": 1000,
+      "paymentMethod": "نقدي",
+      "date": "2026-08-11",
+      "createdAt": "2026-08-19T11:45:19.606Z",
+      "__v": 0
+    }
+  ],
+  "settings": [
+    {
+      "_id": "6a79424d9811082c1d0b1d01",
+      "key": "last_backup_time",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:10.136Z",
+      "value": "2026-08-24T18:21:10.136Z"
+    },
+    {
+      "_id": "6a79430f9811082c1d0b1d5a",
+      "key": "last_modified_time",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:10.235Z",
+      "value": "2026-08-24T18:21:10.136Z"
+    },
+    {
+      "_id": "6a8c8b95724354ef2b2067f4",
+      "key": "academicYear",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:09.035Z",
+      "value": "2026/2027"
+    },
+    {
+      "_id": "6a8c8b96724354ef2b2067f5",
+      "key": "currentUser",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:09.117Z",
+      "value": {
+        "id": "1",
+        "username": "admin",
+        "password": "123",
+        "name": "المدير العام",
+        "role": "admin"
+      }
+    },
+    {
+      "_id": "6a8c8b96724354ef2b2067fa",
+      "key": "gradeSubjects",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:09.216Z",
+      "value": {
+        "KG1": [
+          "القرآن الكريم والتربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "اللغة الإنجليزية",
+          "الأنشطة والمهارات"
+        ],
+        "KG2": [
+          "القرآن الكريم والتربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "اللغة الإنجليزية",
+          "الأنشطة والمهارات"
+        ],
+        "الصف الأول": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "التربية البدنية",
+          "التربية الفنية والموسيقية"
+        ],
+        "الصف الثاني": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "التربية البدنية",
+          "التربية الفنية والموسيقية"
+        ],
+        "الصف الثالث": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "التربية البدنية",
+          "التربية الفنية والموسيقية"
+        ],
+        "الصف الرابع": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "الاجتماعيات",
+          "الحاسوب",
+          "التربية البدنية"
+        ],
+        "الصف الخامس": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "الاجتماعيات",
+          "الحاسوب",
+          "التربية البدنية"
+        ],
+        "الصف السادس": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "الاجتماعيات",
+          "الحاسوب",
+          "التربية البدنية"
+        ],
+        "الصف السابع": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "التاريخ",
+          "الجغرافيا",
+          "الحاسوب",
+          "التربية البدنية"
+        ],
+        "الصف الثامن": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "التاريخ",
+          "الجغرافيا",
+          "الحاسوب",
+          "التربية البدنية"
+        ],
+        "الصف التاسع": [
+          "التربية الإسلامية",
+          "اللغة العربية",
+          "الرياضيات",
+          "العلوم",
+          "اللغة الإنجليزية",
+          "التاريخ",
+          "الجغرافيا",
+          "الحاسوب",
+          "التربية البدنية"
+        ]
+      }
+    },
+    {
+      "_id": "6a8c8b96724354ef2b2067fb",
+      "key": "recycleBin",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:09.523Z",
+      "value": [
+        {
+          "id": "EXP-0001",
+          "type": "expense",
+          "deletedAt": "2026-07-19T10:51:44.788Z",
+          "data": {
+            "id": "EXP-0001",
+            "description": "إيجار المبنى المدرسي",
+            "category": "إيجار",
+            "amount": 5000,
+            "date": "2029-09-01",
+            "notes": "إيجار شهر 9"
+          }
+        },
+        {
+          "id": "EXP-0002",
+          "type": "expense",
+          "deletedAt": "2026-07-19T10:51:46.756Z",
+          "data": {
+            "id": "EXP-0002",
+            "description": "صيانة مكيفات",
+            "category": "صيانة",
+            "amount": 300,
+            "date": "2029-09-05",
+            "notes": "صيانة 3 مكيفات"
+          }
+        },
+        {
+          "id": "REC-0003",
+          "type": "receipt",
+          "deletedAt": "2026-07-19T14:49:43.748Z",
+          "data": {
+            "_id": "6a5ccaa83e1d0caf75ed8f0a",
+            "id": "REC-0003",
+            "studentId": 85,
+            "studentName": "يوسف نورالدين الدربازي",
+            "grade": "KG1",
+            "installmentNo": 3,
+            "totalDue": 1000,
+            "paidAmount": 52,
+            "remaining": 0,
+            "paymentMethod": "حوالة مصرفية",
+            "date": "2026-07-19",
+            "createdAt": "2026-07-19T13:01:28.650Z",
+            "__v": 0
+          }
+        },
+        {
+          "id": "REC-0002",
+          "type": "receipt",
+          "deletedAt": "2026-07-19T14:49:45.465Z",
+          "data": {
+            "_id": "6a5cca6b3e1d0caf75ed8f08",
+            "id": "REC-0002",
+            "studentId": 85,
+            "studentName": "يوسف نورالدين الدربازي",
+            "grade": "KG1",
+            "installmentNo": 2,
+            "totalDue": 1000,
+            "paidAmount": 50,
+            "remaining": 52,
+            "paymentMethod": "بطاقة مصرفية",
+            "date": "2026-07-19",
+            "createdAt": "2026-07-19T13:00:27.381Z",
+            "__v": 0
+          }
+        },
+        {
+          "id": "REC-0003",
+          "type": "receipt",
+          "deletedAt": "2026-07-19T22:58:12.884Z",
+          "data": {
+            "_id": "6a5d2f5f470356f92ea1f86d",
+            "id": "REC-0003",
+            "studentId": 85,
+            "studentName": "نورالدين المبروك علي",
+            "grade": "KG1",
+            "installmentNo": 3,
+            "totalDue": 1800,
+            "paidAmount": 900,
+            "remaining": 0,
+            "paymentMethod": "نقدي",
+            "date": "2026-07-19",
+            "createdAt": "2026-07-19T20:11:11.160Z",
+            "__v": 0
+          }
+        },
+        {
+          "id": "REC-0002",
+          "type": "receipt",
+          "deletedAt": "2026-07-19T22:58:46.081Z",
+          "data": {
+            "_id": "6a5d2f25470356f92ea1f86b",
+            "id": "REC-0002",
+            "studentId": 85,
+            "studentName": "نورالدين المبروك علي",
+            "grade": "KG1",
+            "installmentNo": 2,
+            "totalDue": 1800,
+            "paidAmount": 900,
+            "remaining": 0,
+            "paymentMethod": "نقدي",
+            "date": "2026-07-19",
+            "createdAt": "2026-07-19T20:10:13.185Z",
+            "__v": 0
+          }
+        },
+        {
+          "id": "REC-0002",
+          "type": "receipt",
+          "deletedAt": "2026-08-10T02:34:11.799Z",
+          "data": {
+            "_id": "6a5db051e301f455d2529c9f",
+            "id": "REC-0002",
+            "studentId": 1784524855109,
+            "studentName": "معاذ عيسي عيسي",
+            "grade": "KG1",
+            "installmentNo": 1,
+            "totalDue": 1800,
+            "paidAmount": 1800,
+            "remaining": 0,
+            "paymentMethod": "نقدي",
+            "date": "2026-07-20",
+            "createdAt": "2026-07-20T05:21:21.427Z",
+            "__v": 0
+          }
+        }
+      ]
+    },
+    {
+      "_id": "6a8c8b96724354ef2b2067fc",
+      "key": "classRooms",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:09.718Z",
+      "value": {
+        "KG1": [
+          "أ"
+        ],
+        "KG2": [
+          "أ"
+        ],
+        "الصف الأول": [
+          "أ"
+        ],
+        "الصف الثاني": [
+          "أ",
+          "ب",
+          "ج"
+        ],
+        "الصف الثالث": [
+          "أ"
+        ],
+        "الصف الرابع": [
+          "أ"
+        ],
+        "الصف الخامس": [
+          "أ"
+        ],
+        "الصف السادس": [
+          "أ"
+        ],
+        "الصف السابع": [
+          "أ"
+        ],
+        "الصف الثامن": [
+          "أ"
+        ],
+        "الصف التاسع": [
+          "أ"
+        ]
+      }
+    },
+    {
+      "_id": "6a8c8b96724354ef2b2067fd",
+      "key": "gradeFees",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:09.959Z",
+      "value": {
+        "KG1": 1900,
+        "KG2": 1900,
+        "الصف الأول": 2400,
+        "الصف الثاني": 2300,
+        "الصف الثالث": 2300,
+        "الصف الرابع": 2400,
+        "الصف الخامس": 2400,
+        "الصف السادس": 2400,
+        "الصف السابع": 2500,
+        "الصف الثامن": 2500,
+        "الصف التاسع": 2500
+      }
+    },
+    {
+      "_id": "6a8c8b97724354ef2b2067ff",
+      "key": "timetables",
+      "__v": 0,
+      "updatedAt": "2026-08-24T18:21:10.045Z",
+      "value": {
+        "KG1 - أ": [],
+        "الصف الثاني - أ": [
+          {
+            "day": "الأحد",
+            "periodId": 1,
+            "subject": "حاسوب",
+            "teacher": "نورالدين"
+          },
+          {
+            "day": "الإثنين",
+            "periodId": 1,
+            "subject": "العلوم",
+            "teacher": "نورالدين"
+          }
+        ],
+        "الصف الأول - أ": [
+          {
+            "day": "الأحد",
+            "periodId": 1,
+            "subject": "رياضيات",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الإثنين",
+            "periodId": 1,
+            "subject": "لغة إنجليزية",
+            "teacher": "احمد محمد محمد"
+          },
+          {
+            "day": "الثلاثاء",
+            "periodId": 1,
+            "subject": "لغة عربية",
+            "teacher": "امل خالد"
+          },
+          {
+            "day": "الأربعاء",
+            "periodId": 1,
+            "subject": "جغرافيا",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الخميس",
+            "periodId": 1,
+            "subject": "تاريخ",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الأحد",
+            "periodId": 2,
+            "subject": "لغة عربية",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الإثنين",
+            "periodId": 2,
+            "subject": "تربية إسلامية",
+            "teacher": "امل خالد"
+          },
+          {
+            "day": "الثلاثاء",
+            "periodId": 2,
+            "subject": "رياضيات",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الأربعاء",
+            "periodId": 2,
+            "subject": "لغة إنجليزية",
+            "teacher": "احمد محمد محمد"
+          },
+          {
+            "day": "الخميس",
+            "periodId": 2,
+            "subject": "حاسوب",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الأحد",
+            "periodId": 3,
+            "subject": "تربية فنية",
+            "teacher": "احمد محمد محمد"
+          },
+          {
+            "day": "الإثنين",
+            "periodId": 3,
+            "subject": "جغرافيا",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الثلاثاء",
+            "periodId": 3,
+            "subject": "علوم",
+            "teacher": "نورالدين الدربازي"
+          },
+          {
+            "day": "الأربعاء",
+            "periodId": 3,
+            "subject": "رياضيات",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الخميس",
+            "periodId": 3,
+            "subject": "لغة عربية",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الأحد",
+            "periodId": 4,
+            "subject": "علوم",
+            "teacher": "نورالدين الدربازي"
+          },
+          {
+            "day": "الإثنين",
+            "periodId": 4,
+            "subject": "تربية إسلامية",
+            "teacher": "امل خالد"
+          },
+          {
+            "day": "الثلاثاء",
+            "periodId": 4,
+            "subject": "لغة عربية",
+            "teacher": "امل خالد"
+          },
+          {
+            "day": "الأربعاء",
+            "periodId": 4,
+            "subject": "رياضيات",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الخميس",
+            "periodId": 4,
+            "subject": "لغة إنجليزية",
+            "teacher": "احمد محمد محمد"
+          },
+          {
+            "day": "الأحد",
+            "periodId": 5,
+            "subject": "حاسوب",
+            "teacher": "نورالدين الدربازي"
+          },
+          {
+            "day": "الإثنين",
+            "periodId": 5,
+            "subject": "لغة إنجليزية",
+            "teacher": "احمد محمد محمد"
+          },
+          {
+            "day": "الثلاثاء",
+            "periodId": 5,
+            "subject": "فيزياء",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الأربعاء",
+            "periodId": 5,
+            "subject": "كيمياء",
+            "teacher": "نورالدين الدربازي"
+          },
+          {
+            "day": "الخميس",
+            "periodId": 5,
+            "subject": "تاريخ",
+            "teacher": "نورالدين الدربازي"
+          },
+          {
+            "day": "الأحد",
+            "periodId": 6,
+            "subject": "لغة إنجليزية",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الإثنين",
+            "periodId": 6,
+            "subject": "تربية رياضية",
+            "teacher": "امل خالد"
+          },
+          {
+            "day": "الثلاثاء",
+            "periodId": 6,
+            "subject": "لغة عربية",
+            "teacher": "امل خالد"
+          },
+          {
+            "day": "الأربعاء",
+            "periodId": 6,
+            "subject": "رياضيات",
+            "teacher": "خيرية علي"
+          },
+          {
+            "day": "الخميس",
+            "periodId": 6,
+            "subject": "جغرافيا",
+            "teacher": "خيرية علي"
+          }
+        ]
+      }
+    }
+  ],
+  "users": [
+    {
+      "_id": "6a8adbebbdb664602ba64431",
+      "name": "المدير العام",
+      "username": "admin",
+      "password": "123",
+      "role": "admin",
+      "childrenIds": [],
+      "createdAt": "2026-08-23T11:39:23.164Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a8adbebbdb664602ba64432",
+      "name": "المحاسب",
+      "username": "acc",
+      "password": "123",
+      "role": "accountant",
+      "childrenIds": [],
+      "createdAt": "2026-08-23T11:39:23.165Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a8adbebbdb664602ba64433",
+      "name": "شؤون الطلبة",
+      "username": "std",
+      "password": "123",
+      "role": "student_affairs",
+      "childrenIds": [],
+      "createdAt": "2026-08-23T11:39:23.165Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a8adbebbdb664602ba64434",
+      "name": "شؤون الموظفين",
+      "username": "hr",
+      "password": "123",
+      "role": "hr",
+      "childrenIds": [],
+      "createdAt": "2026-08-23T11:39:23.165Z",
+      "__v": 0
+    }
+  ]
+}
