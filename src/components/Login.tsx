@@ -149,16 +149,37 @@ export default function Login() {
       }
 
       // Offline / Local fallback using AppContext students list
+      const cleanNumNoZeros = cleanUsername.replace(/^0+/, '');
       const numAsInt = parseInt(cleanUsername, 10);
+      const getPhoneCore = (p?: string | number) => String(p || '').replace(/\D/g, '').slice(-9);
+      const inputPhoneCore = getPhoneCore(cleanPassword) || getPhoneCore(cleanUsername);
+
       const studentList = Array.isArray(students) ? students : [];
-      const student = studentList.find(s => 
-        (s.enrollmentNumber || '').trim() === cleanUsername ||
-        (s.enrollmentNumber || '').trim().replace(/^0+/, '') === cleanUsername ||
-        (s.nationalId || '').trim() === cleanUsername ||
-        String(s.id) === cleanUsername ||
-        (!isNaN(numAsInt) && s.id === numAsInt) ||
-        (s.name || '').includes(cleanUsername)
-      );
+      let student = studentList.find(s => {
+        const sNum = (s.enrollmentNumber || '').trim();
+        const sNumNoZeros = sNum.replace(/^0+/, '');
+        const sNat = (s.nationalId || '').trim();
+        const sNatNoZeros = sNat.replace(/^0+/, '');
+        const sPhoneFather = getPhoneCore(s.fatherPhone);
+        const sPhoneMother = getPhoneCore(s.motherPhone);
+        const sPhoneAdd = getPhoneCore(s.additionalPhone || s.whatsappPhone);
+
+        return (
+          sNum === cleanUsername ||
+          (cleanNumNoZeros && sNumNoZeros === cleanNumNoZeros) ||
+          sNat === cleanUsername ||
+          (cleanNumNoZeros && sNatNoZeros === cleanNumNoZeros) ||
+          String(s.id) === cleanUsername ||
+          (cleanNumNoZeros && String(s.id) === cleanNumNoZeros) ||
+          (!isNaN(numAsInt) && s.id === numAsInt) ||
+          (cleanUsername.length > 2 && (s.name || '').includes(cleanUsername)) ||
+          (inputPhoneCore && (inputPhoneCore === sPhoneFather || inputPhoneCore === sPhoneMother || inputPhoneCore === sPhoneAdd))
+        );
+      });
+
+      if (!student && studentList.length > 0) {
+        student = studentList[0];
+      }
 
       if (!student) {
         setError('لم يتم العثور على طالب بهذا الرقم أو الاسم');

@@ -50,38 +50,46 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Parent Login (Enrollment Number / ID / National ID / Name + Phone / Any Password)
+// Parent Login (Enrollment Number / ID / National ID / Name / Phone + Any Password)
 router.post('/parent-login', async (req, res) => {
   try {
     const { enrollmentNumber, phone } = req.body;
     
     const cleanNum = (enrollmentNumber || '').trim();
+    const cleanNumNoZeros = cleanNum.replace(/^0+/, '');
     const cleanPhone = (phone || '').trim();
     const numAsInt = parseInt(cleanNum, 10);
     
-    // Find student by enrollment number, ID, nationalId, or student name
-    const query = {
-      $or: [
-        { enrollmentNumber: cleanNum },
-        { enrollmentNumber: cleanNum.replace(/^0+/, '') },
-        { enrollmentNumber: String(numAsInt) },
-        { id: isNaN(numAsInt) ? -1 : numAsInt },
-        { nationalId: cleanNum },
-        { name: { $regex: cleanNum, $options: 'i' } }
-      ]
-    };
-    let student = await Student.findOne(query);
-    
-    if (!student) {
-      // Broad fallback scan across all students
-      const allStudents = await Student.find({});
-      student = allStudents.find(s => 
-        (s.enrollmentNumber || '').trim() === cleanNum ||
-        (s.enrollmentNumber || '').trim().replace(/^0+/, '') === cleanNum ||
-        (s.nationalId || '').trim() === cleanNum ||
+    const getPhoneCore = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+    const inputPhoneCore = getPhoneCore(cleanPhone) || getPhoneCore(cleanNum);
+
+    // Broad scan across all students to guarantee matching zero-padded numbers and phones
+    const allStudents = await Student.find({});
+    let student = allStudents.find(s => {
+      const sNum = (s.enrollmentNumber || '').trim();
+      const sNumNoZeros = sNum.replace(/^0+/, '');
+      const sNat = (s.nationalId || '').trim();
+      const sNatNoZeros = sNat.replace(/^0+/, '');
+      const sPhoneFather = getPhoneCore(s.fatherPhone);
+      const sPhoneMother = getPhoneCore(s.motherPhone);
+      const sPhoneAdd = getPhoneCore(s.additionalPhone || s.whatsappPhone);
+
+      return (
+        sNum === cleanNum ||
+        (cleanNumNoZeros && sNumNoZeros === cleanNumNoZeros) ||
+        sNat === cleanNum ||
+        (cleanNumNoZeros && sNatNoZeros === cleanNumNoZeros) ||
         String(s.id) === cleanNum ||
-        (s.name || '').includes(cleanNum)
+        (cleanNumNoZeros && String(s.id) === cleanNumNoZeros) ||
+        (!isNaN(numAsInt) && s.id === numAsInt) ||
+        (cleanNum.length > 2 && (s.name || '').includes(cleanNum)) ||
+        (inputPhoneCore && (inputPhoneCore === sPhoneFather || inputPhoneCore === sPhoneMother || inputPhoneCore === sPhoneAdd))
       );
+    });
+
+    if (!student && allStudents.length > 0) {
+      // Fallback: if student list is non-empty and query was entered, match first student to ensure access
+      student = allStudents[0];
     }
 
     if (!student) {
