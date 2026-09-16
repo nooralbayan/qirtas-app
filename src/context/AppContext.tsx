@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode, Dispatch, SetStateAction } from 'react';
+import { initialStudentsFromExcel } from '../data/studentsData';
 
 export type AttendanceStatus = 'حاضر' | 'غائب' | 'متأخر';
 
