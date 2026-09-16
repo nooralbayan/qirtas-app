@@ -25,9 +25,7 @@
     "qrcode": "^1.5.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "whatsapp-web.js": "^1.34.7"
-  },
-  "devDependencies": {
+    "whatsapp-web.js": "^1.34.7",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
@@ -36,5 +34,6 @@
     "typescript": "~6.0.2",
     "vite": "^8.1.1",
     "xlsx": "^0.18.5"
-  }
+  },
+  "devDependencies": {}
 }
