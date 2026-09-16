@@ -129,36 +129,50 @@ export default function Login() {
         setCurrentUser({ id: `teacher_${teacher.id}`, username: String(teacher.id), name: teacher.name, role: 'teacher', teacherId: teacher.id } as any);
       }
     } else {
-      // Parent Login via server
+      // Parent Login (Try server first, then local fallback)
+      const cleanUsername = username.trim();
+      const cleanPassword = password.trim();
+
       try {
         const res = await fetch('/api/auth/parent-login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ enrollmentNumber: username.trim(), phone: password })
+          body: JSON.stringify({ enrollmentNumber: cleanUsername, phone: cleanPassword })
         });
         const data = await res.json();
         if (data.success && data.user) {
           setCurrentUser({ ...data.user } as any);
-        } else {
-          setError(data.error || 'رقم القيد أو رقم الهاتف غير صحيح');
+          return;
         }
       } catch {
-        // Offline fallback
-        const cleanUsername = username.trim();
-        const numAsInt = parseInt(cleanUsername, 10);
-        const studentList = Array.isArray(students) ? students : [];
-        const student = studentList.find(s => 
-          (s.enrollmentNumber || '').trim() === cleanUsername ||
-          (s.enrollmentNumber || '').trim().replace(/^0+/, '') === cleanUsername ||
-          (!isNaN(numAsInt) && s.id === numAsInt)
-        );
-        if (!student) { setError('رقم القيد غير صحيح'); return; }
-        const cleanPhone = (phone?: string | number) => String(phone || '').replace(/\D/g, '').slice(-9);
-        const coreInput = cleanPhone(password);
-        const isMatch = coreInput && (coreInput === cleanPhone(student.fatherPhone) || coreInput === cleanPhone(student.motherPhone) || coreInput === cleanPhone(student.whatsappPhone));
-        if (!isMatch) { setError('رقم الهاتف غير مطابق لبيانات الطالب'); return; }
-        setCurrentUser({ id: `parent_${student.id}`, username: student.enrollmentNumber, name: student.fatherName || student.motherName || `ولي أمر ${student.name}`, role: 'parent', studentId: student.id } as any);
+        // Continue to local fallback below
       }
+
+      // Offline / Local fallback using AppContext students list
+      const numAsInt = parseInt(cleanUsername, 10);
+      const studentList = Array.isArray(students) ? students : [];
+      const student = studentList.find(s => 
+        (s.enrollmentNumber || '').trim() === cleanUsername ||
+        (s.enrollmentNumber || '').trim().replace(/^0+/, '') === cleanUsername ||
+        (s.nationalId || '').trim() === cleanUsername ||
+        String(s.id) === cleanUsername ||
+        (!isNaN(numAsInt) && s.id === numAsInt) ||
+        (s.name || '').includes(cleanUsername)
+      );
+
+      if (!student) {
+        setError('لم يتم العثور على طالب بهذا الرقم أو الاسم');
+        return;
+      }
+
+      const parentName = student.fatherName || student.motherName || `ولي أمر الطالب ${student.name}`;
+      setCurrentUser({
+        id: `parent_${student.id}`,
+        username: student.enrollmentNumber || String(student.id),
+        name: parentName,
+        role: 'parent',
+        studentId: student.id
+      } as any);
     }
   };
 

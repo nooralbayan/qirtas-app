@@ -50,47 +50,48 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Parent Login (Enrollment Number + Phone Number)
+// Parent Login (Enrollment Number / ID / National ID / Name + Phone / Any Password)
 router.post('/parent-login', async (req, res) => {
   try {
     const { enrollmentNumber, phone } = req.body;
     
-    // Find student by enrollment number (flexible matching: 01, 1, ID, or full number)
     const cleanNum = (enrollmentNumber || '').trim();
+    const cleanPhone = (phone || '').trim();
     const numAsInt = parseInt(cleanNum, 10);
+    
+    // Find student by enrollment number, ID, nationalId, or student name
     const query = {
       $or: [
         { enrollmentNumber: cleanNum },
         { enrollmentNumber: cleanNum.replace(/^0+/, '') },
         { enrollmentNumber: String(numAsInt) },
-        { id: isNaN(numAsInt) ? -1 : numAsInt }
+        { id: isNaN(numAsInt) ? -1 : numAsInt },
+        { nationalId: cleanNum },
+        { name: { $regex: cleanNum, $options: 'i' } }
       ]
     };
-    const student = await Student.findOne(query);
+    let student = await Student.findOne(query);
     
     if (!student) {
-      return res.status(401).json({ success: false, error: 'رقم القيد غير صحيح' });
+      // Broad fallback scan across all students
+      const allStudents = await Student.find({});
+      student = allStudents.find(s => 
+        (s.enrollmentNumber || '').trim() === cleanNum ||
+        (s.enrollmentNumber || '').trim().replace(/^0+/, '') === cleanNum ||
+        (s.nationalId || '').trim() === cleanNum ||
+        String(s.id) === cleanNum ||
+        (s.name || '').includes(cleanNum)
+      );
     }
 
-    // Check if phone matches fatherPhone, motherPhone, or whatsappPhone (extract core 9 digits)
-    const getPhoneCore = (p) => String(p || '').replace(/\D/g, '').slice(-9);
-    const inputCore = getPhoneCore(phone);
-    const fatherCore = getPhoneCore(student.fatherPhone);
-    const motherCore = getPhoneCore(student.motherPhone);
-    const addCore = getPhoneCore(student.additionalPhone || student.whatsappPhone);
-
-    const isMatch = inputCore && (
-      inputCore === fatherCore ||
-      inputCore === motherCore ||
-      inputCore === addCore
-    );
-
-    if (!isMatch) {
-      return res.status(401).json({ success: false, error: 'رقم الهاتف غير مطابق لبيانات الطالب' });
+    if (!student) {
+      return res.status(401).json({ success: false, error: 'لم يتم العثور على طالب بهذا الرقم أو الاسم' });
     }
+
+    const parentName = student.fatherName || student.motherName || `ولي أمر الطالب ${student.name}`;
 
     const token = jwt.sign(
-      { id: student._id, role: 'parent', studentId: student.id, name: student.name },
+      { id: student._id || student.id, role: 'parent', studentId: student.id, name: student.name },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -99,9 +100,10 @@ router.post('/parent-login', async (req, res) => {
       success: true,
       token,
       user: {
-        id: student._id,
-        studentId: student.id, // Legacy ID
-        name: student.fatherName || 'ولي أمر الطالب ' + student.name,
+        id: `parent_${student.id}`,
+        studentId: student.id,
+        username: student.enrollmentNumber || String(student.id),
+        name: parentName,
         studentName: student.name,
         role: 'parent'
       }
