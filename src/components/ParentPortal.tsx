@@ -19,7 +19,7 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
   const paidAmount = studentReceipts.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
   const netFees = Math.max(0, (student?.totalFees || 0) - (student?.discountAmount || 0));
   const remainingAmount = Math.max(0, netFees - paidAmount);
-  const effectivePaymentStatus = netFees > 0 && remainingAmount <= 0 ? 'مسدد' : paidAmount > 0 ? 'جزئي' : (student?.paymentStatus === 'مسدد' || student?.paymentStatus === 'جزئي' ? student.paymentStatus : 'غير مسدد');
+  const effectivePaymentStatus = (netFees <= 0 || remainingAmount <= 0) ? 'مسدد' : (paidAmount > 0 ? 'جزئي' : 'غير مسدد');
 
   if (!student) {
     return (

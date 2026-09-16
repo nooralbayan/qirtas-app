@@ -435,17 +435,21 @@ export default function Students({ onBack }: { onBack: () => void }) {
   };
 
   /* ───── badge style ───── */
-  const getCleanPaymentStatus = (status?: string): 'مسدد' | 'جزئي' | 'غير مسدد' => {
-    if (status === 'مسدد') return 'مسدد';
-    if (status === 'جزئي') return 'جزئي';
+  const getDynamicPaymentStatus = (s: Student): 'مسدد' | 'جزئي' | 'غير مسدد' => {
+    const studentReceipts = (receipts || []).filter(r => String(r.studentId) === String(s.id));
+    const paidAmount = studentReceipts.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+    const netFees = Math.max(0, (s.totalFees || 0) - (s.discountAmount || 0));
+    const remainingAmount = Math.max(0, netFees - paidAmount);
+    
+    if (netFees <= 0 || remainingAmount <= 0) return 'مسدد';
+    if (paidAmount > 0) return 'جزئي';
     return 'غير مسدد';
   };
 
   const badgeStyle = (status: Student['paymentStatus']): React.CSSProperties => {
-    const clean = getCleanPaymentStatus(status);
     const base: React.CSSProperties = { padding: '4px 14px', borderRadius: 20, fontSize: 13, fontWeight: 700, display: 'inline-block', minWidth: 70, textAlign: 'center' };
-    if (clean === 'مسدد') return { ...base, background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff' };
-    if (clean === 'جزئي') return { ...base, background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff' };
+    if (status === 'مسدد') return { ...base, background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff' };
+    if (status === 'جزئي') return { ...base, background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff' };
     return { ...base, background: 'linear-gradient(135deg, #ef4444, #dc2626)', color: '#fff' };
   };
 
@@ -596,7 +600,7 @@ export default function Students({ onBack }: { onBack: () => void }) {
                   <td style={{ padding: '12px', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>{s.classRoom || '-'}</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid var(--border-color)', fontWeight: 'bold', color: 'var(--text-primary)' }}>{s.totalFees} د.ل</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid var(--border-color)' }}>
-                    <span style={badgeStyle(s.paymentStatus)}>{getCleanPaymentStatus(s.paymentStatus)}</span>
+                    <span style={badgeStyle(getDynamicPaymentStatus(s))}>{getDynamicPaymentStatus(s)}</span>
                   </td>
                   <td style={{ padding: '12px', borderBottom: '1px solid var(--border-color)' }}>
                     <button onClick={() => openEdit(s)} style={{ backgroundColor: '#f59e0b', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 14px', cursor: 'pointer', marginLeft: 6, fontWeight: 600 }}>تعديل</button>
