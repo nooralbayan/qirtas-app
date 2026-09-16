@@ -299,7 +299,7 @@ export default function Login() {
             position: fixed;
             bottom: -20px;
             left: 0;
-            z-index: 25;
+            z-index: 5;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -619,7 +619,7 @@ export default function Login() {
         </div>
       </div>
 
-      <div style={{...styles.loginBox, zIndex: 20}} className="floating-element">
+      <div style={{...styles.loginBox, zIndex: 100}} className="floating-element">
         <div style={styles.header}>
           <div style={styles.logoWrapper} className="logo-pulse">
             <School size={48} strokeWidth={1.5} color="#0f172a" />
