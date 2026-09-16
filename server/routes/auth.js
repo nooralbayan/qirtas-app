@@ -72,16 +72,20 @@ router.post('/parent-login', async (req, res) => {
       return res.status(401).json({ success: false, error: 'رقم القيد غير صحيح' });
     }
 
-    // Check if phone matches fatherPhone or motherPhone
-    const cleanInputPhone = phone.replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
-    const cleanFatherPhone = (student.fatherPhone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
-    const cleanMotherPhone = (student.motherPhone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '');
+    // Check if phone matches fatherPhone, motherPhone, or whatsappPhone (extract core 9 digits)
+    const getPhoneCore = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+    const inputCore = getPhoneCore(phone);
+    const fatherCore = getPhoneCore(student.fatherPhone);
+    const motherCore = getPhoneCore(student.motherPhone);
+    const addCore = getPhoneCore(student.additionalPhone || student.whatsappPhone);
 
-    // Allow login if it matches father's or mother's phone, or if the phone stored includes the input phone (e.g. ignoring country code)
-    const isFatherMatch = cleanFatherPhone.endsWith(cleanInputPhone) || cleanInputPhone.endsWith(cleanFatherPhone);
-    const isMotherMatch = cleanMotherPhone.endsWith(cleanInputPhone) || cleanInputPhone.endsWith(cleanMotherPhone);
+    const isMatch = inputCore && (
+      inputCore === fatherCore ||
+      inputCore === motherCore ||
+      inputCore === addCore
+    );
 
-    if (!isFatherMatch && !isMotherMatch) {
+    if (!isMatch) {
       return res.status(401).json({ success: false, error: 'رقم الهاتف غير مطابق لبيانات الطالب' });
     }
 

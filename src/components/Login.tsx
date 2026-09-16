@@ -123,7 +123,7 @@ export default function Login() {
           (!isNaN(numAsInt) && s.id === numAsInt)
         );
         if (!student) { setError('رقم القيد غير صحيح'); return; }
-        const cleanPhone = (phone?: string | number) => String(phone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '').slice(-9);
+        const cleanPhone = (phone?: string | number) => String(phone || '').replace(/\D/g, '').slice(-9);
         const coreInput = cleanPhone(password);
         const isMatch = coreInput && (coreInput === cleanPhone(student.fatherPhone) || coreInput === cleanPhone(student.motherPhone) || coreInput === cleanPhone(student.whatsappPhone));
         if (!isMatch) { setError('رقم الهاتف غير مطابق لبيانات الطالب'); return; }
