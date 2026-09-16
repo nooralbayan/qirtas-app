@@ -285,10 +285,35 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       });
   }, []);
 
+  const serverStudents = (() => {
+    const raw = serverState?.students;
+    if (!Array.isArray(raw) || raw.length === 0) return undefined;
+    return raw.map((s: any) => {
+      let cleanStatus: 'مسدد' | 'جزئي' | 'غير مسدد' = 'غير مسدد';
+      if (s.paymentStatus === 'مسدد' || String(s.paymentStatus).includes('مسدد')) cleanStatus = 'مسدد';
+      else if (s.paymentStatus === 'جزئي' || String(s.paymentStatus).includes('جزئي')) cleanStatus = 'جزئي';
+
+      let cleanGender: 'ذكر' | 'أنثى' | 'غير محدد' = s.gender || 'غير محدد';
+      if (cleanGender !== 'ذكر' && cleanGender !== 'أنثى') {
+        if (s.nationalId && String(s.nationalId).startsWith('1')) cleanGender = 'ذكر';
+        else if (s.nationalId && String(s.nationalId).startsWith('2')) cleanGender = 'أنثى';
+      }
+
+      return {
+        ...s,
+        paymentStatus: cleanStatus,
+        gender: cleanGender,
+        nationalId: s.nationalId || '',
+        fatherName: s.fatherName || '',
+        motherName: s.motherName || '',
+      };
+    });
+  })();
+
   const [schoolName, setSchoolName] = useCloudStorage('qirtas_schoolName', 'نظام قرطاس المدرسي', serverState?.schoolName);
   const [schoolLogo, setSchoolLogo] = useCloudStorage('qirtas_schoolLogo', '<>', serverState?.schoolLogo);
   const [gradeFees, setGradeFees] = useCloudStorage<Record<string, number>>('qirtas_gradeFees', initialGradeFees, serverState?.gradeFees);
-  const [students, setStudents] = useCloudStorage<Student[]>('qirtas_students', [], Array.isArray(serverState?.students) ? serverState.students : undefined);
+  const [students, setStudents] = useCloudStorage<Student[]>('qirtas_students', [], serverStudents);
   const [receipts, setReceipts] = useCloudStorage<Receipt[]>('qirtas_receipts', [], Array.isArray(serverState?.receipts) ? serverState.receipts : undefined);
   const [teachers, setTeachers] = useCloudStorage<Teacher[]>('qirtas_teachers', [], Array.isArray(serverState?.teachers) ? serverState.teachers : undefined);
   const [expenses, setExpenses] = useCloudStorage<Expense[]>('qirtas_expenses', [], Array.isArray(serverState?.expenses) ? serverState.expenses : undefined);
@@ -399,6 +424,37 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     });
     if (changed) setStudents(updated);
   }, [serverLoaded]); // ✅ Run only after server state is loaded
+
+  // ✅ FIX: Auto-repair corrupted/garbled paymentStatus and gender in loaded students list
+  useEffect(() => {
+    if (!serverLoaded || !students || students.length === 0) return;
+    let hasCorrupted = false;
+    const sanitizedList = students.map(s => {
+      let cleanStatus: 'مسدد' | 'جزئي' | 'غير مسدد' = 'غير مسدد';
+      if (s.paymentStatus === 'مسدد' || String(s.paymentStatus).includes('مسدد')) cleanStatus = 'مسدد';
+      else if (s.paymentStatus === 'جزئي' || String(s.paymentStatus).includes('جزئي')) cleanStatus = 'جزئي';
+
+      let cleanGender: 'ذكر' | 'أنثى' | 'غير محدد' = s.gender || 'غير محدد';
+      if (cleanGender !== 'ذكر' && cleanGender !== 'أنثى') {
+        if (s.nationalId && String(s.nationalId).startsWith('1')) cleanGender = 'ذكر';
+        else if (s.nationalId && String(s.nationalId).startsWith('2')) cleanGender = 'أنثى';
+      }
+
+      if (s.paymentStatus !== cleanStatus || s.gender !== cleanGender) {
+        hasCorrupted = true;
+      }
+
+      return {
+        ...s,
+        paymentStatus: cleanStatus,
+        gender: cleanGender,
+      };
+    });
+
+    if (hasCorrupted) {
+      setStudents(sanitizedList);
+    }
+  }, [serverLoaded]);
 
   return (
     <AppContext.Provider value={{

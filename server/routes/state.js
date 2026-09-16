@@ -7,10 +7,36 @@ import Setting from '../models/Setting.js';
 
 const router = express.Router();
 
+function sanitizeStudent(s) {
+  const obj = s && s.toObject ? s.toObject() : { ...s };
+  
+  let cleanStatus = 'غير مسدد';
+  if (obj.paymentStatus === 'مسدد' || String(obj.paymentStatus).includes('مسدد')) {
+    cleanStatus = 'مسدد';
+  } else if (obj.paymentStatus === 'جزئي' || String(obj.paymentStatus).includes('جزئي')) {
+    cleanStatus = 'جزئي';
+  }
+
+  let cleanGender = obj.gender || 'غير محدد';
+  if (cleanGender !== 'ذكر' && cleanGender !== 'أنثى') {
+    if (obj.nationalId && String(obj.nationalId).startsWith('1')) cleanGender = 'ذكر';
+    else if (obj.nationalId && String(obj.nationalId).startsWith('2')) cleanGender = 'أنثى';
+  }
+
+  return {
+    ...obj,
+    nationalId: obj.nationalId || '',
+    paymentStatus: cleanStatus,
+    gender: cleanGender,
+    enrollmentNumber: obj.enrollmentNumber || '',
+  };
+}
+
 // Fetch all application state
 router.get('/', async (req, res) => {
   try {
-    const students = await Student.find({});
+    const rawStudents = await Student.find({});
+    const students = rawStudents.map(sanitizeStudent);
     const teachers = await Teacher.find({});
     const receipts = await Receipt.find({});
     const rawUsers = await User.find({});
@@ -73,12 +99,7 @@ router.post('/update', async (req, res) => {
         await Student.deleteMany({});
       } else {
         // ✅ SAFE ATOMIC UPSERT: Never delete-then-insert (race condition risk)
-        // Clean incoming data to prevent validation errors
-        const cleanStudents = incoming.map(s => ({
-          ...s,
-          nationalId: s.nationalId || '',
-          enrollmentNumber: s.enrollmentNumber || `ENR-${s.id || Date.now()}`,
-        }));
+        const cleanStudents = incoming.map(sanitizeStudent);
 
         // bulkWrite with upsert: updates existing, inserts new, never deletes first
         const bulkOps = cleanStudents.map(s => ({
