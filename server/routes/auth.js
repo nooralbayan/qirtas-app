@@ -114,6 +114,11 @@ router.post('/parent-login', async (req, res) => {
     const addCore = getPhoneCore(student.additionalPhone || student.whatsappPhone);
     const nationalCore = (student.nationalId || '').trim();
 
+    const hasRegisteredPhone = !!(fatherCore || motherCore || addCore || nationalCore);
+    if (!hasRegisteredPhone) {
+      return res.status(401).json({ success: false, error: 'لا يوجد رقم هاتف مسجل لهذا الطالب للتحقق. يرجى مراجعة الإدارة.' });
+    }
+
     const isMatch = inputCore && (
       inputCore === fatherCore ||
       inputCore === motherCore ||

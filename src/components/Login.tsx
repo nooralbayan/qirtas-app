@@ -206,14 +206,18 @@ export default function Login() {
       const nationalCore = (student.nationalId || '').trim();
 
       const hasRegisteredPhone = fatherCore || motherCore || addCore;
-      const isMatch = !hasRegisteredPhone || (
-        inputCore && (
-          inputCore === fatherCore ||
-          inputCore === motherCore ||
-          inputCore === addCore ||
-          (nationalCore && cleanPassword === nationalCore) ||
-          (student.enrollmentNumber && cleanPassword === student.enrollmentNumber.trim())
-        )
+      
+      if (!hasRegisteredPhone) {
+        setError('لا يوجد رقم هاتف مسجل لهذا الطالب للتحقق. يرجى مراجعة الإدارة.');
+        return;
+      }
+
+      const isMatch = inputCore && (
+        inputCore === fatherCore ||
+        inputCore === motherCore ||
+        inputCore === addCore ||
+        (nationalCore && cleanPassword === nationalCore) ||
+        (student.enrollmentNumber && cleanPassword === student.enrollmentNumber.trim())
       );
 
       if (!isMatch) {
