@@ -175,7 +175,10 @@ export default function Students({ onBack }: { onBack: () => void }) {
   };
 
   const handleSubmit = () => {
-    if (!form.name || !form.grade || !form.fatherName) return;
+    if (!form.name || !form.grade || !form.fatherName) {
+      alert('عذراً، يجب إدخال اسم الطالب، واسم الأب، والصف الدراسي كحد أدنى.');
+      return;
+    }
 
     // Check for duplicates
     const isDuplicate = students.some(s => {

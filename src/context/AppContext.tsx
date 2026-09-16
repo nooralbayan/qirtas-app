@@ -50,7 +50,12 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
 
       const valueToStore = value instanceof Function ? (value as any)(storedValue) : value;
       setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      
+      try {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      } catch (lsError) {
+        console.warn('LocalStorage limit reached, but continuing with cloud save.', lsError);
+      }
       
       // Async save to cloud
       // Skip sync for theme/currentUser as they are local session variables
