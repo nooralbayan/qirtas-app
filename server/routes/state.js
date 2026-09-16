@@ -81,42 +81,50 @@ router.post('/update', async (req, res) => {
     const { key, value } = req.body;
 
     if (key === 'students') {
-      const currentCount = await Student.countDocuments({});
-      const incoming = Array.isArray(value) ? value : [];
-      const newCount = incoming.length;
-
-      // 🛑 SAFETY GUARD: Prevent accidental data wipes
-      if (currentCount > 0 && newCount === 0 && !req.body.confirmWipe) {
-        console.warn(`⚠️ [SAFETY GUARD] Blocked wipe of ${currentCount} students!`);
-        return res.status(400).json({
-          success: false,
-          error: `حماية النظام: تم منع محاولة مسح ${currentCount} طالب عن طريق الخطأ.`
-        });
-      }
-
-      if (newCount === 0) {
-        // Only wipe if explicitly confirmed
-        await Student.deleteMany({});
+      if (value && value.__isDiff) {
+        // --- FAST DIFF UPDATES ---
+        const { upsert, removeIds } = value;
+        if (upsert && upsert.length > 0) {
+          const cleanStudents = upsert.map(sanitizeStudent);
+          const bulkOps = cleanStudents.map(s => ({
+            updateOne: { filter: { id: s.id }, update: { $set: s }, upsert: true }
+          }));
+          await Student.bulkWrite(bulkOps, { ordered: false });
+        }
+        if (removeIds && removeIds.length > 0) {
+          await Student.deleteMany({ id: { $in: removeIds } });
+        }
+        console.log(`[State] Fast Diff update: ${upsert?.length || 0} upserted, ${removeIds?.length || 0} removed.`);
       } else {
-        // ✅ SAFE ATOMIC UPSERT: Never delete-then-insert (race condition risk)
-        const cleanStudents = incoming.map(sanitizeStudent);
+        // --- FULL ARRAY REPLACE (Legacy / Fallback) ---
+        const currentCount = await Student.countDocuments({});
+        const incoming = Array.isArray(value) ? value : [];
+        const newCount = incoming.length;
 
-        // bulkWrite with upsert: updates existing, inserts new, never deletes first
-        const bulkOps = cleanStudents.map(s => ({
-          updateOne: {
-            filter: { id: s.id },
-            update: { $set: s },
-            upsert: true,
+        // 🛑 SAFETY GUARD: Prevent accidental data wipes
+        if (currentCount > 0 && newCount === 0 && !req.body.confirmWipe) {
+          console.warn(`⚠️ [SAFETY GUARD] Blocked wipe of ${currentCount} students!`);
+          return res.status(400).json({
+            success: false,
+            error: `حماية النظام: تم منع محاولة مسح ${currentCount} طالب عن طريق الخطأ.`
+          });
+        }
+
+        if (newCount === 0) {
+          await Student.deleteMany({});
+        } else {
+          const cleanStudents = incoming.map(sanitizeStudent);
+          const bulkOps = cleanStudents.map(s => ({
+            updateOne: { filter: { id: s.id }, update: { $set: s }, upsert: true }
+          }));
+
+          await Student.bulkWrite(bulkOps, { ordered: false });
+
+          const incomingIds = cleanStudents.map(s => s.id);
+          const removeResult = await Student.deleteMany({ id: { $nin: incomingIds } });
+          if (removeResult.deletedCount > 0) {
+            console.log(`[State] Removed ${removeResult.deletedCount} stale students from DB`);
           }
-        }));
-
-        await Student.bulkWrite(bulkOps, { ordered: false });
-
-        // Remove students that are no longer in the new list
-        const incomingIds = cleanStudents.map(s => s.id);
-        const removeResult = await Student.deleteMany({ id: { $nin: incomingIds } });
-        if (removeResult.deletedCount > 0) {
-          console.log(`[State] Removed ${removeResult.deletedCount} stale students from DB`);
         }
       }
 

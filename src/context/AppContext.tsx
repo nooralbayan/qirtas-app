@@ -56,10 +56,35 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
       // Skip sync for theme/currentUser as they are local session variables
       if (key !== 'qirtas_theme' && key !== 'qirtas_currentUser') {
         const cleanKey = key.replace('qirtas_', '');
+        
+        let payload = valueToStore;
+        
+        // --- DIFFING LOGIC TO FIX NETWORK TIMEOUTS ON LARGE ARRAYS ---
+        if (cleanKey === 'students' && Array.isArray(valueToStore) && Array.isArray(storedValue)) {
+          const oldMap = new Map(storedValue.map((s: any) => [s.id, JSON.stringify(s)]));
+          const changedOrNew = valueToStore.filter((s: any) => {
+            const oldStr = oldMap.get(s.id);
+            return !oldStr || oldStr !== JSON.stringify(s);
+          });
+          
+          const newIds = new Set(valueToStore.map((s: any) => s.id));
+          const deletedIds = storedValue.filter((s: any) => !newIds.has(s.id)).map((s: any) => s.id);
+          
+          if (changedOrNew.length > 0 || deletedIds.length > 0) {
+             payload = {
+               __isDiff: true,
+               upsert: changedOrNew,
+               removeIds: deletedIds
+             };
+          } else {
+             return; // Nothing actually changed, don't hit the server
+          }
+        }
+        
         fetch('/api/state/update', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: cleanKey, value: valueToStore })
+          body: JSON.stringify({ key: cleanKey, value: payload })
         }).catch(console.error);
       }
 
