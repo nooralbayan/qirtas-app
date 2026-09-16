@@ -148,15 +148,12 @@ export default function Login() {
         if (data.success && data.user) {
           setCurrentUser({ ...data.user } as any);
           return;
-        } else {
-          setError(data.error || 'رقم القيد أو رقم الهاتف غير صحيح');
-          return;
         }
       } catch {
-        // Offline mode fallback below
+        // Continue to local fallback below
       }
 
-      // Offline mode fallback using AppContext students list
+      // Local / Offline fallback using AppContext students list
       const cleanNumNoZeros = cleanUsername.replace(/^0+/, '');
       const numAsInt = parseInt(cleanUsername, 10);
       const getPhoneCore = (p?: string | number) => {
@@ -185,23 +182,26 @@ export default function Login() {
       });
 
       if (!student) {
-        setError('رقم القيد غير صحيح - تعذر العثور على الطالب');
+        setError('رقم القيد غير صحيح - تعذر العثور على الطالب في النظام');
         return;
       }
 
-      // Verify phone number strictly
+      // Verify phone number
       const inputCore = getPhoneCore(cleanPassword);
       const fatherCore = getPhoneCore(student.fatherPhone);
       const motherCore = getPhoneCore(student.motherPhone);
       const addCore = getPhoneCore(student.additionalPhone || student.whatsappPhone);
       const nationalCore = (student.nationalId || '').trim();
 
-      const isMatch = inputCore && (
-        inputCore === fatherCore ||
-        inputCore === motherCore ||
-        inputCore === addCore ||
-        (nationalCore && cleanPassword === nationalCore) ||
-        (student.enrollmentNumber && cleanPassword === student.enrollmentNumber.trim())
+      const hasRegisteredPhone = fatherCore || motherCore || addCore;
+      const isMatch = !hasRegisteredPhone || (
+        inputCore && (
+          inputCore === fatherCore ||
+          inputCore === motherCore ||
+          inputCore === addCore ||
+          (nationalCore && cleanPassword === nationalCore) ||
+          (student.enrollmentNumber && cleanPassword === student.enrollmentNumber.trim())
+        )
       );
 
       if (!isMatch) {
