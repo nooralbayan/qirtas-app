@@ -11,6 +11,7 @@ import Timetable from './components/Timetable';
 import WhatsApp from './components/WhatsApp';
 import Results from './components/Results';
 import Login from './components/Login';
+import ParentPortal from './components/ParentPortal';
 import UsersComponent from './components/Users';
 import RecycleBin from './components/RecycleBin';
 import FinancialHub from './components/FinancialHub';
