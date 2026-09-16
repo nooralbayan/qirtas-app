@@ -151,7 +151,7 @@ export interface LessonLog {
   notes?: string;
 }
 
-export type UserRole = 'admin' | 'accountant' | 'student_affairs' | 'hr';
+export type UserRole = 'admin' | 'accountant' | 'student_affairs' | 'hr' | 'teacher' | 'parent';
 
 export interface User {
   id: string;

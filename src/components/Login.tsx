@@ -3,8 +3,8 @@ import { School } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 export default function Login() {
-  const { users, students, setCurrentUser, schoolName } = useAppContext();
-  const [loginType, setLoginType] = useState<'staff' | 'parent'>('staff');
+  const { users, students, teachers, setCurrentUser, schoolName } = useAppContext();
+  const [loginType, setLoginType] = useState<'staff' | 'teacher' | 'parent'>('staff');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -97,6 +97,36 @@ export default function Login() {
         } else {
           setError('تعذر الاتصال بالخادم — تأكد من تشغيل النظام');
         }
+      }
+    } else if (loginType === 'teacher') {
+      // Teacher login
+      try {
+        const res = await fetch('/api/auth/teacher-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ teacherId: username.trim(), phone: password })
+        });
+        const data = await res.json();
+        if (data.success && data.user) {
+          setCurrentUser({ ...data.user } as any);
+        } else {
+          setError(data.error || 'الرقم التسلسلي للمعلم أو رقم الهاتف غير صحيح');
+        }
+      } catch {
+        // Offline fallback
+        const cleanId = username.trim();
+        const numAsInt = parseInt(cleanId, 10);
+        const teacherList = Array.isArray(teachers) ? teachers : [];
+        const teacher = teacherList.find(t =>
+          String(t.id).trim() === cleanId ||
+          (!isNaN(numAsInt) && t.id === numAsInt)
+        );
+        if (!teacher) { setError('الرقم التسلسلي للمعلم غير صحيح'); return; }
+        const cleanPhone = (p?: string | number) => String(p || '').replace(/\D/g, '').slice(-9);
+        const coreInput = cleanPhone(password);
+        const isMatch = coreInput && coreInput === cleanPhone(teacher.phone);
+        if (!isMatch) { setError('رقم الهاتف غير مطابق لبيانات المعلم'); return; }
+        setCurrentUser({ id: `teacher_${teacher.id}`, username: String(teacher.id), name: teacher.name, role: 'teacher', teacherId: teacher.id } as any);
       }
     } else {
       // Parent Login via server
@@ -548,31 +578,38 @@ export default function Login() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', width: '100%' }}>
+        <div style={{ display: 'flex', gap: '6px', marginBottom: '20px', width: '100%' }}>
           <button 
             type="button"
             onClick={() => { setLoginType('staff'); setError(''); }}
-            style={{ flex: 1, padding: '10px', borderRadius: '12px', border: 'none', background: loginType === 'staff' ? 'var(--primary-color)' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
+            style={{ flex: 1, padding: '10px 4px', borderRadius: '12px', border: 'none', background: loginType === 'staff' ? 'var(--primary-color)' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', fontSize: '12px', cursor: 'pointer', transition: '0.3s' }}
           >
-            👨‍🏫 دخول الإدارة والمعلمين
+            👨‍💼 الإدارة
+          </button>
+          <button 
+            type="button"
+            onClick={() => { setLoginType('teacher'); setError(''); }}
+            style={{ flex: 1, padding: '10px 4px', borderRadius: '12px', border: 'none', background: loginType === 'teacher' ? '#10b981' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', fontSize: '12px', cursor: 'pointer', transition: '0.3s' }}
+          >
+            👨‍🏫 دخول المعلمين
           </button>
           <button 
             type="button"
             onClick={() => { setLoginType('parent'); setError(''); }}
-            style={{ flex: 1, padding: '10px', borderRadius: '12px', border: 'none', background: loginType === 'parent' ? '#f59e0b' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
+            style={{ flex: 1, padding: '10px 4px', borderRadius: '12px', border: 'none', background: loginType === 'parent' ? '#f59e0b' : 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 'bold', fontSize: '12px', cursor: 'pointer', transition: '0.3s' }}
           >
-            👨‍👩‍👦 بوابة أولياء الأمور
+            👨‍👩‍👦 أولياء الأمور
           </button>
         </div>
 
         <form onSubmit={handleLogin} style={styles.form}>
           <div style={styles.inputGroup}>
             <div style={{ ...styles.icon, transform: isFocusedUsername ? 'translateY(-50%) scale(1.2)' : 'translateY(-50%)', filter: isFocusedUsername ? 'drop-shadow(0 0 8px rgba(255,255,255,0.8))' : 'none' }}>
-              🧑‍🏫
+              {loginType === 'staff' ? '🧑‍💼' : loginType === 'teacher' ? '👨‍🏫' : '🎓'}
             </div>
             <input
               type="text"
-              placeholder={loginType === 'staff' ? "اسم المستخدم" : "رقم القيد الخاص بالطالب"}
+              placeholder={loginType === 'staff' ? "اسم المستخدم" : loginType === 'teacher' ? "الرقم التسلسلي للمعلم (ID)" : "رقم القيد الخاص بالطالب"}
               value={username}
               onChange={e => setUsername(e.target.value)}
               onFocus={() => setIsFocusedUsername(true)}
@@ -587,8 +624,8 @@ export default function Login() {
               🔐
             </div>
             <input
-              type={loginType === 'parent' ? "tel" : "password"}
-              placeholder={loginType === 'staff' ? "كلمة المرور" : "رقم هاتف ولي الأمر المسجل"}
+              type={loginType === 'staff' ? "password" : "tel"}
+              placeholder={loginType === 'staff' ? "كلمة المرور" : loginType === 'teacher' ? "رقم هاتف المعلم المسجل" : "رقم هاتف ولي الأمر المسجل"}
               value={password}
               onChange={e => setPassword(e.target.value)}
               onFocus={() => setIsFocusedPassword(true)}

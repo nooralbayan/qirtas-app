@@ -111,4 +111,55 @@ router.post('/parent-login', async (req, res) => {
   }
 });
 
+// Teacher Login (Serial ID + Phone Number as password)
+router.post('/teacher-login', async (req, res) => {
+  try {
+    const { teacherId, phone } = req.body;
+    
+    const cleanId = String(teacherId || '').trim();
+    const idAsInt = parseInt(cleanId, 10);
+    
+    // Find teacher by ID or matching serial
+    const teacher = await Teacher.findOne({
+      $or: [
+        { id: isNaN(idAsInt) ? -1 : idAsInt },
+        { phone: cleanId }
+      ]
+    });
+    
+    if (!teacher) {
+      return res.status(401).json({ success: false, error: 'الرقم التسلسلي للمعلم غير صحيح' });
+    }
+
+    // Match phone core
+    const getPhoneCore = (p) => String(p || '').replace(/\D/g, '').slice(-9);
+    const inputCore = getPhoneCore(phone);
+    const teacherCore = getPhoneCore(teacher.phone);
+
+    if (!inputCore || inputCore !== teacherCore) {
+      return res.status(401).json({ success: false, error: 'رقم الهاتف غير مطابق لبيانات المعلم' });
+    }
+
+    const token = jwt.sign(
+      { id: teacher._id, role: 'teacher', teacherId: teacher.id, name: teacher.name, subject: teacher.subject },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: teacher._id,
+        teacherId: teacher.id,
+        name: teacher.name,
+        subject: teacher.subject,
+        role: 'teacher'
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'حدث خطأ في الخادم' });
+  }
+});
+
 export default router;
