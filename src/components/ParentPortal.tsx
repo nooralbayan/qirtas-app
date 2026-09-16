@@ -6,13 +6,20 @@ interface ParentPortalProps {
 }
 
 export default function ParentPortal({ onLogout }: ParentPortalProps) {
-  const { currentUser, students, timetables, studentResults, attendanceRecords, gradeFees } = useAppContext();
+  const { currentUser, students, timetables, studentResults, attendanceRecords, gradeFees, receipts } = useAppContext();
   const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance'>('info');
 
   // The parent user object has a custom `studentId` attached to it
   const studentId = (currentUser as any)?.studentId;
   const studentList = Array.isArray(students) ? students : [];
   const student = studentList.find(s => s.id === studentId);
+
+  // Dynamic Payment Calculation
+  const studentReceipts = (receipts || []).filter(r => String(r.studentId) === String(student?.id));
+  const paidAmount = studentReceipts.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+  const netFees = Math.max(0, (student?.totalFees || 0) - (student?.discountAmount || 0));
+  const remainingAmount = Math.max(0, netFees - paidAmount);
+  const effectivePaymentStatus = netFees > 0 && remainingAmount <= 0 ? 'مسدد' : paidAmount > 0 ? 'جزئي' : (student?.paymentStatus === 'مسدد' || student?.paymentStatus === 'جزئي' ? student.paymentStatus : 'غير مسدد');
 
   if (!student) {
     return (
@@ -132,15 +139,15 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                 <div style={{ color: 'var(--text-primary)', fontSize: 18, fontWeight: 'bold' }}>{student.birthDate || 'غير مسجل'}</div>
               </div>
               <div style={{ padding: 16, background: 'var(--input-bg)', borderRadius: 12 }}>
-                <div style={{ color: 'var(--text-secondary)', fontSize: 14 }}>الرسوم الدراسية</div>
+                <div style={{ color: 'var(--text-secondary)', fontSize: 14 }}>الرسوم الدراسية وحالة السداد</div>
                 <div style={{ 
-                  color: student.paymentStatus === 'مسدد' ? '#10b981' : student.paymentStatus === 'جزئي' ? '#f59e0b' : '#ef4444', 
+                  color: effectivePaymentStatus === 'مسدد' ? '#10b981' : effectivePaymentStatus === 'جزئي' ? '#f59e0b' : '#ef4444', 
                   fontSize: 18, fontWeight: 'bold', marginBottom: 4 
                 }}>
-                  الحالة: {student.paymentStatus}
+                  الحالة: {effectivePaymentStatus === 'مسدد' ? 'مسدد بالكامل ✅' : effectivePaymentStatus === 'جزئي' ? 'دفع جزئي ⏳' : 'غير مسدد ⚠️'}
                 </div>
-                <div style={{ color: 'var(--text-primary)', fontSize: 16 }}>
-                  القيمة الإجمالية: {totalFees}
+                <div style={{ color: 'var(--text-primary)', fontSize: 14, marginTop: 4 }}>
+                  الإجمالي: <strong>{netFees || student.totalFees || totalFees} د.ل</strong> | المدفوع: <strong style={{ color: '#10b981' }}>{paidAmount} د.ل</strong> | المتبقي: <strong style={{ color: '#ef4444' }}>{remainingAmount} د.ل</strong>
                 </div>
               </div>
               <div style={{ padding: 16, background: 'var(--input-bg)', borderRadius: 12 }}>
