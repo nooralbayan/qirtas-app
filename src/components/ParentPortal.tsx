@@ -6,8 +6,8 @@ interface ParentPortalProps {
 }
 
 export default function ParentPortal({ onLogout }: ParentPortalProps) {
-  const { currentUser, students, timetables, studentResults, attendanceRecords, gradeFees, receipts } = useAppContext();
-  const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance'>('info');
+  const { currentUser, students, timetables, studentResults, attendanceRecords, gradeFees, receipts, lessonLogs } = useAppContext();
+  const [activeTab, setActiveTab] = useState<'info' | 'timetable' | 'results' | 'attendance' | 'lessons'>('info');
 
   // The parent user object has a custom `studentId` attached to it
   const studentId = (currentUser as any)?.studentId;
@@ -119,6 +119,12 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
           style={{ flex: 1, padding: '16px', background: activeTab === 'results' ? 'var(--primary-color)' : 'var(--bg-card)', color: activeTab === 'results' ? '#fff' : 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 12, fontWeight: 'bold', fontSize: 18, cursor: 'pointer', transition: '0.3s' }}
         >
           📊 الدرجات والنتائج
+        </button>
+        <button 
+          onClick={() => setActiveTab('lessons')}
+          style={{ flex: 1, padding: '16px', background: activeTab === 'lessons' ? 'var(--primary-color)' : 'var(--bg-card)', color: activeTab === 'lessons' ? '#fff' : 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 12, fontWeight: 'bold', fontSize: 18, cursor: 'pointer', transition: '0.3s' }}
+        >
+          📖 المسار الدروسي والواجبات
         </button>
       </div>
 
@@ -280,6 +286,45 @@ export default function ParentPortal({ onLogout }: ParentPortalProps) {
                 </table>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Lessons Tab */}
+        {activeTab === 'lessons' && (
+          <div>
+            <h3 style={{ color: 'var(--primary-color)', marginBottom: 24, borderBottom: '2px solid var(--border-color)', paddingBottom: 10 }}>المسار الدراسي والدروس المنفذة - {student.grade} (فصل {student.classRoom})</h3>
+            {(() => {
+              const safeLogs = Array.isArray(lessonLogs) ? lessonLogs : [];
+              const studentLessons = safeLogs.filter(l => l.grade === student.grade && (!l.classRoom || l.classRoom === 'الكل' || l.classRoom === student.classRoom)).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+              
+              if (studentLessons.length === 0) {
+                return <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>لم يتم إدراج دروس في المسار الدراسي لصف الطالب حتى الآن.</div>;
+              }
+
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {studentLessons.map(log => (
+                    <div key={log.id} style={{ background: 'var(--input-bg)', border: '1px solid var(--border-color)', borderRadius: 12, padding: 20 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                        <span style={{ background: 'var(--primary-color)', color: '#fff', padding: '4px 12px', borderRadius: 8, fontSize: 13, fontWeight: 'bold' }}>
+                          {log.subject}
+                        </span>
+                        <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+                          📅 {log.date}
+                        </span>
+                      </div>
+                      <h4 style={{ margin: '8px 0', fontSize: 18, color: 'var(--text-primary)' }}>{log.lessonTitle}</h4>
+                      {log.teacherName && <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>👨‍🏫 المعلم: {log.teacherName}</div>}
+                      {log.homework && (
+                        <div style={{ background: 'rgba(245, 158, 11, 0.1)', borderRight: '4px solid #f59e0b', padding: '8px 12px', borderRadius: 6, fontSize: 13, marginTop: 8 }}>
+                          📝 <strong>الواجب المنزلي:</strong> {log.homework}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>

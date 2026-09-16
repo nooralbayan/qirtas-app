@@ -139,6 +139,18 @@ export interface Expense {
   paymentMethod?: 'نقدي' | 'بطاقة مصرفية' | 'حوالة مصرفية' | 'صك مصدق';
 }
 
+export interface LessonLog {
+  id: string;
+  grade: string;
+  classRoom: string;
+  subject: string;
+  teacherName: string;
+  lessonTitle: string;
+  date: string;
+  homework?: string;
+  notes?: string;
+}
+
 export type UserRole = 'admin' | 'accountant' | 'student_affairs' | 'hr';
 
 export interface User {
@@ -193,6 +205,8 @@ interface AppContextType {
   setAcademicYear: (year: string) => void;
   attendanceRecords: AttendanceRecord[];
   setAttendanceRecords: React.Dispatch<React.SetStateAction<AttendanceRecord[]>>;
+  lessonLogs: LessonLog[];
+  setLessonLogs: React.Dispatch<React.SetStateAction<LessonLog[]>>;
 }
 
 const initialGradeFees = {
@@ -343,6 +357,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useCloudStorage<ThemeType>('qirtas_theme', 'light');
   const [academicYear, setAcademicYear] = useCloudStorage('qirtas_academicYear', '2024 - 2025', serverState?.academicYear);
   const [attendanceRecords, setAttendanceRecords] = useCloudStorage<AttendanceRecord[]>('qirtas_attendanceRecords', [], serverState?.attendanceRecords);
+  const [lessonLogs, setLessonLogs] = useCloudStorage<LessonLog[]>('qirtas_lessonLogs', [], serverState?.lessonLogs);
 
   // Apply theme to document body
   useEffect(() => {
@@ -475,7 +490,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       studentResults, setStudentResults,
       theme, setTheme,
       academicYear, setAcademicYear,
-      attendanceRecords, setAttendanceRecords
+      attendanceRecords, setAttendanceRecords,
+      lessonLogs, setLessonLogs
     }}>
       {isLoading ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'var(--bg-color)', color: 'var(--text-primary)', fontFamily: 'Cairo' }}>

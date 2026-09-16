@@ -18,6 +18,7 @@ import FinancialHub from './components/FinancialHub';
 import Subjects from './components/Subjects';
 import Classrooms from './components/Classrooms';
 import InstallmentsQuery from './components/InstallmentsQuery';
+import Lessons from './components/Lessons';
 import { useAppContext } from './context/AppContext';
 
 function App() {
@@ -203,6 +204,7 @@ function App() {
     { id: 'whatsapp', label: 'تواصل أولياء الأمور', icon: '📱', roles: ['admin', 'accountant', 'student_affairs'] },
     { id: 'results', label: 'النتائج المدرسية', icon: '🏆', roles: ['admin', 'student_affairs'] },
     { id: 'subjects', label: 'المواد الدراسية', icon: '📚', roles: ['admin', 'student_affairs'] },
+    { id: 'lessons', label: 'سجل الدروس والمسار الدراسي', icon: '📖', roles: ['admin', 'student_affairs', 'hr'] },
     { id: 'users', label: 'إدارة المستخدمين', icon: '👥', roles: ['admin'] },
     { id: 'settings', label: 'الإعدادات', icon: '⚙️', roles: ['admin'] },
     { id: 'recyclebin', label: 'سلة المحذوفات', icon: '🗑️', roles: ['admin'] },
@@ -264,6 +266,7 @@ function App() {
       case 'whatsapp': return <WhatsApp onBack={() => setCurrentView('dashboard')} />;
       case 'results': return <Results onBack={() => setCurrentView('dashboard')} />;
       case 'subjects': return <Subjects onBack={() => setCurrentView('dashboard')} />;
+      case 'lessons': return <Lessons onBack={() => setCurrentView('dashboard')} />;
       case 'users': return <UsersComponent onBack={() => setCurrentView('dashboard')} />;
       case 'recyclebin': return <RecycleBin onBack={() => setCurrentView('dashboard')} />;
       case 'classrooms': return <Classrooms onBack={() => setCurrentView('dashboard')} />;
