@@ -317,6 +317,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         ...s,
         paymentStatus: cleanStatus,
         gender: cleanGender,
+        enrollmentNumber: s.enrollmentNumber || String(s.id),
         nationalId: s.nationalId || '',
         fatherName: s.fatherName || '',
         motherName: s.motherName || '',

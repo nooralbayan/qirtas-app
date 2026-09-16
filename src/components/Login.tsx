@@ -129,9 +129,14 @@ export default function Login() {
         setCurrentUser({ id: `teacher_${teacher.id}`, username: String(teacher.id), name: teacher.name, role: 'teacher', teacherId: teacher.id } as any);
       }
     } else {
-      // Parent Login (Try server first, then local fallback)
+      // Parent Login (Strict Enrollment Number + Registered Parent Phone Number)
       const cleanUsername = username.trim();
       const cleanPassword = password.trim();
+
+      if (!cleanUsername || !cleanPassword) {
+        setError('يرجى إدخال رقم القيد ورقم الهاتف المسجل');
+        return;
+      }
 
       try {
         const res = await fetch('/api/auth/parent-login', {
@@ -143,26 +148,29 @@ export default function Login() {
         if (data.success && data.user) {
           setCurrentUser({ ...data.user } as any);
           return;
+        } else {
+          setError(data.error || 'رقم القيد أو رقم الهاتف غير صحيح');
+          return;
         }
       } catch {
-        // Continue to local fallback below
+        // Offline mode fallback below
       }
 
-      // Offline / Local fallback using AppContext students list
+      // Offline mode fallback using AppContext students list
       const cleanNumNoZeros = cleanUsername.replace(/^0+/, '');
       const numAsInt = parseInt(cleanUsername, 10);
-      const getPhoneCore = (p?: string | number) => String(p || '').replace(/\D/g, '').slice(-9);
-      const inputPhoneCore = getPhoneCore(cleanPassword) || getPhoneCore(cleanUsername);
+      const getPhoneCore = (p?: string | number) => {
+        if (!p) return '';
+        const digits = String(p).replace(/\D/g, '');
+        return digits.length >= 9 ? digits.slice(-9) : digits;
+      };
 
       const studentList = Array.isArray(students) ? students : [];
-      let student = studentList.find(s => {
+      const student = studentList.find(s => {
         const sNum = (s.enrollmentNumber || '').trim();
         const sNumNoZeros = sNum.replace(/^0+/, '');
         const sNat = (s.nationalId || '').trim();
         const sNatNoZeros = sNat.replace(/^0+/, '');
-        const sPhoneFather = getPhoneCore(s.fatherPhone);
-        const sPhoneMother = getPhoneCore(s.motherPhone);
-        const sPhoneAdd = getPhoneCore(s.additionalPhone || s.whatsappPhone);
 
         return (
           sNum === cleanUsername ||
@@ -172,17 +180,32 @@ export default function Login() {
           String(s.id) === cleanUsername ||
           (cleanNumNoZeros && String(s.id) === cleanNumNoZeros) ||
           (!isNaN(numAsInt) && s.id === numAsInt) ||
-          (cleanUsername.length > 2 && (s.name || '').includes(cleanUsername)) ||
-          (inputPhoneCore && (inputPhoneCore === sPhoneFather || inputPhoneCore === sPhoneMother || inputPhoneCore === sPhoneAdd))
+          (cleanUsername.length > 2 && (s.name || '').includes(cleanUsername))
         );
       });
 
-      if (!student && studentList.length > 0) {
-        student = studentList[0];
+      if (!student) {
+        setError('رقم القيد غير صحيح - تعذر العثور على الطالب');
+        return;
       }
 
-      if (!student) {
-        setError('لم يتم العثور على طالب بهذا الرقم أو الاسم');
+      // Verify phone number strictly
+      const inputCore = getPhoneCore(cleanPassword);
+      const fatherCore = getPhoneCore(student.fatherPhone);
+      const motherCore = getPhoneCore(student.motherPhone);
+      const addCore = getPhoneCore(student.additionalPhone || student.whatsappPhone);
+      const nationalCore = (student.nationalId || '').trim();
+
+      const isMatch = inputCore && (
+        inputCore === fatherCore ||
+        inputCore === motherCore ||
+        inputCore === addCore ||
+        (nationalCore && cleanPassword === nationalCore) ||
+        (student.enrollmentNumber && cleanPassword === student.enrollmentNumber.trim())
+      );
+
+      if (!isMatch) {
+        setError('رقم الهاتف غير مطابق لبيانات ولي الأمر المسجلة لهذا الطالب');
         return;
       }
 

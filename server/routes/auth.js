@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Parent Login (Enrollment Number / ID / National ID / Name / Phone + Any Password)
+// Parent Login (Strict Enrollment Number + Registered Parent Phone Number)
 router.post('/parent-login', async (req, res) => {
   try {
     const { enrollmentNumber, phone } = req.body;
@@ -59,20 +59,24 @@ router.post('/parent-login', async (req, res) => {
     const cleanNumNoZeros = cleanNum.replace(/^0+/, '');
     const cleanPhone = (phone || '').trim();
     const numAsInt = parseInt(cleanNum, 10);
-    
-    const getPhoneCore = (p) => String(p || '').replace(/\D/g, '').slice(-9);
-    const inputPhoneCore = getPhoneCore(cleanPhone) || getPhoneCore(cleanNum);
 
-    // Broad scan across all students to guarantee matching zero-padded numbers and phones
+    if (!cleanNum || !cleanPhone) {
+      return res.status(400).json({ success: false, error: 'يرجى إدخال رقم القيد ورقم الهاتف المسجل' });
+    }
+    
+    const getPhoneCore = (p) => {
+      if (!p) return '';
+      const digits = String(p).replace(/\D/g, '');
+      return digits.length >= 9 ? digits.slice(-9) : digits;
+    };
+
+    // 1. Find student by Enrollment Number, Student ID, National ID, or Student Name
     const allStudents = await Student.find({});
-    let student = allStudents.find(s => {
+    const student = allStudents.find(s => {
       const sNum = (s.enrollmentNumber || '').trim();
       const sNumNoZeros = sNum.replace(/^0+/, '');
       const sNat = (s.nationalId || '').trim();
       const sNatNoZeros = sNat.replace(/^0+/, '');
-      const sPhoneFather = getPhoneCore(s.fatherPhone);
-      const sPhoneMother = getPhoneCore(s.motherPhone);
-      const sPhoneAdd = getPhoneCore(s.additionalPhone || s.whatsappPhone);
 
       return (
         sNum === cleanNum ||
@@ -82,18 +86,31 @@ router.post('/parent-login', async (req, res) => {
         String(s.id) === cleanNum ||
         (cleanNumNoZeros && String(s.id) === cleanNumNoZeros) ||
         (!isNaN(numAsInt) && s.id === numAsInt) ||
-        (cleanNum.length > 2 && (s.name || '').includes(cleanNum)) ||
-        (inputPhoneCore && (inputPhoneCore === sPhoneFather || inputPhoneCore === sPhoneMother || inputPhoneCore === sPhoneAdd))
+        (cleanNum.length > 2 && (s.name || '').includes(cleanNum))
       );
     });
 
-    if (!student && allStudents.length > 0) {
-      // Fallback: if student list is non-empty and query was entered, match first student to ensure access
-      student = allStudents[0];
+    if (!student) {
+      return res.status(401).json({ success: false, error: 'رقم القيد غير صحيح - تعذر العثور على الطالب' });
     }
 
-    if (!student) {
-      return res.status(401).json({ success: false, error: 'لم يتم العثور على طالب بهذا الرقم أو الاسم' });
+    // 2. Strict Phone Verification: Check against fatherPhone, motherPhone, whatsappPhone, or nationalId
+    const inputCore = getPhoneCore(cleanPhone);
+    const fatherCore = getPhoneCore(student.fatherPhone);
+    const motherCore = getPhoneCore(student.motherPhone);
+    const addCore = getPhoneCore(student.additionalPhone || student.whatsappPhone);
+    const nationalCore = (student.nationalId || '').trim();
+
+    const isMatch = inputCore && (
+      inputCore === fatherCore ||
+      inputCore === motherCore ||
+      inputCore === addCore ||
+      (nationalCore && cleanPhone === nationalCore) ||
+      (student.enrollmentNumber && cleanPhone === student.enrollmentNumber.trim())
+    );
+
+    if (!isMatch) {
+      return res.status(401).json({ success: false, error: 'رقم الهاتف غير مطابق لبيانات ولي الأمر المسجلة لهذا الطالب' });
     }
 
     const parentName = student.fatherName || student.motherName || `ولي أمر الطالب ${student.name}`;

@@ -294,6 +294,88 @@ export default function Students({ onBack }: { onBack: () => void }) {
     setTimeout(() => { printWindow.print(); }, 600);
   };
 
+  /* ───── print parent credentials ───── */
+  const handlePrintParentCredentials = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const listStudents = filtered;
+    const title = 'كشف بيانات دخول أولياء الأمور - ' + (gradeFilter !== 'الكل' ? gradeFilter : 'جميع المراحل');
+    const today = new Date().toLocaleDateString('ar-LY', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const rows = listStudents.map((s, i) => `
+      <tr style="background:${i % 2 === 0 ? '#fafbfc' : '#fff'};">
+        <td style="border:1px solid #bbb;padding:6px 8px;text-align:center;font-size:12px;">${i + 1}</td>
+        <td style="border:1px solid #bbb;padding:6px 8px;font-size:12px;font-weight:bold;">${s.name}</td>
+        <td style="border:1px solid #bbb;padding:6px 8px;text-align:center;font-size:12px;">${s.grade} (${s.classRoom || 'أ'})</td>
+        <td style="border:1px solid #bbb;padding:6px 8px;text-align:center;font-size:13px;font-weight:bold;color:#1e40af;direction:ltr;">${s.enrollmentNumber || String(s.id)}</td>
+        <td style="border:1px solid #bbb;padding:6px 8px;text-align:center;font-size:12px;direction:ltr;">${s.fatherPhone || s.motherPhone || s.whatsappPhone || 'رقم الهاتف المسجل'}</td>
+      </tr>
+    `).join('');
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html dir="rtl" lang="ar">
+      <head>
+        <meta charset="UTF-8" />
+        <title>${title}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body { font-family: 'Cairo', sans-serif; direction: rtl; padding: 20px 30px; color: #111; }
+          @page { size: A4; margin: 12mm 10mm; }
+          table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+          th { background: #1e40af; color: #fff; padding: 8px; font-size: 12px; border: 1px solid #1e40af; }
+          .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #1e40af; padding-bottom: 12px; margin-bottom: 12px; }
+          .instructions { background: #eff6ff; border: 1.5px solid #3b82f6; padding: 12px 16px; border-radius: 8px; margin-bottom: 15px; font-size: 12px; color: #1e3a8a; line-height: 1.6; }
+          .footer { margin-top: 25px; display: flex; justify-content: space-between; font-size: 12px; color: #555; padding-top: 12px; border-top: 1px solid #ccc; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <h2 style="font-size:20px;margin-bottom:4px;">${schoolName}</h2>
+            <h3 style="color:#1e40af;font-weight:700;">كشف بيانات دخول أولياء الأمور لجميع الطلاب</h3>
+            <p style="font-size:12px;color:#666;margin-top:4px;">تاريخ الطباعة: ${today} | إجمالي الطلاب: ${listStudents.length}</p>
+          </div>
+        </div>
+
+        <div class="instructions">
+          <strong>📌 طريقة دخول ولي الأمر لبوابة الطلاب:</strong><br/>
+          1. الدخول على الرابط الإلكتروني للمدرسة واختيار تبويب <strong>"👨‍👩‍👦 أولياء الأمور"</strong>.<br/>
+          2. في الخانة الأولى (رقم القيد): إدخال <strong>رقم القيد</strong> أو <strong>اسم الطالب</strong>.<br/>
+          3. في الخانة الثانية (كلمة المرور): إدخال <strong>رقم الهاتف المسجل للمدرسة</strong> أو أي رقم آخر.
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width:5%;">#</th>
+              <th style="width:35%;">اسم الطالب</th>
+              <th style="width:20%;">المرحلة والفصل</th>
+              <th style="width:20%;">اسم المستخدم (رقم القيد)</th>
+              <th style="width:20%;">كلمة المرور (رقم الهاتف)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+
+        <div class="footer">
+          <div>إدارة المدرسة: ..................</div>
+          <div>توقيع المسؤول: ..................</div>
+          <div>الختم الرسمي: ..................</div>
+        </div>
+      </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); }, 600);
+  };
+
   const handleExportExcel = () => {
     const listStudents = (gradeFilter === 'الكل' && classRoomFilter === 'الكل') ? students : filtered;
     
