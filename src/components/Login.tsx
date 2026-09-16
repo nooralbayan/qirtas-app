@@ -164,23 +164,34 @@ export default function Login() {
       };
 
       const studentList = Array.isArray(students) ? students : [];
-      const student = studentList.find(s => {
-        const sNum = (s.enrollmentNumber || '').trim();
-        const sNumNoZeros = sNum.replace(/^0+/, '');
-        const sNat = (s.nationalId || '').trim();
-        const sNatNoZeros = sNat.replace(/^0+/, '');
+      
+      // Step 1: exact enrollment number match
+      let student = studentList.find(s =>
+        (s.enrollmentNumber || '').trim() === cleanUsername ||
+        (cleanNumNoZeros && (s.enrollmentNumber || '').trim().replace(/^0+/, '') === cleanNumNoZeros)
+      );
 
-        return (
-          sNum === cleanUsername ||
-          (cleanNumNoZeros && sNumNoZeros === cleanNumNoZeros) ||
-          sNat === cleanUsername ||
-          (cleanNumNoZeros && sNatNoZeros === cleanNumNoZeros) ||
-          String(s.id) === cleanUsername ||
-          (cleanNumNoZeros && String(s.id) === cleanNumNoZeros) ||
-          (!isNaN(numAsInt) && s.id === numAsInt) ||
-          (cleanUsername.length > 2 && (s.name || '').includes(cleanUsername))
+      // Step 2: national ID match
+      if (!student) {
+        student = studentList.find(s =>
+          (s.nationalId || '').trim() === cleanUsername
         );
-      });
+      }
+
+      // Step 3: student name partial match
+      if (!student && cleanUsername.length > 2 && /[^\d]/.test(cleanUsername)) {
+        student = studentList.find(s => (s.name || '').includes(cleanUsername));
+      }
+
+      // Step 4: numeric ID match — ONLY if no enrollment number entry could match
+      if (!student && !isNaN(numAsInt)) {
+        const hasEnrollmentMatch = studentList.some(s =>
+          (s.enrollmentNumber || '').replace(/^0+/, '') === cleanNumNoZeros
+        );
+        if (!hasEnrollmentMatch) {
+          student = studentList.find(s => s.id === numAsInt);
+        }
+      }
 
       if (!student) {
         setError('رقم القيد غير صحيح - تعذر العثور على الطالب في النظام');

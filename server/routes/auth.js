@@ -71,25 +71,37 @@ router.post('/parent-login', async (req, res) => {
       return digits.slice(-9);
     };
 
-    // 1. Find student by Enrollment Number, Student ID, National ID, or Student Name
+    // 1. Find student: Enrollment Number is HIGHEST priority, then nationalId, then id
     const allStudents = await Student.find({});
-    const student = allStudents.find(s => {
-      const sNum = (s.enrollmentNumber || '').trim();
-      const sNumNoZeros = sNum.replace(/^0+/, '');
-      const sNat = (s.nationalId || '').trim();
-      const sNatNoZeros = sNat.replace(/^0+/, '');
 
-      return (
-        sNum === cleanNum ||
-        (cleanNumNoZeros && sNumNoZeros === cleanNumNoZeros) ||
-        sNat === cleanNum ||
-        (cleanNumNoZeros && sNatNoZeros === cleanNumNoZeros) ||
-        String(s.id) === cleanNum ||
-        (cleanNumNoZeros && String(s.id) === cleanNumNoZeros) ||
-        (!isNaN(numAsInt) && s.id === numAsInt) ||
-        (cleanNum.length > 2 && (s.name || '').includes(cleanNum))
+    // Step 1: exact enrollment number match (including leading zeros like "082")
+    let student = allStudents.find(s =>
+      (s.enrollmentNumber || '').trim() === cleanNum ||
+      (cleanNumNoZeros && (s.enrollmentNumber || '').trim().replace(/^0+/, '') === cleanNumNoZeros)
+    );
+
+    // Step 2: national ID match
+    if (!student) {
+      student = allStudents.find(s =>
+        (s.nationalId || '').trim() === cleanNum
       );
-    });
+    }
+
+    // Step 3: student name partial match (only if query is longer than 2 chars)
+    if (!student && cleanNum.length > 2 && /[^\d]/.test(cleanNum)) {
+      student = allStudents.find(s => (s.name || '').includes(cleanNum));
+    }
+
+    // Step 4: numeric ID match — ONLY if no enrollment number entry could match
+    if (!student && !isNaN(numAsInt)) {
+      // Only match by ID if no student has an enrollment number matching this number
+      const hasEnrollmentMatch = allStudents.some(s =>
+        (s.enrollmentNumber || '').replace(/^0+/, '') === cleanNumNoZeros
+      );
+      if (!hasEnrollmentMatch) {
+        student = allStudents.find(s => s.id === numAsInt);
+      }
+    }
 
     if (!student) {
       return res.status(401).json({ success: false, error: 'رقم القيد غير صحيح - تعذر العثور على الطالب' });
