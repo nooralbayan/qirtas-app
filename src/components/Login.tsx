@@ -159,7 +159,8 @@ export default function Login() {
       const getPhoneCore = (p?: string | number) => {
         if (!p) return '';
         const digits = String(p).replace(/\D/g, '');
-        return digits.length >= 9 ? digits.slice(-9) : digits;
+        if (digits.length < 7) return '';
+        return digits.slice(-9);
       };
 
       const studentList = Array.isArray(students) ? students : [];

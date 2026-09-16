@@ -67,7 +67,8 @@ router.post('/parent-login', async (req, res) => {
     const getPhoneCore = (p) => {
       if (!p) return '';
       const digits = String(p).replace(/\D/g, '');
-      return digits.length >= 9 ? digits.slice(-9) : digits;
+      if (digits.length < 7) return '';
+      return digits.slice(-9);
     };
 
     // 1. Find student by Enrollment Number, Student ID, National ID, or Student Name

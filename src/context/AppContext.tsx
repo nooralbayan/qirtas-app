@@ -328,7 +328,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [schoolName, setSchoolName] = useCloudStorage('qirtas_schoolName', 'نظام قرطاس المدرسي', serverState?.schoolName);
   const [schoolLogo, setSchoolLogo] = useCloudStorage('qirtas_schoolLogo', '<>', serverState?.schoolLogo);
   const [gradeFees, setGradeFees] = useCloudStorage<Record<string, number>>('qirtas_gradeFees', initialGradeFees, serverState?.gradeFees);
-  const [students, setStudents] = useCloudStorage<Student[]>('qirtas_students', [], serverStudents);
+  const [students, setStudents] = useCloudStorage<Student[]>('qirtas_students', initialStudentsFromExcel, serverStudents);
   const [receipts, setReceipts] = useCloudStorage<Receipt[]>('qirtas_receipts', [], Array.isArray(serverState?.receipts) ? serverState.receipts : undefined);
   const [teachers, setTeachers] = useCloudStorage<Teacher[]>('qirtas_teachers', [], Array.isArray(serverState?.teachers) ? serverState.teachers : undefined);
   const [expenses, setExpenses] = useCloudStorage<Expense[]>('qirtas_expenses', [], Array.isArray(serverState?.expenses) ? serverState.expenses : undefined);
