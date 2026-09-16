@@ -26,6 +26,22 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // Connect to MongoDB
 connectDB();
 
+// Health check endpoint for Keep-Alive ping services
+app.get('/api/health', (req, res) => res.status(200).send('OK'));
+
+// Keep-Alive Self-Ping for Render Free Tier (pings itself every 10 minutes)
+if (process.env.RENDER_EXTERNAL_URL) {
+  const url = `${process.env.RENDER_EXTERNAL_URL}/api/health`;
+  setInterval(async () => {
+    try {
+      await fetch(url);
+      console.log('⚡ [KEEP-ALIVE] Pinged self successfully to stay awake');
+    } catch (err) {
+      console.error('❌ [KEEP-ALIVE] Ping error:', err.message);
+    }
+  }, 10 * 60 * 1000); // Every 10 minutes
+}
+
 // Register API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/migration', migrationRoutes);
