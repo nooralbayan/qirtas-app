@@ -55,8 +55,18 @@ router.post('/parent-login', async (req, res) => {
   try {
     const { enrollmentNumber, phone } = req.body;
     
-    // Find student by enrollment number
-    const student = await Student.findOne({ enrollmentNumber });
+    // Find student by enrollment number (flexible matching: 01, 1, ID, or full number)
+    const cleanNum = (enrollmentNumber || '').trim();
+    const numAsInt = parseInt(cleanNum, 10);
+    const query = {
+      $or: [
+        { enrollmentNumber: cleanNum },
+        { enrollmentNumber: cleanNum.replace(/^0+/, '') },
+        { enrollmentNumber: String(numAsInt) },
+        { id: isNaN(numAsInt) ? -1 : numAsInt }
+      ]
+    };
+    const student = await Student.findOne(query);
     
     if (!student) {
       return res.status(401).json({ success: false, error: 'رقم القيد غير صحيح' });

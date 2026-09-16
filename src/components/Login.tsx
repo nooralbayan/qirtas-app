@@ -115,8 +115,13 @@ export default function Login() {
       } catch {
         // Offline fallback
         const cleanUsername = username.trim();
+        const numAsInt = parseInt(cleanUsername, 10);
         const studentList = Array.isArray(students) ? students : [];
-        const student = studentList.find(s => (s.enrollmentNumber || '').trim() === cleanUsername);
+        const student = studentList.find(s => 
+          (s.enrollmentNumber || '').trim() === cleanUsername ||
+          (s.enrollmentNumber || '').trim().replace(/^0+/, '') === cleanUsername ||
+          (!isNaN(numAsInt) && s.id === numAsInt)
+        );
         if (!student) { setError('رقم القيد غير صحيح'); return; }
         const cleanPhone = (phone?: string | number) => String(phone || '').replace(/\s+/g, '').replace(/-/g, '').replace(/\+/g, '').slice(-9);
         const coreInput = cleanPhone(password);
