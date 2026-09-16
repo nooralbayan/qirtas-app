@@ -35,6 +35,19 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
 
   const setValue: Dispatch<SetStateAction<T>> = (value) => {
     try {
+      if (key !== 'qirtas_theme' && key !== 'qirtas_currentUser') {
+         const userJson = window.localStorage.getItem('qirtas_currentUser');
+         if (userJson) {
+           try {
+             const user = JSON.parse(userJson);
+             if (user?.role === 'viewer') {
+               alert('عذراً، حسابك للعرض فقط ولا يمكنك إجراء تعديلات.');
+               return;
+             }
+           } catch (e) {}
+         }
+      }
+
       const valueToStore = value instanceof Function ? (value as any)(storedValue) : value;
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
@@ -152,7 +165,7 @@ export interface LessonLog {
   notes?: string;
 }
 
-export type UserRole = 'admin' | 'accountant' | 'student_affairs' | 'hr' | 'teacher' | 'parent';
+export type UserRole = 'admin' | 'accountant' | 'student_affairs' | 'hr' | 'teacher' | 'parent' | 'viewer';
 
 export interface User {
   id: string;

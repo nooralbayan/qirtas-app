@@ -60,7 +60,8 @@ export default function Users({ onBack }: { onBack: () => void }) {
     'admin': 'مدير عام',
     'accountant': 'محاسب',
     'student_affairs': 'شؤون طلبة',
-    'hr': 'شؤون موظفين'
+    'hr': 'شؤون موظفين',
+    'viewer': 'مستخدم للعرض فقط'
   };
 
   return (
@@ -142,6 +143,7 @@ export default function Users({ onBack }: { onBack: () => void }) {
                   <option value="accountant">محاسب</option>
                   <option value="hr">شؤون موظفين</option>
                   <option value="admin">مدير عام</option>
+                  <option value="viewer">للعرض فقط</option>
                 </select>
               </div>
             </div>
