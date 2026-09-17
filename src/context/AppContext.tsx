@@ -29,7 +29,13 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
   useEffect(() => {
     if (serverValue != null) {
       setStoredValue(serverValue);
-      window.localStorage.setItem(key, JSON.stringify(serverValue));
+      try {
+        if (key !== 'qirtas_students') {
+          window.localStorage.setItem(key, JSON.stringify(serverValue));
+        }
+      } catch (e) {
+        console.warn('LocalStorage limit reached on mount', e);
+      }
     }
   }, [serverValue, key]);
 
@@ -54,8 +60,8 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
         // Defer heavy serialization and network tasks to unblock the UI instantly
         setTimeout(() => {
           try {
-            // Do not stringify if it's a huge array (like students) to avoid freezing
-            if (key !== 'qirtas_students' || (Array.isArray(valueToStore) && valueToStore.length < 100)) {
+            // Do not stringify students array to avoid massive UI freezing from base64 photos
+            if (key !== 'qirtas_students') {
               window.localStorage.setItem(key, JSON.stringify(valueToStore));
             }
           } catch (lsError) {
@@ -419,9 +425,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [theme]);
 
   // Emergency Vault Cache: Preserves non-empty student lists safely in localStorage
+  // Strips large photos to prevent QuotaExceededError and synchronous UI freezes.
   useEffect(() => {
     if (students && students.length > 0) {
-      localStorage.setItem('qirtas_emergency_students_vault', JSON.stringify(students));
+      setTimeout(() => {
+        try {
+          const stripped = students.map(s => ({ ...s, photo: null }));
+          localStorage.setItem('qirtas_emergency_students_vault', JSON.stringify(stripped));
+        } catch (e) {}
+      }, 500);
     }
   }, [students]);
 
