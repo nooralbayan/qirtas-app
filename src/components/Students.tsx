@@ -208,6 +208,12 @@ export default function Students({ onBack }: { onBack: () => void }) {
       };
       setStudents((prev) => [...prev, newStudent]);
     }
+    
+    // 🔥 Ensure the student is visible in the list by updating the filters
+    setSearchTerm('');
+    setGradeFilter(form.grade);
+    setClassRoomFilter('الكل');
+    
     setShowModal(false);
   };
 
