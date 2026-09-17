@@ -33,7 +33,7 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
     }
   }, [serverValue, key]);
 
-  const setValue: Dispatch<SetStateAction<T>> = (value) => {
+  const setValue: Dispatch<SetStateAction<T>> = useCallback((value) => {
     try {
       if (key !== 'qirtas_theme' && key !== 'qirtas_currentUser') {
          const userJson = window.localStorage.getItem('qirtas_currentUser');
@@ -48,61 +48,64 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
          }
       }
 
-      const valueToStore = value instanceof Function ? (value as any)(storedValue) : value;
-      setStoredValue(valueToStore);
-      
-      // Defer heavy serialization and network tasks to unblock the UI instantly
-      setTimeout(() => {
-        try {
-          // Do not stringify if it's a huge array (like students) to avoid freezing
-          if (key !== 'qirtas_students' || valueToStore.length < 100) {
-            window.localStorage.setItem(key, JSON.stringify(valueToStore));
-          }
-        } catch (lsError) {
-          console.warn('LocalStorage limit reached', lsError);
-        }
+      setStoredValue(prev => {
+        const valueToStore = value instanceof Function ? (value as any)(prev) : value;
         
-        // Async save to cloud
-        if (key !== 'qirtas_theme' && key !== 'qirtas_currentUser') {
-          const cleanKey = key.replace('qirtas_', '');
-          
-          let payload = valueToStore;
-          
-          // --- ULTRA FAST DIFFING USING REFERENCES ---
-          if (cleanKey === 'students' && Array.isArray(valueToStore) && Array.isArray(storedValue)) {
-            const oldMap = new Map(storedValue.map((s: any) => [s.id, s]));
-            const changedOrNew = valueToStore.filter((s: any) => {
-              const oldObj = oldMap.get(s.id);
-              // If it's a new reference, it means it was modified or newly added!
-              return !oldObj || oldObj !== s;
-            });
-            
-            const newIds = new Set(valueToStore.map((s: any) => s.id));
-            const deletedIds = storedValue.filter((s: any) => !newIds.has(s.id)).map((s: any) => s.id);
-            
-            if (changedOrNew.length > 0 || deletedIds.length > 0) {
-               payload = {
-                 __isDiff: true,
-                 upsert: changedOrNew,
-                 removeIds: deletedIds
-               };
-            } else {
-               return; 
+        // Defer heavy serialization and network tasks to unblock the UI instantly
+        setTimeout(() => {
+          try {
+            // Do not stringify if it's a huge array (like students) to avoid freezing
+            if (key !== 'qirtas_students' || (Array.isArray(valueToStore) && valueToStore.length < 100)) {
+              window.localStorage.setItem(key, JSON.stringify(valueToStore));
             }
+          } catch (lsError) {
+            console.warn('LocalStorage limit reached', lsError);
           }
           
-          fetch('/api/state/update', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ key: cleanKey, value: payload })
-          }).catch(console.error);
-        }
-      }, 10);
+          // Async save to cloud
+          if (key !== 'qirtas_theme' && key !== 'qirtas_currentUser') {
+            const cleanKey = key.replace('qirtas_', '');
+            
+            let payload = valueToStore;
+            
+            // --- ULTRA FAST DIFFING USING REFERENCES ---
+            if (cleanKey === 'students' && Array.isArray(valueToStore) && Array.isArray(prev)) {
+              const oldMap = new Map(prev.map((s: any) => [s.id, s]));
+              const changedOrNew = valueToStore.filter((s: any) => {
+                const oldObj = oldMap.get(s.id);
+                // If it's a new reference, it means it was modified or newly added!
+                return !oldObj || oldObj !== s;
+              });
+              
+              const newIds = new Set(valueToStore.map((s: any) => s.id));
+              const deletedIds = prev.filter((s: any) => !newIds.has(s.id)).map((s: any) => s.id);
+              
+              if (changedOrNew.length > 0 || deletedIds.length > 0) {
+                 payload = {
+                   __isDiff: true,
+                   upsert: changedOrNew,
+                   removeIds: deletedIds
+                 };
+              } else {
+                 return; 
+              }
+            }
+            
+            fetch('/api/state/update', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ key: cleanKey, value: payload })
+            }).catch(console.error);
+          }
+        }, 10);
+
+        return valueToStore;
+      });
 
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [key]);
 
   return [storedValue, setValue];
 }
