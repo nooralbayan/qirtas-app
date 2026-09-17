@@ -54,9 +54,12 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
       // Defer heavy serialization and network tasks to unblock the UI instantly
       setTimeout(() => {
         try {
-          window.localStorage.setItem(key, JSON.stringify(valueToStore));
+          // Do not stringify if it's a huge array (like students) to avoid freezing
+          if (key !== 'qirtas_students' || valueToStore.length < 100) {
+            window.localStorage.setItem(key, JSON.stringify(valueToStore));
+          }
         } catch (lsError) {
-          console.warn('LocalStorage limit reached, but continuing with cloud save.', lsError);
+          console.warn('LocalStorage limit reached', lsError);
         }
         
         // Async save to cloud
@@ -65,12 +68,13 @@ function useCloudStorage<T>(key: string, initialValue: T, serverValue?: T): [T, 
           
           let payload = valueToStore;
           
-          // --- FAST DIFFING ---
+          // --- ULTRA FAST DIFFING USING REFERENCES ---
           if (cleanKey === 'students' && Array.isArray(valueToStore) && Array.isArray(storedValue)) {
-            const oldMap = new Map(storedValue.map((s: any) => [s.id, JSON.stringify(s)]));
+            const oldMap = new Map(storedValue.map((s: any) => [s.id, s]));
             const changedOrNew = valueToStore.filter((s: any) => {
-              const oldStr = oldMap.get(s.id);
-              return !oldStr || oldStr !== JSON.stringify(s);
+              const oldObj = oldMap.get(s.id);
+              // If it's a new reference, it means it was modified or newly added!
+              return !oldObj || oldObj !== s;
             });
             
             const newIds = new Set(valueToStore.map((s: any) => s.id));
